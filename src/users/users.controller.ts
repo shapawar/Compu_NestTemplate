@@ -1,6 +1,8 @@
-import { Controller, Post, Res, Body, HttpStatus, Get, Param } from '@nestjs/common';
+import { Controller, Post, Res, Body, HttpStatus, Get, Param, Delete,Put } from '@nestjs/common';
 import { UserPostDTO } from './user.post.dto';
-import { UsersService } from './users.service';
+import { UsersService } from './users.service';import { json } from 'body-parser';
+;
+
 
 
 @Controller('users')
@@ -29,13 +31,31 @@ export class UsersController {
        })
     }
 
-    /* @Get(':userid')
+     @Get(':userID')
     async getUser(@Res() res, @Param('userID') userID){
-        const user = await this.userService.getUser();
+        const user = await this.userService.getUser(userID);
         return res.status(HttpStatus.OK).json({message:"Fetch user info successfully",UserDetails:user})
        
     }
- */
+
+    @Delete(':userID')
+    async deleteUser(@Res() res, @Param('userID') userID){
+          const user = await this.userService.deleteUser(userID);
+          return res.status(HttpStatus.OK).json({message:"User deleted successfully", data:user}); 
+    }
+
+    @Put()
+    async updateUser(@Res() res, @Body() userPostDTO: UserPostDTO){
+   
+        const editPost = await this.userService.editPost(userPostDTO);
+        return res.status(HttpStatus.OK).json({
+            message:'user has been updated successfully ',
+            details:editPost
+        })
+    }
+    
+    
+    
 
    
 }

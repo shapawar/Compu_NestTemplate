@@ -24,16 +24,39 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./user.entity");
 const typeorm_2 = require("typeorm");
-const user_post_dto_1 = require("./user.post.dto");
 let UsersService = class UsersService {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
-    createUser(userPostDTO) {
+    createUser(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(JSON.stringify(user_post_dto_1.UserPostDTO));
-            const savedata = yield this.userRepository.save(userPostDTO);
+            const savedata = yield this.userRepository.save(data);
             return savedata;
+        });
+    }
+    getUserList() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const list = yield this.userRepository.find();
+            return list;
+        });
+    }
+    getUser(userid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const details = yield this.userRepository.findOne({ username: userid });
+            return details;
+        });
+    }
+    deleteUser(userid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("check userid" + userid);
+            const user = yield this.userRepository.delete({ username: userid });
+            return user;
+        });
+    }
+    editPost(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const editedPost = yield this.userRepository.update({ username: data.username }, { address: data.address });
+            return editedPost;
         });
     }
 };

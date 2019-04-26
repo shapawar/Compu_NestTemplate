@@ -22,6 +22,17 @@ export class UsersService {
         const details = await this.userRepository.findOne({username:userid});
         return details;
     }
+
+    async deleteUser(userid){
+        console.log("check userid"+userid);
+        const user = await this.userRepository.delete({username:userid});
+        return user;
+    }
  
+    async editPost(data) {
+    
+        const editedPost = await this.userRepository.update({username:data.username},data);
+        return editedPost;
+    }
 
 }

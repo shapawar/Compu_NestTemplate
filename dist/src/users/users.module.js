@@ -11,7 +11,11 @@ const users_service_1 = require("./users.service");
 const users_controller_1 = require("./users.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./user.entity");
+const auth_middleware_1 = require("src/middleware/auth.middleware");
 let UsersModule = class UsersModule {
+    configure(consumer) {
+        consumer.apply(auth_middleware_1.AuthMiddleware).forRoutes('v1/api/');
+    }
 };
 UsersModule = __decorate([
     common_1.Module({

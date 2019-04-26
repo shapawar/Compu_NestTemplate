@@ -26,7 +26,7 @@ __decorate([
 ], userEntity.prototype, "email", void 0);
 __decorate([
     typeorm_1.Column(),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], userEntity.prototype, "mobile", void 0);
 __decorate([
     typeorm_1.Column(),

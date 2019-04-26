@@ -10,7 +10,7 @@ const port = process.env.PORT || 9001;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(bodyParser.json());
-  app.setGlobalPrefix('/api/v1')
+  app.setGlobalPrefix('api/v1')
   app.set('views', __dirname + '/views');
   app.set('view engine','ejs');
   await app.listen(port);

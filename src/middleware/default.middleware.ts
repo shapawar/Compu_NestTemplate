@@ -26,6 +26,7 @@ export class DefaultMiddleware implements NestMiddleware {
 
     resolve(...args: any[]): MiddlewareFunction {
         return (req, res, next) => {
+
             // assign a unique id to this request and response
             req.evUniqueID = callGUID;
             res.locals.evUniqueID = callGUID;//to share between middlewares
