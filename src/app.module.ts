@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { userEntity } from './users/user.entity';
+import { PingController } from './ping/ping.controller';
 
 
 @Module({
@@ -21,7 +22,7 @@ import { userEntity } from './users/user.entity';
     synchronize: true,
     entities : [userEntity]
   })],
-  controllers: [AppController, AuthController],
+  controllers: [AppController, AuthController, PingController],
   providers: [AppService]
 })
 
@@ -30,6 +31,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(DefaultMiddleware)
-      .forRoutes('*');
+      .forRoutes(PingController);
   }
 }
