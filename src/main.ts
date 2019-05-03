@@ -4,6 +4,7 @@ import { Logger } from '@nestjs/common';
 
 import 'dotenv/config';
 import bodyParser = require('body-parser');
+import { ErrorFilter } from './middleware/errorhandler.middleware';
 
 const port = process.env.PORT || 9001;
 
@@ -13,6 +14,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1')
   app.set('views', __dirname + '/views');
   app.set('view engine','ejs');
+  app.useGlobalFilters(new ErrorFilter());
   await app.listen(port);
 
   Logger.log(`APIVERSION = ${process.env.APIVERSION}`);

@@ -21,28 +21,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
-const app_service_1 = require("./app.service");
-let AppController = class AppController {
-    constructor(appService) {
-        this.appService = appService;
+const typeorm_1 = require("typeorm");
+const typeorm_2 = require("@nestjs/typeorm");
+const user_entity_1 = require("dist/src/users/user.entity");
+const jwt = require('jsonwebtoken');
+let LoginService = class LoginService {
+    constructor(userReposity) {
+        this.userReposity = userReposity;
     }
-    root(res) {
+    checkLogin(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("ok i am move");
-            res.redirect('/api/v1/login');
+            const checkUser = yield this.userReposity.findOne({ username: data.username, password: data.password });
+            return checkUser;
+        });
+    }
+    generateJWT(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let today = new Date();
+            let exp = new Date(today);
+            exp.setDate(today.getDate() + 60);
+            return jwt.sign({
+                username: data.username,
+                exp: exp.getTime() / 1000,
+            }, process.env.JWTSECRET);
         });
     }
 };
-__decorate([
-    common_1.Get(),
-    __param(0, common_1.Res()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AppController.prototype, "root", null);
-AppController = __decorate([
-    common_1.Controller(),
-    __metadata("design:paramtypes", [app_service_1.AppService])
-], AppController);
-exports.AppController = AppController;
-//# sourceMappingURL=app.controller.js.map
+LoginService = __decorate([
+    common_1.Injectable(),
+    __param(0, typeorm_2.InjectRepository(user_entity_1.userEntity)),
+    __metadata("design:paramtypes", [typeorm_1.Repository])
+], LoginService);
+exports.LoginService = LoginService;
+//# sourceMappingURL=login.service.js.map

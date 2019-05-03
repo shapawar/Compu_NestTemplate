@@ -7,7 +7,7 @@ export class AppController {
 
   @Get()
  async root(@Res() res) {
-    let data = await this.appService.getHello();
-    res.json(data)
+   console.log("ok i am move");
+  res.redirect('/api/v1/login');
   }
 }
