@@ -21,15 +21,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
-const app_service_1 = require("./app.service");
-let AppController = class AppController {
-    constructor(appService) {
-        this.appService = appService;
+const user_post_dto_1 = require("../users/user.post.dto");
+const login_service_1 = require("./login.service");
+let LoginController = class LoginController {
+    constructor(loginService) {
+        this.loginService = loginService;
     }
-    root(res) {
+    loginCheck(res) {
+        res.render('login', { title: "Welcome to comepumatrice", msg: null });
+    }
+    loginPost(res, req, UserPostDTO) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("ok i am move");
-            res.redirect('/api/v1/login');
+            const postData = yield this.loginService.checkLogin(UserPostDTO);
+            if (postData == undefined) {
+                const errors = { User: ' Invalid Credential try again' };
+                throw new common_1.HttpException({ errors }, 401);
+            }
+            else {
+                const token = yield this.loginService.generateJWT(postData);
+                res.render('main', { title: "Welcome to compumatrice", msg: "User successfully login", jwtToken: token });
+            }
         });
     }
 };
@@ -38,11 +49,18 @@ __decorate([
     __param(0, common_1.Res()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], LoginController.prototype, "loginCheck", null);
+__decorate([
+    common_1.Post(),
+    __param(0, common_1.Res()), __param(1, common_1.Req()), __param(2, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, user_post_dto_1.UserPostDTO]),
     __metadata("design:returntype", Promise)
-], AppController.prototype, "root", null);
-AppController = __decorate([
-    common_1.Controller(),
-    __metadata("design:paramtypes", [app_service_1.AppService])
-], AppController);
-exports.AppController = AppController;
-//# sourceMappingURL=app.controller.js.map
+], LoginController.prototype, "loginPost", null);
+LoginController = __decorate([
+    common_1.Controller('login'),
+    __metadata("design:paramtypes", [login_service_1.LoginService])
+], LoginController);
+exports.LoginController = LoginController;
+//# sourceMappingURL=login.controller.js.map
