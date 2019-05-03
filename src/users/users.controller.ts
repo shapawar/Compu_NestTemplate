@@ -1,7 +1,7 @@
 import { Controller, Post, Res, Body, HttpStatus, Get, Param, Delete,Put } from '@nestjs/common';
 import { UserPostDTO } from './user.post.dto';
-import { UsersService } from './users.service';import { json } from 'body-parser';
-;
+import { UsersService } from './users.service';
+
 
 
 
@@ -20,6 +20,26 @@ export class UsersController {
             post: newPost
         })
     } 
+
+    @Post('/noorm')
+    async addPosts(@Res() res, @Body() userpostdto: UserPostDTO) {
+
+        const newPost = await this.userService.createUsers(userpostdto);
+        return res.status(HttpStatus.OK).json({
+            message: "Post has been submitted successfully!",
+            post: newPost
+        })
+    } 
+
+    @Get('/noorm')
+    async getUserLists(@Res() res,){
+       const userlist = await this.userService.getUserData();
+       return res.status(HttpStatus.OK).json({
+           message:"Fetch User List successfully",
+           list:userlist
+       })
+    }
+
 
 
     @Get()
