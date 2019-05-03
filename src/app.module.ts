@@ -5,7 +5,7 @@ import { AuthController } from './auth/auth.controller';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { DefaultMiddleware } from './middleware/default.middleware';
 import { UsersModule } from './users/users.module';
-import {TypeOrmModule} from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { userEntity } from './users/user.entity';
 import { PingController } from './ping/ping.controller';
@@ -18,16 +18,16 @@ import { PingController } from './ping/ping.controller';
     username: 'postgres',
     password: 'root',
     database: 'nestdapp',
-    host:'localhost',
+    host: 'localhost',
     synchronize: true,
-    entities : [userEntity]
+    entities: [userEntity]
   })],
   controllers: [AppController, AuthController, PingController],
   providers: [AppService]
 })
 
 export class AppModule implements NestModule {
-  constructor (private readonly connection: Connection) {}
+  constructor(private readonly connection: Connection) { }
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(DefaultMiddleware)
