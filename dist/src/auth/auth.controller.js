@@ -14,9 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 let AuthController = class AuthController {
-    ping(req) {
-        return req.metadata;
-    }
     create() {
         return 'This action adds a new cat';
     }
@@ -24,14 +21,6 @@ let AuthController = class AuthController {
         return 'This action returns all cats';
     }
 };
-__decorate([
-    common_1.Get('/ping'),
-    common_1.HttpCode(200),
-    __param(0, common_1.Req()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "ping", null);
 __decorate([
     common_1.Post(),
     common_1.HttpCode(200),
@@ -48,7 +37,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "findAll", null);
 AuthController = __decorate([
-    common_1.Controller('api/v1/auth')
+    common_1.Controller('auth')
 ], AuthController);
 exports.AuthController = AuthController;
 //# sourceMappingURL=auth.controller.js.map

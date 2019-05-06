@@ -20,6 +20,7 @@ const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./devutils/users/user.entity");
 const login_module_1 = require("./devutils/login/login.module");
 const auth_middleware_1 = require("./middleware/auth.middleware");
+const ping_controller_1 = require("./ping/ping.controller");
 let AppModule = class AppModule {
     constructor(connection) {
         this.connection = connection;
@@ -29,7 +30,9 @@ let AppModule = class AppModule {
             .apply(default_middleware_1.DefaultMiddleware)
             .forRoutes('*')
             .apply(auth_middleware_1.AuthMiddleware)
-            .forRoutes('/users');
+            .forRoutes('/users')
+            .apply(default_middleware_1.DefaultMiddleware)
+            .forRoutes(ping_controller_1.PingController);
     }
 };
 AppModule = __decorate([
@@ -44,8 +47,8 @@ AppModule = __decorate([
                 synchronize: true,
                 entities: [user_entity_1.userEntity]
             }), login_module_1.LoginModule],
-        controllers: [app_controller_1.AppController, auth_controller_1.AuthController],
-        providers: [app_service_1.AppService]
+        controllers: [app_controller_1.AppController, auth_controller_1.AuthController, ping_controller_1.PingController],
+        providers: [app_service_1.AppService],
     }),
     __metadata("design:paramtypes", [typeorm_2.Connection])
 ], AppModule);

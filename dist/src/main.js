@@ -14,11 +14,13 @@ const common_1 = require("@nestjs/common");
 require("dotenv/config");
 const bodyParser = require("body-parser");
 const errorhandler_middleware_1 = require("./middleware/errorhandler.middleware");
+const logger_middleware_1 = require("./middleware/logger.middleware");
 const port = process.env.PORT || 9001;
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
-        app.use(bodyParser.json());
+        logger: new logger_middleware_1.LogService(),
+            app.use(bodyParser.json());
         app.setGlobalPrefix('api/v1');
         app.set('views', __dirname + '/views');
         app.set('view engine', 'ejs');

@@ -1,12 +1,13 @@
-import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { userEntity } from './user.entity';
 import { Repository } from 'typeorm';
+import { LogService } from 'src/middleware/logger.middleware';
 
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectRepository(userEntity) private readonly userRepository: Repository<userEntity>) { }
+    constructor(@InjectRepository(userEntity) private readonly userRepository: Repository<userEntity>, private Logger:LogService) { }
     MODULENAME = 'User Service';
      
     
@@ -19,14 +20,14 @@ export class UsersService {
         let taskName = 'createUser';
 
         try {
-            Logger.log(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- QueryData: ${JSON.stringify(data)}`);
+            this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${JSON.stringify(data)}`);
 
             const savedata = await this.userRepository.save(data);
             return savedata
         } catch (error) {
 
-            Logger.log(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- ${error.stack}`);
-            Logger.error(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- ${error.message}`);
+            this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+            this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
 
             return error;
         }
@@ -41,14 +42,14 @@ export class UsersService {
         let taskName = 'getUserList';
 
         try {
-            Logger.log(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- QueryData: - `);
+            this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: - `);
 
             const list = await this.userRepository.find();
             return list;
         } catch (error) {
 
-            Logger.log(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- ${error.stack}`);
-            Logger.error(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- ${error.message}`);
+            this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+            this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
 
             return error;
         }
@@ -64,14 +65,14 @@ export class UsersService {
         let taskName = 'getUser';
 
         try {
-            Logger.log(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- QueryData: ${userid}`);
+            this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${userid}`);
 
             const details = await this.userRepository.findOne({ username: userid });
             return details;
         } catch (error) {
 
-            Logger.log(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- ${error.stack}`);
-            Logger.error(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- ${error.message}`);
+            this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+            this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
 
             return error;
         }
@@ -87,14 +88,14 @@ export class UsersService {
         let taskName = 'deleteUser';
 
         try {
-            Logger.log(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- QueryData: ${userid}`);
+            this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${userid}`);
 
-            const user = await this.userRepository.delete({ username: userid });
+            const user = await this.userRepository.delete({username:userid} );
             return user;
         } catch (error) {
-
-            Logger.log(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- ${error.stack}`);
-            Logger.error(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- ${error.message}`);
+ 
+            this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+            this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
 
             return error;
         }
@@ -110,14 +111,14 @@ export class UsersService {
         let taskName = 'editPost';
 
         try {
-            Logger.log(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- QueryData: ${JSON.stringify(data)}`);
+            this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${JSON.stringify(data)}`);
 
             const editedPost = await this.userRepository.update({ username: data.username }, data);
             return editedPost;
         } catch (error) {
 
-            Logger.log(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- ${error.stack}`);
-            Logger.error(`[${evUniqueID}] - ${this.MODULENAME}(${taskName})- ${error.message}`);
+            this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+            this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
 
             return error;
         }
