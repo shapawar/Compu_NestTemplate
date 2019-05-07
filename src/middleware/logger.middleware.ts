@@ -3,10 +3,15 @@ import { createLogger, format, Logger, LoggerOptions, transports } from 'winston
 import { TransformableInfo } from 'logform';
 import winston = require('winston');
 
+/**
+ * ADD COMMENT
+ */
+export enum LogLevel { INFO = 'info', WARN = 'warn', ERROR = 'error', DEBUG = 'debug' }
 
-export enum LogLevel { INFO = 'info', WARN = 'warn', ERROR = 'error',DEBUG='debug' }
 
-
+/**
+ * ADD COMMENT
+ */
 export const logTransportConsole = new transports.Console({
     handleExceptions: true,
     format: format.combine(
@@ -18,8 +23,9 @@ export const logTransportConsole = new transports.Console({
 });
 
 
-
-
+/**
+ * ADD COMMENT
+ */
 @Injectable()
 export class LogService {
     private readonly logger: Logger;
@@ -28,39 +34,40 @@ export class LogService {
 
     constructor() {
 
+
+        /**
+         * ADD COMMENT
+         */
+        this.logger = createLogger();
+        this.logger.configure({
+
+            transports: [
+                new winston.transports.File({
+                    level: 'info',
+                    filename: './logs/all-logs.log',
+                    handleExceptions: true,
+                    maxsize: 5242880, //5MB
+                    maxFiles: 5
+                }),
+            ],
+            exitOnError: false
+        });
+
+        /**
+ * Avoid logger in production
+ */
         if (process.env.NODE_ENV !== 'production') {
-
-            this.logger = createLogger();
-            this.logger.configure({
-                transports: [logTransportConsole,
-                    new winston.transports.File({
-                        level: 'info',
-                        filename: './logs/all-logs.log',
-                        handleExceptions: true,
-                        maxsize: 5242880, //5MB
-                        maxFiles: 5
-                    }),
-                ],
-                exitOnError: false
-            });
-
-        } else {
-
-            this.logger = createLogger();
-            this.logger.configure({
-
-                transports: [
-                    new winston.transports.File({
-                        level: 'info',
-                        filename: './logs/all-logs.log',
-                        handleExceptions: true,
-                        maxsize: 5242880, //5MB
-                        maxFiles: 5
-                    }),
-                ],
-                exitOnError: false
-            });
-        }
+            this.logger.add(new winston.transports.Console({
+                format: winston.format.combine(
+                    winston.format.colorize(),
+                    winston.format.timestamp(),
+                    winston.format.align(),
+                    winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
+                ),
+                level: 'debug',
+                handleExceptions: true,
+            }));
+        };
     }
 
     public configure(configuration: LoggerOptions, contextName?: string): void {
