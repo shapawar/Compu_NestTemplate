@@ -1,24 +1,30 @@
 import * as moment from 'moment'
 
 export interface apiResponse {
-    requestURL: String,
-    evUniqueID: String,
-    requestTS: Number,
-    elapsedTimeInMS: Number,
-    apiServer: String,
-    apiBuildVersion: String,
-    errCode: Number,
-    errMsg: String,
-    tasks: Array<Object>,
-    endMetadata: (evUniqueID, errCode, errMessage) => {
-       
-        //get error info
-        // errInfo = ErrorCodeSvc.getErrorInformation(evUniqueID, errCode, errMessage);
+  requestURL: String,
+  evUniqueID: String,
+  requestTS: Number,
+  elapsedTimeInMS: Number,
+  apiServer: String,
+  apiBuildVersion: String,
+  errCode: Number,
+  errMsg: String,
+  tasks: Array<Object>,
+  endMetaData:
 
-        // set the task information
-        this.elapsedTimeInMS = moment(Date.now()).diff(this.requestTS, 'milliseconds');
-        this.errCode = errInfo.code;
-        this.errMsg = errInfo.message;
-        
-      }      
 }
+
+  interface IEndMetaData {  
+    evUniqueID: number;
+    errCode: string;
+    errMsg: string;
+
+  }
+  type AnyType = IEndMetaData 
+
+   function end(update: AnyType) {  
+     this.elapsedTimeInMS = moment(Date.now()).diff(this.requestTS, 'milliseconds');
+  }
+
+
+
