@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { userEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { LogService } from 'src/middleware/logger.middleware';
-
+import {validate} from "class-validator";
 
 @Injectable()
 export class UsersService {
@@ -16,20 +16,42 @@ export class UsersService {
      * @param {*} evUniqueID req unique id
      * @param {*} data is a req data
      */
-    async createUser(evUniqueID, data): Promise<userEntity> {
+    async createUser(evUniqueID, data) {
         let taskName = 'createUser';
+       
 
         try {
-            this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${JSON.stringify(data)}`);
+            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${JSON.stringify(data)}`);
+           let userpost = new userEntity();
+           userpost.username = data.username;
+           userpost.email = data.email;
+           userpost.mobile= data.mobile;
+           userpost.password= data.password;
+           userpost.address = data.address;
 
-            const savedata = await this.userRepository.save(data);
-            return savedata
+           let checkerror = await validate(userpost);
+
+           if (checkerror.length > 0) {
+             let value = checkerror.map( data=> data.constraints.length);
+            throw new Error(value[0]); 
+        } else {
+
+            const checkuser = await this.userRepository.findOne({username:data.username});
+            if(checkuser == undefined){
+
+                const savedata = await this.userRepository.save(data);
+                return savedata
+
+            }else{
+                throw new Error(`Username is already present plz try another !!!`); 
+            }
+        }
+         
         } catch (error) {
-
-            this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
             this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
 
-            return error;
+            throw error;
         }
 
     }
@@ -42,16 +64,16 @@ export class UsersService {
         let taskName = 'getUserList';
 
         try {
-            this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: - `);
+            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: - `);
 
             const list = await this.userRepository.find();
             return list;
         } catch (error) {
 
-            this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
             this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
 
-            return error;
+            throw error;
         }
 
     }
@@ -65,16 +87,16 @@ export class UsersService {
         let taskName = 'getUser';
 
         try {
-            this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${userid}`);
+            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${userid}`);
 
             const details = await this.userRepository.findOne({ username: userid });
             return details;
         } catch (error) {
 
-            this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
             this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
 
-            return error;
+            throw error;
         }
 
     }
@@ -88,16 +110,16 @@ export class UsersService {
         let taskName = 'deleteUser';
 
         try {
-            this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${userid}`);
+            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${userid}`);
 
             const user = await this.userRepository.delete({username:userid} );
             return user;
         } catch (error) {
  
-            this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
             this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
 
-            return error;
+            throw error;
         }
 
     }
@@ -111,16 +133,16 @@ export class UsersService {
         let taskName = 'editPost';
 
         try {
-            this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${JSON.stringify(data)}`);
+            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${JSON.stringify(data)}`);
 
             const editedPost = await this.userRepository.update({ username: data.username }, data);
             return editedPost;
         } catch (error) {
 
-            this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
             this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
 
-            return error;
+            throw error;
         }
 
     }

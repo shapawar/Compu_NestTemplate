@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 
 import 'dotenv/config';
 import bodyParser = require('body-parser');
@@ -12,8 +12,9 @@ const port = process.env.PORT || 9001;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   logger: new LogService(),
+  app.useGlobalPipes(new ValidationPipe());
   app.use(bodyParser.json());
-  app.setGlobalPrefix('api/v1')
+  app.setGlobalPrefix('v1')
   app.set('views', __dirname + '/views');
   app.set('view engine','ejs');
   app.useGlobalFilters(new ErrorFilter());

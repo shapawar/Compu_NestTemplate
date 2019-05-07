@@ -7,6 +7,6 @@ export class AppController {
 
   @Get()
  async root(@Res() res) {
-  res.redirect('/api/v1/login');
+  res.redirect('/v1/login');
   }
 }

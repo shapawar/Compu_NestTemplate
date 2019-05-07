@@ -21,7 +21,7 @@ function bootstrap() {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
         logger: new logger_middleware_1.LogService(),
             app.use(bodyParser.json());
-        app.setGlobalPrefix('api/v1');
+        app.setGlobalPrefix('/v1');
         app.set('views', __dirname + '/views');
         app.set('view engine', 'ejs');
         app.useGlobalFilters(new errorhandler_middleware_1.ErrorFilter());

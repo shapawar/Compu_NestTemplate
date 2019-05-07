@@ -2,6 +2,7 @@ import { Controller, Post, Res, Body, HttpStatus, Get, Param, Delete, Put, Next,
 import { UserPostDTO } from './user.post.dto';
 import { UsersService } from './users.service';
 import { LogService } from 'src/middleware/logger.middleware';
+import { json } from 'body-parser';
 
 
 
@@ -21,24 +22,20 @@ export class UsersController {
     async addPost(@Req() req, @Res() res, @Body() userpostdto: UserPostDTO) {
             let taskName = 'Create User'
         try {
-             this.Logger.info(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
-
+     
+             this.Logger.debug(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
+            
             const newPost = await this.userService.createUser(req.evUniqueID,userpostdto);
-            if(newPost == undefined){
-
-                return res.status(HttpStatus.OK).json({
-                    message: "Username/Email is already present try another",
-                    post: null
-                });
-            }
+ 
             return res.status(HttpStatus.OK).json({
                 message: "Post has been submitted successfully!",
                 post: newPost
             });
 
         } catch (error) {
+        
             this.Logger.error(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.message}`);
-            this.Logger.log(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.message}`);
+            this.Logger.debug(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.stack}`);
 
             throw error;
         }
@@ -54,7 +51,7 @@ export class UsersController {
 
         let taskName = 'Fetch All User List'
         try {
-            this.Logger.log(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - QueryData: ${"-"}`);
+            this.Logger.debug(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - QueryData: ${"-"}`);
             const userlist = await this.userService.getUserList(req.evUniqueID);
             return res.status(HttpStatus.OK).json({
                 message: "Fetch User List successfully",
@@ -63,7 +60,7 @@ export class UsersController {
 
         } catch (error) {
             this.Logger.error(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.message}`);
-            this.Logger.log(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.message}`);
+            this.Logger.debug(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.stack}`);
            
             throw error;
         }
@@ -77,13 +74,13 @@ export class UsersController {
         let taskName = 'Get User Details'
 
         try {
-            this.Logger.log(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - QueryData: ${ userID }`);
+            this.Logger.debug(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - QueryData: ${ userID }`);
 
             const user = await this.userService.getUser(req.evUniqueID,userID);
             return res.status(HttpStatus.OK).json({ message: "Fetch user info successfully", UserDetails: user })
         } catch (error) {
             this.Logger.error(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.message}`);
-            this.Logger.log(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.message}`);
+            this.Logger.debug(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.stack}`);
 
             throw error;
         }
@@ -99,13 +96,13 @@ export class UsersController {
         let taskName = 'Delete User';
 
         try {
-            this.Logger.log(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - QueryData: ${userID}`);
+            this.Logger.debug(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - QueryData: ${userID}`);
 
             const user = await this.userService.deleteUser(req.evUniqueID,userID);
             return res.status(HttpStatus.OK).json({ message: "User deleted successfully", data: user });
         } catch (error) {
             this.Logger.error(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.message}`);
-            this.Logger.log(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.message}`);             
+            this.Logger.debug(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.stack}`);             
             
             throw error;
         }
@@ -120,7 +117,7 @@ export class UsersController {
             let taskName = 'Update User'
 
         try {
-            this.Logger.log(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
+            this.Logger.debug(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
 
             const editPost = await this.userService.editPost(req.evUniqueID,userPostDTO);
             return res.status(HttpStatus.OK).json({
@@ -130,7 +127,7 @@ export class UsersController {
 
         } catch (error) {
             this.Logger.error(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.message}`);
-            this.Logger.log(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.message}`);
+            this.Logger.debug(`[${req.evUniqueID}] - ${this.MODULENAME} - ${taskName} - ErrorMessage: ${error.stack}`);
 
             throw error;
         }

@@ -1,30 +1,15 @@
 import { Injectable } from 'injection-js';
-import { createLogger, format, Logger, LoggerOptions, transports } from 'winston';
-import { TransformableInfo } from 'logform';
+import { createLogger, Logger, LoggerOptions } from 'winston';
 import winston = require('winston');
 
 /**
- * ADD COMMENT
+ * Define Logger level
  */
 export enum LogLevel { INFO = 'info', WARN = 'warn', ERROR = 'error', DEBUG = 'debug' }
 
 
 /**
- * ADD COMMENT
- */
-export const logTransportConsole = new transports.Console({
-    handleExceptions: true,
-    format: format.combine(
-        format.timestamp(),
-        format.printf((info: TransformableInfo) => {
-            return `${info.timestamp} [${info.meta.context}] [${info.level.toLocaleUpperCase()}] ${info.message}`;
-        })
-    )
-});
-
-
-/**
- * ADD COMMENT
+ * Logger Class
  */
 @Injectable()
 export class LogService {
@@ -34,9 +19,9 @@ export class LogService {
 
     constructor() {
 
-
         /**
-         * ADD COMMENT
+         * Initialize logger configuration for console and file
+         * Write logs on console and file
          */
         this.logger = createLogger();
         this.logger.configure({
@@ -54,8 +39,9 @@ export class LogService {
         });
 
         /**
- * Avoid logger in production
- */
+         * Avoid logger in production
+         * print debug log when development is on going
+         */
         if (process.env.NODE_ENV !== 'production') {
             this.logger.add(new winston.transports.Console({
                 format: winston.format.combine(
