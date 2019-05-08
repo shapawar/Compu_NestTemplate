@@ -1,7 +1,13 @@
+/* 
+* Nest & Third party imports
+*/
+
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+/* Custom imports */
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { userEntity } from './user.entity';
 import { LogService } from 'src/middleware/logger.middleware';
 

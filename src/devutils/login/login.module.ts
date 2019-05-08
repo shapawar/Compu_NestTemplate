@@ -1,7 +1,14 @@
+/* 
+* Nest & Third party imports
+*/
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+/* 
+* Custom imports
+*/
 import { LoginController } from './login.controller';
 import { LoginService } from './login.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { userEntity } from '../users/user.entity';
 
 @Module({

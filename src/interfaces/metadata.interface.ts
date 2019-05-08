@@ -1,3 +1,7 @@
+
+/* 
+* Defind res object interface
+*/
 export interface apiResponse {
     requestURL: String,
     evUniqueID: String,

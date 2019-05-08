@@ -1,14 +1,21 @@
+/* 
+* Nest and third party imports
+*/
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { userEntity } from './user.entity';
-import { Repository } from 'typeorm';
-import { LogService } from 'src/middleware/logger.middleware';
+import { Repository, getManager } from 'typeorm';
 import {validate} from "class-validator";
+
+/* 
+* custom imports
+*/
+import { userEntity } from './user.entity';
+import { LogService } from 'src/middleware/logger.middleware';
 
 @Injectable()
 export class UsersService {
     constructor(@InjectRepository(userEntity) private readonly userRepository: Repository<userEntity>, private Logger:LogService) { }
-    MODULENAME = 'User Service';
+    MODULENAME = 'USERSERVICE';
      
     
     /**
@@ -21,7 +28,7 @@ export class UsersService {
        
 
         try {
-            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${JSON.stringify(data)}`);
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
            let userpost = new userEntity();
            userpost.username = data.username;
            userpost.email = data.email;
@@ -39,7 +46,7 @@ export class UsersService {
             const checkuser = await this.userRepository.findOne({username:data.username});
             if(checkuser == undefined){
 
-                const savedata = await this.userRepository.save(data);
+                const savedata = await this.userRepository.save(userpost);
                 return savedata
 
             }else{
@@ -48,8 +55,8 @@ export class UsersService {
         }
          
         } catch (error) {
-            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
-            this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
+            this.Logger.error(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
 
             throw error;
         }
@@ -64,14 +71,14 @@ export class UsersService {
         let taskName = 'getUserList';
 
         try {
-            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: - `);
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: - `);
 
             const list = await this.userRepository.find();
             return list;
         } catch (error) {
 
-            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
-            this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
+            this.Logger.error(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
 
             throw error;
         }
@@ -87,14 +94,14 @@ export class UsersService {
         let taskName = 'getUser';
 
         try {
-            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${userid}`);
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${userid}`);
 
             const details = await this.userRepository.findOne({ username: userid });
             return details;
         } catch (error) {
 
-            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
-            this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
+            this.Logger.error(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
 
             throw error;
         }
@@ -110,14 +117,14 @@ export class UsersService {
         let taskName = 'deleteUser';
 
         try {
-            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${userid}`);
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${userid}`);
 
             const user = await this.userRepository.delete({username:userid} );
             return user;
         } catch (error) {
  
-            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
-            this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
+            this.Logger.error(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
 
             throw error;
         }
@@ -133,18 +140,63 @@ export class UsersService {
         let taskName = 'editPost';
 
         try {
-            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${JSON.stringify(data)}`);
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
 
             const editedPost = await this.userRepository.update({ username: data.username }, data);
             return editedPost;
         } catch (error) {
 
-            this.Logger.debug(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
-            this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
+            this.Logger.error(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
 
             throw error;
         }
 
     }
+
+     /**
+     * registerUsers user
+     * @param {*} evUniqueID req unique id
+     * @param {*} data is a req data
+     */
+     async registerUsers(evUniqueID,data): Promise<userEntity>{
+         let taskName = 'registerUsers';
+
+         try {
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
+
+            const savedata = await getManager().query(`INSERT INTO user_entity(username, email, mobile, password, address) VALUES ('${data.username}','${data.email}','${data.mobile}','${data.password}','${data.address}')`);
+            return savedata;
+         } catch (error) {
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
+            this.Logger.error(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
+
+            throw error; 
+         }
+        
+    }
+
+   /**
+     * registerUsers user
+     * @param {*} evUniqueID req unique id
+     */
+    async getUserData(evUniqueID){
+        let taskName = 'getUserData';
+
+        try {
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: - `);
+
+            const list = await  getManager().query(`SELECT * FROM user_entity`);
+            return list;
+            
+        } catch (error) {
+            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
+            this.Logger.error(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
+
+            throw error;   
+        }
+       
+    }
+
 
 }

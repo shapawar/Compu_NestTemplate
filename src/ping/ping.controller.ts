@@ -1,7 +1,17 @@
-import { Controller, Get, HttpCode, Req } from '@nestjs/common'; 7
+/* 
+* Nest & Third party imports
+*/
+import { Controller, Get, HttpCode, Req } from '@nestjs/common'; 
+
+/* 
+* Custome imports
+*/
 import { apiResponse } from '../interfaces/metadata.interface'
 import { LogService } from '../middleware/logger.middleware'
 
+/* 
+* Ping route for helth check
+*/
 @Controller('ping')
 export class PingController {
 
@@ -10,6 +20,7 @@ export class PingController {
     constructor(private logger: LogService) {
 
     }
+    
     @Get()
     @HttpCode(200)
     ping(@Req() req): Promise<apiResponse[]> {

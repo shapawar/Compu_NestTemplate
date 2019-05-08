@@ -1,19 +1,31 @@
+/* 
+* Nest and third party imports
+*/
+
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
-
-import 'dotenv/config';
 import bodyParser = require('body-parser');
-import { ErrorFilter } from './middleware/errorhandler.middleware';
-import { LogService } from './middleware/logger.middleware';
 
+/* 
+* custom imports
+*/
+
+import { AppModule } from './app.module';
+ require('dotenv').config({ "path": './secured/.env' });
+import { ErrorFilter } from './middleware/errorhandler.middleware';
+
+/* Define port */
 const port = process.env.PORT || 9001;
 
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  logger: new LogService(),
+
+const app = await NestFactory.create(AppModule);
+
+/* app initialisation */
   app.useGlobalPipes(new ValidationPipe());
   app.use(bodyParser.json());
+  app.enableCors({origin: `http://localhost:9001`});
   app.setGlobalPrefix('v1')
   app.set('views', __dirname + '/views');
   app.set('view engine','ejs');
@@ -26,8 +38,3 @@ async function bootstrap() {
 }
 
 bootstrap();
-
-
-
-
-
