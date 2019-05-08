@@ -7,7 +7,6 @@ import * as os from "os";
 
 const callGUID: string = uuid();
 
-
 @Injectable()
 export class DefaultMiddleware implements NestMiddleware {
     apiResp = <apiResponse>{};
@@ -29,9 +28,6 @@ export class DefaultMiddleware implements NestMiddleware {
             return '--NOT AVAILABLE--';
         }
     };
-
-
-
 
     resolve(...args: any[]): MiddlewareFunction {
 

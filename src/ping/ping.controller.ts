@@ -6,15 +6,15 @@ import { LogService } from '../middleware/logger.middleware'
 export class PingController {
 
     taskName = "PingController";
-    MODULENAME ="ping route"
+    MODULENAME = "PINGCONTROLLER"
     constructor(private logger: LogService) {
 
     }
     @Get()
     @HttpCode(200)
     ping(@Req() req): Promise<apiResponse[]> {
-
-        this.logger.debug(`[${req.evUniqueID}]-${this.MODULENAME}-${this.taskName}`);
+        req.metadata.elapsedTimeInMS = 125;
+        this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-${this.taskName}`);
         return req.metadata;
     }
 }

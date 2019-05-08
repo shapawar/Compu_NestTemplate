@@ -12,9 +12,6 @@ import { AuthMiddleware } from './middleware/auth.middleware';
 import { PingController } from './ping/ping.controller';
 import { LogService } from './middleware/logger.middleware';
 
-
-
-
 @Module({
   imports: [UsersModule, TypeOrmModule.forRoot({
     type: 'postgres',

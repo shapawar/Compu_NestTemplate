@@ -1,3 +1,7 @@
+
+/**
+ * Nest and Third party imports
+ */
 import { Injectable } from 'injection-js';
 import { createLogger, Logger, LoggerOptions } from 'winston';
 import winston = require('winston');
@@ -6,7 +10,6 @@ import winston = require('winston');
  * Define Logger level
  */
 export enum LogLevel { INFO = 'info', WARN = 'warn', ERROR = 'error', DEBUG = 'debug' }
-
 
 /**
  * Logger Class
@@ -40,7 +43,7 @@ export class LogService {
 
         /**
          * Avoid logger in production
-         * print debug log when development is on going
+         * print debug log in development
          */
         if (process.env.NODE_ENV !== 'production') {
             this.logger.add(new winston.transports.Console({
