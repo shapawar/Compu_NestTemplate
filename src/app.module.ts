@@ -41,7 +41,7 @@ export class AppModule implements NestModule {
   /* For defult middleware apply for all routes */
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(DefaultMiddleware,AuthMiddleware)
+      .apply(DefaultMiddleware)
       .forRoutes('*')
       .apply(AuthMiddleware)
       .forRoutes('/users')
