@@ -1,4 +1,4 @@
-import { NestMiddleware, HttpStatus, Injectable, HttpException, MiddlewareFunction } from '@nestjs/common';
+import { NestMiddleware, HttpStatus, Injectable, HttpException } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import { UsersService } from 'dist/src/users/users.service';
 
@@ -9,8 +9,8 @@ import { UsersService } from 'dist/src/users/users.service';
 export class AuthMiddleware implements NestMiddleware {
 
 
-  resolve(...args: any[]): MiddlewareFunction {
-    return async (req, res, next) => {
+ 
+    use(req, res, next: () => void) {
 
       try {
 
@@ -18,19 +18,19 @@ export class AuthMiddleware implements NestMiddleware {
 
         if (token) {
           try {
-            let check = await jwt.verify(token,process.env.JWTSECRET);
+            let check =  jwt.verify(token,process.env.JWTSECRET);
             req.check = check;
             next();
           } catch (error) {
-            next(error);
+            next();
           }
         } else {
-          next({message:"Auth token missing", name:"JWT Token error"});
+          next();
         }
       } catch (error) {
-        next(error);
+        next();
       }
 
     }
-  }
+  
 };

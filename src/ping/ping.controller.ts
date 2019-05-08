@@ -1,15 +1,14 @@
-import { Controller, Get, HttpCode, Req } from '@nestjs/common';
-import { apiResponse } from '../interfaces/metadata.interface'
+import { Controller, Get, HttpCode, Req, UseInterceptors, Res } from '@nestjs/common';
 
 @Controller('ping')
 export class PingController {
-    apiResp = <apiResponse>{};
     @Get()
     @HttpCode(200)
-    ping(@Req() req) {
+    ping(@Req() req,@Res() res) {
         try {
+            console.log("Check1",res);
             // this.apiResp.endMetadata(req.evUniqueID, 0, 'success');
-            return req.metadata;
+            return res;
         } catch (error) {
             return error;
         }

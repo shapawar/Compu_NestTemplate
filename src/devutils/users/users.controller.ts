@@ -3,8 +3,6 @@ import { UserPostDTO } from './user.post.dto';
 import { UsersService } from './users.service';
 
 
-
-
 @Controller('users')
 export class UsersController {
     
@@ -40,7 +38,7 @@ export class UsersController {
      * fetch user list
      */
     @Get()
-    async getUserList(@Req() req,@Res() res, ) {
+    async getUserList(@Req() req,@Res() res,@Body() userPostDTO: UserPostDTO ) {
 
         let taskName = 'Fect All User List'
         try {
@@ -61,7 +59,7 @@ export class UsersController {
      *get user Details using userid
      */
     @Get(':userID')
-    async getUser(@Req() req,@Res() res, @Param('userID') userID) {
+    async getUser(@Req() req,@Res() res, @Param('userID') userID  ) {
         let taskName = 'Get User Details'
 
         try {

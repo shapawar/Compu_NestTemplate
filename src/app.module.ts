@@ -10,6 +10,8 @@ import { userEntity } from './devutils/users/user.entity';
 import { LoginModule } from './devutils/login/login.module';
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { PingController } from './ping/ping.controller';
+import { DefaultInterceptor } from './interceptor/default.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 
 @Module({
@@ -24,7 +26,13 @@ import { PingController } from './ping/ping.controller';
     entities : [userEntity]
   }),LoginModule],
   controllers: [AppController, AuthController,PingController],
-  providers: [AppService]
+  providers: [AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DefaultInterceptor,
+    }
+  ],
+ 
 })
 
 export class AppModule implements NestModule {
@@ -32,12 +40,10 @@ export class AppModule implements NestModule {
   /* For defult middleware apply for all routes */
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(DefaultMiddleware)
+      .apply()
       .forRoutes('*')
-      .apply(AuthMiddleware)
-      .forRoutes('/users')
-      .apply(DefaultMiddleware)
-      .forRoutes(PingController);
+      // .apply(AuthMiddleware)
+      // .forRoutes('/users')
     }
 
 }

@@ -1,5 +1,5 @@
 import { Controller, Post, Res, Body, HttpStatus, Get, Param, Delete,Put } from '@nestjs/common';
-import { UserPostDTO } from './user.post.dto';
+import { UserPostDTO } from '../devutils/users/user.post.dto';
 import { UsersService } from './users.service';
 
 

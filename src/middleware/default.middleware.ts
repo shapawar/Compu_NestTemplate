@@ -1,4 +1,4 @@
-import { Injectable, NestMiddleware, MiddlewareFunction, Logger } from '@nestjs/common';
+import { Injectable, NestMiddleware, Logger } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { apiResponse } from 'src/interfaces/metadata.interface';
 
@@ -9,8 +9,8 @@ const callGUID: string = uuid();
 
 
 @Injectable()
-export class DefaultMiddleware implements NestMiddleware {
-    apiResp = <apiResponse>{};
+export class DefaultMiddleware<T> implements NestMiddleware<T, apiResponse<T>> {
+    apiResp = <apiResponse<T>>{};
     // constructor(private DefaultMiddleware: apiResponse) {
 
     // }
@@ -33,9 +33,9 @@ export class DefaultMiddleware implements NestMiddleware {
 
 
 
-    resolve(...args: any[]): MiddlewareFunction {
+   
 
-        return (req, res, next) => {
+         use(req, res, next:() => void) {
             // assign a unique id to this request and response
             req.evUniqueID = callGUID;
             res.locals.evUniqueID = callGUID;//to share between middlewares
@@ -52,5 +52,5 @@ export class DefaultMiddleware implements NestMiddleware {
 
             next();
         };
-    }
+    
 }
