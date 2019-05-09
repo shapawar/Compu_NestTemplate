@@ -1,3 +1,4 @@
+import { tasksData } from "./tasks.interface";
 
 /* 
 * Defind res object interface
@@ -5,11 +6,11 @@
 export interface apiResponse {
     requestURL: String,
     evUniqueID: String,
-    requestTS: Number,
-    elapsedTimeInMS: Number,
+    requestTS: number,
+    elapsedTimeInMS: number,
     apiServer: String,
     apiBuildVersion: String,
     errCode: Number,
     errMsg: String,
-    tasks: Array<Object>
+    tasks: Array<tasksData>
 }

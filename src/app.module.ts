@@ -10,6 +10,7 @@ import { PingController } from './ping/ping.controller';
 import { LogService } from './middleware/logger.middleware';
 import { AppController } from './app.controller';
 import { ErrorcodesModule } from './errorcodes/errorcodes.module';
+import { AppService } from './app.service';
 
 /* 
 * Nest & Third party imports
@@ -25,14 +26,14 @@ import { ErrorcodesModule } from './errorcodes/errorcodes.module';
     type: 'postgres',
     port: 5432,
     username: 'postgres',
-    password: 'admin2518',
+    password: 'root',
     database: 'nestdapp',
     host: 'localhost',
     synchronize: true,
     entities: [userEntity]
   }), LoginModule, ErrorcodesModule],
   controllers: [ PingController,AppController],
-  providers: [ LogService]
+  providers: [ LogService,AppService]
 })
 
 /* 
