@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 /* Login Service */
 @Injectable()
 export class LoginService {
-    constructor(@InjectRepository(userEntity) private readonly userReposity: Repository<userEntity>  ){
+    constructor(@InjectRepository(userEntity) private readonly userReposity: Repository<userEntity>){
 
     }
 

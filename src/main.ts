@@ -25,7 +25,7 @@ const app = await NestFactory.create(AppModule);
 /* app initialisation */
   app.useGlobalPipes(new ValidationPipe());
   app.use(bodyParser.json());
-  app.enableCors({origin: `http://localhost:9001`});
+  app.enableCors();
   app.setGlobalPrefix('v1')
   app.set('views', __dirname + '/views');
   app.set('view engine','ejs');

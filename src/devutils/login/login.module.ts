@@ -11,9 +11,10 @@ import { LoginController } from './login.controller';
 import { LoginService } from './login.service';
 import { userEntity } from '../users/user.entity';
 
+
 @Module({
   imports:[TypeOrmModule.forFeature([userEntity])],
-  controllers: [LoginController],
+  controllers: [LoginController,],
   providers: [LoginService]
 })
 export class LoginModule {}

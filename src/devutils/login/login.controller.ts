@@ -17,8 +17,9 @@ export class LoginController {
 
      /* Render login page */
     @Get()
-    loginCheck(@Res() res){
+    async loginCheck(@Res() res){
      res.render('login',{title:"Welcome to comepumatrice",msg:null });
+
     }
 
     /* Check login credentials */

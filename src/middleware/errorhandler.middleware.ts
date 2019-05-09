@@ -15,19 +15,28 @@ export class ErrorFilter implements ExceptionFilter {
 *Configure error Handler middleware
 */
   catch(error: Error, host: ArgumentsHost) {
-
-    console.log("i am inside error");
     let response = host.switchToHttp().getResponse();
     let request = host.switchToHttp().getRequest();
-
-    request.metadata.statusCode = (error instanceof HttpException) ? error.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-    request.metadata.message = error.message;
-    request.metadata.errorname = error.name;
-    request.metadata.body = request.body;
-    request.metadata.params = request.params;
-    request.timestamp = new Date().toISOString();
-
-    return response.status(request.metadata.statusCode).json(request.metadata)
+    let status = (error instanceof HttpException) ? error.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR ;
+    const objData = {
+      metadata:{},
+      status: 0,
+      message:"",
+      errorname:"",
+      body:"",
+      params:"",
+      timestamp:"",
+    }
+    objData.metadata = request.metadata;
+    objData.status = status;
+    objData.message = error.message;
+    objData.errorname = error.name;
+    objData.body = request.body;
+    objData.params = request.params;
+    objData.timestamp = new Date().toISOString();
+    
+    request.metadata = objData;
+    return response.status(status).json(request.metadata)
   }
 
 }
