@@ -11,7 +11,7 @@ export class GeneralCodes {
     ];
     
     getErrorCodes(){
-        return this.ErrorCodes;
+        return this.ErrorCodes
     }
   
     

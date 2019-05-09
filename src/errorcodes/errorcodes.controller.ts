@@ -12,8 +12,10 @@ export class ErrorcodesController {
     /* Render login page */
     @Get()
     async checkroute(@Res() res){
-
+        
         let chaeck = await this.errorService.findErrorCode();
+        
+
        return res.json(chaeck);
 
     }
