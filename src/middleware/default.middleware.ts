@@ -9,8 +9,8 @@ const callGUID: string = uuid();
 
 
 @Injectable()
-export class DefaultMiddleware<T> implements NestMiddleware<T, apiResponse<T>> {
-    apiResp = <apiResponse<T>>{};
+export class DefaultMiddleware implements NestMiddleware {
+    apiResp = <apiResponse>{};
     // constructor(private DefaultMiddleware: apiResponse) {
 
     // }

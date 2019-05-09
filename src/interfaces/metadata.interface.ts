@@ -1,15 +1,15 @@
 import * as moment from 'moment'
 
-export interface apiResponse<T> {
+export interface apiResponse {
   requestURL: String,
   evUniqueID: String,
   requestTS: number,
-  elapsedTimeInMS: Number,
+  elapsedTimeInMS: (evUniqueID,errCode,errMsg) => Number
   apiServer: String,
   apiBuildVersion: String,
   errCode: Number,
   errMsg: String,
-  tasks: Array<Object>,
+  tasks: Array<Object>
 }
 
   // interface IEndMetaData {  
@@ -20,9 +20,9 @@ export interface apiResponse<T> {
   // }
   // type AnyType = IEndMetaData 
 
-  //  function end(update: AnyType) {  
-  //    this.elapsedTimeInMS = moment(Date.now()).diff(this.requestTS, 'milliseconds');
-  // }
+  (evUniqueID,errCode,errMsg):Number => {  
+    return this.elapsedTimeInMS = moment(Date.now()).diff(this.requestTS, 'milliseconds');
+  }
 
 
 
