@@ -11,7 +11,8 @@ import { UserPostDTO } from './user.post.dto';
 import { UsersService } from './users.service';
 import { LogService } from 'src/middleware/logger.middleware';
 
-
+import { userEntity } from './user.entity';
+import { validate } from 'class-validator';
 
 
 @Controller('users')
@@ -29,16 +30,29 @@ export class UsersController {
     async addPost(@Req() req, @Res() res, @Body() userpostdto: UserPostDTO) {
         let taskName = 'createUser'
         try {
+            let userpost = new userEntity();
 
             this.Logger.debug(`[${req.evUniqueID}] (${this.MODULENAME}) - ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
 
-            const newPost = await this.userService.createUser(req.evUniqueID, userpostdto);
+            userpost.username = userpostdto.username;
+            userpost.email = userpostdto.email;
+            userpost.mobile = userpostdto.mobile;
+            userpost.password = userpostdto.password;
+            userpost.address = userpostdto.address;
 
-            return res.status(HttpStatus.OK).json({
-                message: "Post has been submitted successfully!",
-                post: newPost
-            });
+            let checkerror = await validate(userpost);
 
+            if (checkerror.length > 0) {
+                let value = checkerror.map(data => data.constraints.length ||data.constraints.isEmail||data.constraints.isNotEmpty );
+                throw new Error(value[0]);
+            } else {
+                const newPost = await this.userService.createUser(req.evUniqueID, userpostdto);
+
+                return res.status(HttpStatus.OK).json({
+                    message: "Post has been submitted successfully!",
+                    post: newPost
+                });
+            }
         } catch (error) {
 
             this.Logger.error(`[${req.evUniqueID}] (${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);
@@ -55,7 +69,7 @@ export class UsersController {
     */
     @Get()
     async getUserList(@Req() req, @Res() res, ) {
-
+        //throw new Error('Hello');
         let taskName = 'userList'
         try {
             this.Logger.debug(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - QueryData: ${"-"}`);
@@ -151,7 +165,7 @@ export class UsersController {
         try {
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME} )- ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
 
-            const newPost = await this.userService.registerUsers(req.evUniqueID,userpostdto);
+            const newPost = await this.userService.registerUsers(req.evUniqueID, userpostdto);
             return res.status(HttpStatus.OK).json({
                 message: "Post has been submitted successfully!",
                 post: newPost
@@ -170,7 +184,7 @@ export class UsersController {
     * Get user list
     */
     @Get('/noorm')
-    async getUserLists(@Req() req,@Res() res ) {
+    async getUserLists(@Req() req, @Res() res) {
         let taskName = "getUserLists";
 
         try {

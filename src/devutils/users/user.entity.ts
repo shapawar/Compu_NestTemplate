@@ -2,7 +2,8 @@
 * NEST & Third party middleware
 */
 import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
-import { IsEmail, IsString, Length, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsString, Length, IsNotEmpty, Max, Min } from 'class-validator';
+import { min } from 'moment';
 
 /* Define User Entity */
 @Entity()
@@ -21,9 +22,8 @@ export class userEntity {
   @IsEmail()
   email: string;
 
-  @Column()
+  @Column("bigint")
   @IsNotEmpty()
-  @Length(10, 12)
   mobile: number;
 
   @Column()
