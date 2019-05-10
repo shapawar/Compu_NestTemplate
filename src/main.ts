@@ -1,28 +1,42 @@
+/* 
+* Nest and third party imports
+*/
+
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common';
-
-import 'dotenv/config';
+import {ValidationPipe } from '@nestjs/common';
 import bodyParser = require('body-parser');
-import { ErrorFilter } from './middleware/errorhandler.middleware';
 
+/* 
+* custom imports
+*/
+
+import { AppModule } from './app.module';
+ require('dotenv').config({ "path": './secured/.env' });
+import { ErrorFilter } from './middleware/errorhandler.middleware';
+import { LogService } from './middleware/logger.middleware';
+
+/* Define port */
 const port = process.env.PORT || 9001;
 
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+
+const app = await NestFactory.create(AppModule);
+
+/* app initialisation */
+  app.useGlobalPipes(new ValidationPipe());
   app.use(bodyParser.json());
-  app.setGlobalPrefix('api/v1')
+  app.enableCors();
+  app.setGlobalPrefix(process.env.APIPATH);
   app.set('views', __dirname + '/views');
   app.set('view engine','ejs');
   app.useGlobalFilters(new ErrorFilter());
   await app.listen(port);
+  let Logger = new LogService();
 
-  Logger.log(`APIVERSION = ${process.env.APIVERSION}`);
-  Logger.log(`PORT = ${port}`);
-  Logger.log(`NODE_ENV = ${process.env.NODE_ENV}`);
+  Logger.debug(`APIVERSION = ${process.env.APIVERSION}`);
+  Logger.debug(`PORT = ${port}`);
+  Logger.debug(`NODE_ENV = ${process.env.NODE_ENV}`);
 }
 
 bootstrap();
-
-
-

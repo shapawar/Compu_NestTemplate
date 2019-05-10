@@ -1,22 +1,37 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+/* 
+* NEST & Third party middleware
+*/
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
+import { IsEmail, IsString, Length, IsNotEmpty, Max, Min } from 'class-validator';
+import { min } from 'moment';
 
+/* Define User Entity */
 @Entity()
 export class userEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 500 })
+  @Column()
+  @IsNotEmpty()
+  @IsString()
+  @Length(8, 20)
   username: string;
 
   @Column()
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 
-  @Column()
-  mobile: string;
+  @Column("bigint")
+  @IsNotEmpty()
+  mobile: number;
 
   @Column()
+  @IsNotEmpty()
+  @Length(8, 15)
   password: string;
 
   @Column('text')
+  @IsNotEmpty()
   address: string;
 }

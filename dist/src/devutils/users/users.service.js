@@ -24,61 +24,84 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./user.entity");
 const typeorm_2 = require("typeorm");
+const logger_middleware_1 = require("src/middleware/logger.middleware");
 let UsersService = class UsersService {
-    constructor(userRepository) {
+    constructor(userRepository, Logger) {
         this.userRepository = userRepository;
+        this.Logger = Logger;
+        this.MODULENAME = 'User Service';
     }
-    createUser(data) {
+    createUser(evUniqueID, data) {
         return __awaiter(this, void 0, void 0, function* () {
+            let taskName = 'createUser';
             try {
+                this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${JSON.stringify(data)}`);
                 const savedata = yield this.userRepository.save(data);
                 return savedata;
             }
             catch (error) {
+                this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+                this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
                 return error;
             }
         });
     }
-    getUserList() {
+    getUserList(evUniqueID) {
         return __awaiter(this, void 0, void 0, function* () {
+            let taskName = 'getUserList';
             try {
+                this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: - `);
                 const list = yield this.userRepository.find();
                 return list;
             }
             catch (error) {
+                this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+                this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
                 return error;
             }
         });
     }
-    getUser(userid) {
+    getUser(evUniqueID, userid) {
         return __awaiter(this, void 0, void 0, function* () {
+            let taskName = 'getUser';
             try {
+                this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${userid}`);
                 const details = yield this.userRepository.findOne({ username: userid });
                 return details;
             }
             catch (error) {
+                this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+                this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
                 return error;
             }
         });
     }
-    deleteUser(userid) {
+    deleteUser(evUniqueID, userid) {
         return __awaiter(this, void 0, void 0, function* () {
+            let taskName = 'deleteUser';
             try {
-                const user = yield this.userRepository.delete({ username: userid });
+                this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${userid}`);
+                const user = yield this.userRepository.remove(userid);
                 return user;
             }
             catch (error) {
+                this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+                this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
                 return error;
             }
         });
     }
-    editPost(data) {
+    editPost(evUniqueID, data) {
         return __awaiter(this, void 0, void 0, function* () {
+            let taskName = 'editPost';
             try {
+                this.Logger.info(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- QueryData: ${JSON.stringify(data)}`);
                 const editedPost = yield this.userRepository.update({ username: data.username }, data);
                 return editedPost;
             }
             catch (error) {
+                this.Logger.log(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.stack}`);
+                this.Logger.error(`[${evUniqueID}] - ${this.MODULENAME}-(${taskName})- ${error.message}`);
                 return error;
             }
         });
@@ -87,7 +110,7 @@ let UsersService = class UsersService {
 UsersService = __decorate([
     common_1.Injectable(),
     __param(0, typeorm_1.InjectRepository(user_entity_1.userEntity)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository, logger_middleware_1.LogService])
 ], UsersService);
 exports.UsersService = UsersService;
 //# sourceMappingURL=users.service.js.map

@@ -1,4 +1,11 @@
+/* 
+* Nest & Third party imports
+*/
 import { Test, TestingModule } from '@nestjs/testing';
+
+/* 
+* Custom imports
+*/
 import { LoginService } from './login.service';
 
 describe('LoginService', () => {

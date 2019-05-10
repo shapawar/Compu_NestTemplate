@@ -8,10 +8,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const uuid_1 = require("uuid");
+const crypto = require("crypto");
+const os = require("os");
 const callGUID = uuid_1.v4();
 let DefaultMiddleware = class DefaultMiddleware {
+    constructor() {
+        this.apiResp = {};
+    }
     hashAPIServer() {
         try {
+            const hash = crypto.createHash('sha256');
+            hash.update(os.hostname());
+            return hash.digest('base64');
         }
         catch (e) {
             common_1.Logger.error('hashAPIServer(): ' + e.message);
@@ -23,15 +31,13 @@ let DefaultMiddleware = class DefaultMiddleware {
         return (req, res, next) => {
             req.evUniqueID = callGUID;
             res.locals.evUniqueID = callGUID;
-            const respMeta = {};
-            respMeta['evUniqueID'] = callGUID;
-            respMeta['requestURL'] = req.originalUrl;
-            respMeta['apiBuildVersion'] = process.env.npm_package_version || '--NOT AVAILABLE--';
-            respMeta['requestTS'] = Date.now();
-            respMeta['tasks'] = [];
-            res.locals.apiMeta = respMeta;
-            let metadata = {};
-            req.metadata = metadata;
+            this.apiResp.evUniqueID = callGUID;
+            this.apiResp.requestURL = req.originalUrl;
+            this.apiResp.apiServer = this.hashAPIServer();
+            this.apiResp.apiBuildVersion = process.env.npm_package_version || '--NOT AVAILABLE--';
+            this.apiResp.requestTS = Date.now();
+            this.apiResp.tasks = [];
+            req.metadata = this.apiResp;
             next();
         };
     }

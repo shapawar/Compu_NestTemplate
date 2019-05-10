@@ -1,4 +1,11 @@
+/* 
+* Nest and Third patry imports
+*/
 import { Test, TestingModule } from '@nestjs/testing';
+
+/* 
+* Custom imports
+*/
 import { LoginController } from './login.controller';
 
 describe('Login Controller', () => {

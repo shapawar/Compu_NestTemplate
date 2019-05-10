@@ -1,27 +1,37 @@
+/* 
+* Nset and third party imports
+*/
 import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common';
+import { LogService } from './logger.middleware';
 
+/* 
+* Error Handler middleware
+* Handle all catch error throw by try block
+*/
 @Catch()
 export class ErrorFilter implements ExceptionFilter {
 
+  MODULENAME ="ERRORHANDLER";
+  /* 
+*Configure error Handler middleware
+*/
   catch(error: Error, host: ArgumentsHost) {
+    let debugName='Error-Middleware';
+
     let response = host.switchToHttp().getResponse();
     let request = host.switchToHttp().getRequest();
-  
+    let status = (error instanceof HttpException) ? error.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
     
-    let metadata= {
-      metadata: response.locals.apiMeta,
-      statusCode:0,
-      errorname:'',
-      message:'',
-      params:request.params,
-      body:request.body,
-      timestamp: new Date().toISOString()
-      
-    }
-    
-    metadata.statusCode = (error instanceof HttpException) ? error.getStatus(): HttpStatus.INTERNAL_SERVER_ERROR;;
-    metadata.message = error.message;;
-    metadata.errorname = error.name;
-    return response.status(metadata.statusCode).json(metadata)
-  } 
+    request.metadata.errMsg = error.message;
+    request.metadata.errCode = 1;
+    request.timestamp = new Date().toISOString();
+
+   let logger = new LogService();
+
+   logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}):: ${error.message}`);
+   logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}):: ${error.message}`);
+
+    return response.status(status).json(request.metadata)
+  }
+
 }

@@ -55,8 +55,20 @@ let UsersService = class UsersService {
     }
     editPost(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const editedPost = yield this.userRepository.update({ username: data.username }, { address: data.address });
+            const editedPost = yield this.userRepository.update({ username: data.username }, data);
             return editedPost;
+        });
+    }
+    createUsers(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const savedata = yield typeorm_2.getManager().query(`INSERT INTO user_entity(username, email, mobile, password, address) VALUES ('${data.username}','${data.email}','${data.mobile}','${data.password}','${data.address}')`);
+            return savedata;
+        });
+    }
+    getUserData() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const list = yield typeorm_2.getManager().query(`SELECT * FROM user_entity`);
+            return list;
         });
     }
 };

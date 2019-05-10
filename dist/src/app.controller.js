@@ -28,8 +28,7 @@ let AppController = class AppController {
     }
     root(res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("ok i am move");
-            res.redirect('/api/v1/login');
+            res.redirect('/v1/login');
         });
     }
 };

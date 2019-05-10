@@ -1,17 +1,30 @@
+
+/* 
+* Nest & Third party imports
+*/
 import { Controller, Get, Res, Post, Param, Body, Req, HttpException } from '@nestjs/common';
+
+/* 
+* Custom Imports
+*/
 import { UserPostDTO } from '../users/user.post.dto';
 import { LoginService } from './login.service';
+import { LogService } from 'src/middleware/logger.middleware';
 
 @Controller('login')
 export class LoginController {
    
-     constructor(private loginService:LoginService){}
+     constructor(private loginService:LoginService, private logger:LogService){}
 
+     /* Render login page */
     @Get()
-    loginCheck(@Res() res){
+    async loginCheck(@Res() res){
+    this.logger.debug("ok");  
      res.render('login',{title:"Welcome to comepumatrice",msg:null });
+
     }
 
+    /* Check login credentials */
     @Post()
     async loginPost(@Res() res,@Req() req, @Body() UserPostDTO: UserPostDTO){
  

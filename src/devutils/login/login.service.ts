@@ -4,12 +4,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { userEntity } from 'dist/src/users/user.entity';
 const jwt = require('jsonwebtoken');
 
+/* Login Service */
 @Injectable()
 export class LoginService {
-    constructor(@InjectRepository(userEntity) private readonly userReposity: Repository<userEntity>  ){
+    constructor(@InjectRepository(userEntity) private readonly userReposity: Repository<userEntity>){
 
     }
 
+    /* Check login credential of user using 'username' & 'Password' */
     async checkLogin(data){
      const checkUser = await this.userReposity.findOne({username:data.username, password:data.password});
      return checkUser;
