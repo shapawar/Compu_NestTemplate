@@ -11,7 +11,7 @@ import { UserPostDTO } from './user.post.dto';
 import { UsersService } from './users.service';
 import { LogService } from 'src/middleware/logger.middleware';
 
-
+import { userEntity } from './user.entity';
 
 
 @Controller('users')
@@ -29,8 +29,11 @@ export class UsersController {
     async addPost(@Req() req, @Res() res, @Body() userpostdto: UserPostDTO) {
         let taskName = 'createUser'
         try {
+            let userpost = new userEntity();
 
             this.Logger.debug(`[${req.evUniqueID}] (${this.MODULENAME}) - ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
+
+
 
             const newPost = await this.userService.createUser(req.evUniqueID, userpostdto);
 
@@ -55,7 +58,7 @@ export class UsersController {
     */
     @Get()
     async getUserList(@Req() req, @Res() res, ) {
-
+        //throw new Error('Hello');
         let taskName = 'userList'
         try {
             this.Logger.debug(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - QueryData: ${"-"}`);
@@ -151,7 +154,7 @@ export class UsersController {
         try {
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME} )- ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
 
-            const newPost = await this.userService.registerUsers(req.evUniqueID,userpostdto);
+            const newPost = await this.userService.registerUsers(req.evUniqueID, userpostdto);
             return res.status(HttpStatus.OK).json({
                 message: "Post has been submitted successfully!",
                 post: newPost
@@ -170,7 +173,7 @@ export class UsersController {
     * Get user list
     */
     @Get('/noorm')
-    async getUserLists(@Req() req,@Res() res ) {
+    async getUserLists(@Req() req, @Res() res) {
         let taskName = "getUserLists";
 
         try {

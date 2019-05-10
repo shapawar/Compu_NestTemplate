@@ -1,7 +1,7 @@
 
 export class GeneralCodes {
 
-     ErrorCodes = [
+    ErrorCodes = [
         { "code": 0, "message": 'OK', "description": 'Success', "type": 'SUCCESS', "canOverrideMessage": false },
         { "code": 1, "message": 'Internal Error', "description": 'Unexpected error encountered', "type": 'ERROR', "canOverrideMessage": true },
         { "code": 2, "message": 'Missing Input', "description": 'Missing one or more required parameters', "type": 'ERROR', "canOverrideMessage": true },
@@ -9,10 +9,5 @@ export class GeneralCodes {
         { "code": 4, "message": 'Invalid URL', "description": 'URL not found', "type": 'ERROR', "canOverrideMessage": true },
         { "code": 5, "message": 'Invalid Configuration', "description": 'Invalid configuration value(s)', "type": 'ERROR', "canOverrideMessage": false }
     ];
-    
-    getErrorCodes(){
-        return this.ErrorCodes;
-    }
-  
-    
+
 }

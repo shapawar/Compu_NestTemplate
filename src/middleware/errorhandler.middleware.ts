@@ -17,16 +17,18 @@ export class ErrorFilter implements ExceptionFilter {
   catch(error: Error, host: ArgumentsHost) {
     let response = host.switchToHttp().getResponse();
     let request = host.switchToHttp().getRequest();
-    let status = (error instanceof HttpException) ? error.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR ;
+    let status = (error instanceof HttpException) ? error.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
     const objData = {
-      metadata:{},
+      metadata: {},
       status: 0,
-      message:"",
-      errorname:"",
-      body:"",
-      params:"",
-      timestamp:"",
+      message: "",
+      errorname: "",
+      body: "",
+      params: "",
+      timestamp: "",
     }
+    request.metadata.errMsg = error.message;
+    request.metadata.errCode = 1;
     objData.metadata = request.metadata;
     objData.status = status;
     objData.message = error.message;
@@ -34,7 +36,7 @@ export class ErrorFilter implements ExceptionFilter {
     objData.body = request.body;
     objData.params = request.params;
     objData.timestamp = new Date().toISOString();
-    
+
     request.metadata = objData;
     return response.status(status).json(request.metadata)
   }

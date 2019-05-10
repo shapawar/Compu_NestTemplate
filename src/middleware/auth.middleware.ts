@@ -14,9 +14,9 @@ import * as jwt from 'jsonwebtoken';
 
 export class AuthMiddleware implements NestMiddleware {
 
-/*
-* Verify token if token unauthorized throw error msg otherwise continue. 
- */
+  /*
+  * Verify token if token unauthorized throw error msg otherwise continue. 
+   */
   resolve(...args: any[]): MiddlewareFunction {
     return async (req, res, next) => {
 
@@ -33,6 +33,8 @@ export class AuthMiddleware implements NestMiddleware {
             next();
 
           } catch (error) {
+
+            //add error logs here 
             next(error);
           }
 
@@ -43,6 +45,7 @@ export class AuthMiddleware implements NestMiddleware {
         }
 
       } catch (error) {
+        //add error logs here 
         next(error);
       }
     }
