@@ -17,19 +17,23 @@ export class ErrorFilter implements ExceptionFilter {
 */
   catch(error: Error, host: ArgumentsHost) {
     let debugName='Error-Middleware';
+    let logger = new LogService();
 
     let response = host.switchToHttp().getResponse();
     let request = host.switchToHttp().getRequest();
     let status = (error instanceof HttpException) ? error.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+
+    if(request.url == "/favicon.ico"){
+      logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${JSON.stringify(error.message)}`);
+      logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${JSON.stringify(error.message)}`);
+      return;
+    }
     
     request.metadata.errMsg = error.message;
     request.metadata.errCode = 1;
     request.timestamp = new Date().toISOString();
-
-   let logger = new LogService();
-
-   logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}):: ${error.message}`);
-   logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}):: ${error.message}`);
+   logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
+   logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
 
     return response.status(status).json(request.metadata)
   }
