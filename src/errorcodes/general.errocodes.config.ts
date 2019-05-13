@@ -1,4 +1,7 @@
 
+/* 
+* Define and add general error codes
+*/
 export class GeneralCodes {
 
     ErrorCodes = [

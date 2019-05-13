@@ -3,17 +3,17 @@
 * Nest & Third party imports
 */
 import { Controller, Post, Res, Body, HttpStatus, Get, Param, Delete, Put, Req } from '@nestjs/common';
-
+import { ApiUseTags, ApiOperation, ApiImplicitParam } from '@nestjs/swagger';
+import { validate } from 'class-validator';
 /* 
 * Custome imports
 */
 import { UserPostDTO } from './user.post.dto';
 import { UsersService } from './users.service';
-import { LogService } from 'src/middleware/logger.middleware';
+import { LogService } from '../../middleware/logger.middleware';
 import { userEntity } from './user.entity';
-import { ApiUseTags, ApiOperation, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
 import { AppService } from '../../app.service';
-import { validate } from 'class-validator';
+
 
 @ApiUseTags('users')
 // @ApiBearerAuth()
@@ -95,6 +95,7 @@ export class UsersController {
             });
 
         } catch (error) {
+            
             this.Logger.error(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.stack}`);
 

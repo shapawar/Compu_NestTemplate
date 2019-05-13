@@ -2,7 +2,12 @@
 * Nset and third party imports
 */
 import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common';
+
+/* 
+* Custom imports
+*/
 import { LogService } from './logger.middleware';
+
 
 /* 
 * Error Handler middleware
@@ -15,8 +20,9 @@ export class ErrorFilter implements ExceptionFilter {
   /* 
 *Configure error Handler middleware
 */
+ 
 
-  catch(error: Error, host: ArgumentsHost) {
+   catch(error: Error, host: ArgumentsHost) {
     let debugName='Error-Middleware';
     let logger = new LogService();
 
@@ -25,13 +31,11 @@ export class ErrorFilter implements ExceptionFilter {
     let status = (error instanceof HttpException) ? error.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
     if(request.url == "/favicon.ico"){
+
       logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${JSON.stringify(error.message)}`);
       logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${JSON.stringify(error.message)}`);
       return;
-    }
-    
-    if (request.url === '/favicon.ico') {
-      return;
+
     }
 
     request.metadata.errMsg = error.message;
@@ -39,8 +43,11 @@ export class ErrorFilter implements ExceptionFilter {
     request.timestamp = new Date().toISOString();
    logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
    logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
+  
+   //let apierror =  this.appService.endMetaData(request.evUniqueID,1,error.message,request.metadata,'Error Handling');
+  
+   return response.status(status).json(request.metadata)
 
-    return response.status(status).json(request.metadata)
   }
 
 }

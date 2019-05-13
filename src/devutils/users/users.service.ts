@@ -10,7 +10,7 @@ import { Repository, getManager } from 'typeorm';
 * custom imports
 */
 import { userEntity } from './user.entity';
-import { LogService } from 'src/middleware/logger.middleware';
+import { LogService } from '../../middleware/logger.middleware';
 
 @Injectable()
 export class UsersService {
