@@ -3,21 +3,13 @@ import { GeneralCodes } from './general.errocodes.config';
 import { errorCodes } from 'src/interfaces/errorcode.interface';
 
 
+
+
 @Injectable()
 export class ErrorcodesService {
     taskName = "ErrorCodesService";
     MODULENAME = "ErrorCodesController"
-    constructor(private readonly generalcodes: GeneralCodes) {
-
-    }
-
-
-    findErrorCode() {
-
-        let errorCodes = [];
-        return errorCodes = this.generalcodes.ErrorCodes;
-
-    }
+    constructor(private readonly generalcodes: GeneralCodes) {}
 
     getErrorInformation(evUniqueID, errCode, errMsg):errorCodes {
         try {
@@ -51,8 +43,8 @@ export class ErrorcodesService {
                 throw new Error(`Unknown error code: ${errCode}`);
             }
         } catch (error) {
-           // this.logger.error(`[${evUniqueID}] ${this.MODULENAME}(${this.taskName}): ${error.message}`);
-            // return { "code": 1, "message": 'Internal Error', "description": error.message, "type": 'ERROR' };
+        //    this.logger.error(`[${evUniqueID}] ${this.MODULENAME}(${this.taskName}): ${error.message}`);
+          //return { "code": 1, "message": 'Internal Error', "description": error.message, "type": 'ERROR' };
         }
     }
 
