@@ -6,8 +6,8 @@ import { Controller, Get, HttpCode, Req } from '@nestjs/common';
 /* 
 * Custome imports
 */
-import { AppService } from 'src/app.service';
-import { LogService } from 'src/middleware/logger.middleware';
+import { AppService } from '../app.service';
+import { LogService } from '../middleware/logger.middleware';
 
 /* 
 * Ping route for helth check
@@ -24,9 +24,13 @@ export class PingController {
     @HttpCode(200)
     ping(@Req() req){
         this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-${this.taskName}`);
-        let pingdata= this.appService.endMetaData(req.evUniqueID,0,'Submitted Successfully',req.metadata);
-        let elapsedTS = this.appService.endTask(Date.now());
-        console.log("===",elapsedTS);
+        
+        const task = {
+            name:this.taskName,
+            info:"Ping controller executed"
+        }
+        
+        let pingdata= this.appService.endMetaData(req.evUniqueID,0,'Submitted Successfully',req.metadata,task);
         return pingdata;
     }
 }

@@ -3,7 +3,6 @@
 */
 import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 import { IsEmail, IsString, Length, IsNotEmpty, Max, Min } from 'class-validator';
-import { min } from 'moment';
 
 /* Define User Entity */
 @Entity()

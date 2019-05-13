@@ -16,11 +16,12 @@ describe('Ping Controller', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PingController],
     }).compile();
-
     controller = module.get<PingController>(PingController);
+    
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+  let user = jest.spyOn(controller,'ping');
+    expect(user).toHaveBeenCalled();
   });
 });
