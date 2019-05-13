@@ -12,5 +12,6 @@ export interface apiResponse {
     apiBuildVersion: String,
     errCode: Number,
     errMsg: String,
+    timestamp:String,
     tasks: Array<tasksData>
 }

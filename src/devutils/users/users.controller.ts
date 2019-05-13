@@ -14,6 +14,7 @@ import { LogService } from 'src/middleware/logger.middleware';
 import { userEntity } from './user.entity';
 import { ApiUseTags, ApiOperation, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
 import { AppService } from '../../app.service';
+import { validate } from 'class-validator';
 
 @ApiUseTags('users')
 // @ApiBearerAuth()
@@ -37,13 +38,25 @@ export class UsersController {
 
             this.Logger.debug(`[${req.evUniqueID}] (${this.MODULENAME}) - ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
 
-            const newPost = await this.userService.createUser(req.evUniqueID, userpostdto);
+            userpost.username = userpostdto.username;
+            userpost.email = userpostdto.email;
+            userpost.mobile = userpostdto.mobile;
+            userpost.password = userpostdto.password;
+            userpost.address = userpostdto.address;
 
-            return res.status(HttpStatus.OK).json({
-                message: "Post has been submitted successfully!",
-                post: newPost,
-            });
+            let checkerror = await validate(userpost);
 
+            if (checkerror.length > 0) {
+                let value = checkerror.map(data => data.constraints.length ||data.constraints.isEmail||data.constraints.isNotEmpty );
+                throw new Error(value[0]);
+            } else {
+                const newPost = await this.userService.createUser(req.evUniqueID, userpostdto);
+
+                return res.status(HttpStatus.OK).json({
+                    message: "Post has been submitted successfully!",
+                    post: newPost
+                });
+            }
         } catch (error) {
 
             this.Logger.error(`[${req.evUniqueID}] (${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);

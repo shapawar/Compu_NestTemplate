@@ -1,6 +1,13 @@
-import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+/* 
+* Nest & Third party imports
+*/
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
+
+/* 
+* Custom imports
+*/
 import { DefaultMiddleware } from './middleware/default.middleware';
 import { UsersModule } from './devutils/users/users.module';
 import { userEntity } from './devutils/users/user.entity';
@@ -14,13 +21,8 @@ import { ErrorcodesModule } from './errorcodes/errorcodes.module';
 
 
 
-/* 
-* Nest & Third party imports
-*/
 
-/* 
-* Custom imports
-*/
+
 
 
 @Module({
@@ -28,7 +30,7 @@ import { ErrorcodesModule } from './errorcodes/errorcodes.module';
     type: 'postgres',
     port: 5432,
     username: 'postgres',
-    password: 'root',
+    password: 'admin2518',
     database: 'nestdapp',
     host: 'localhost',
     synchronize: true,
@@ -36,7 +38,7 @@ import { ErrorcodesModule } from './errorcodes/errorcodes.module';
   }),ErrorcodesModule],
   controllers: [ PingController,AppController],
   providers: [ LogService,AppService],
-  
+  exports :[LogService]
 })
 
 /* 
