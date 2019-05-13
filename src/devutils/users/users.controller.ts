@@ -12,12 +12,15 @@ import { UsersService } from './users.service';
 import { LogService } from 'src/middleware/logger.middleware';
 
 import { userEntity } from './user.entity';
+import { ApiUseTags, ApiOperation, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
+import { AppService } from '../../app.service';
 
-
+@ApiUseTags('users')
+// @ApiBearerAuth()
 @Controller('users')
 export class UsersController {
 
-    constructor(private userService: UsersService, private Logger: LogService) {
+    constructor(private userService: UsersService, private Logger: LogService, private appService: AppService) {
     }
 
     MODULENAME = 'USERCONTROLLER';
@@ -26,6 +29,7 @@ export class UsersController {
     * create user
     */
     @Post()
+    @ApiOperation({ title: 'Create Users' })
     async addPost(@Req() req, @Res() res, @Body() userpostdto: UserPostDTO) {
         let taskName = 'createUser'
         try {
@@ -33,13 +37,11 @@ export class UsersController {
 
             this.Logger.debug(`[${req.evUniqueID}] (${this.MODULENAME}) - ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
 
-
-
             const newPost = await this.userService.createUser(req.evUniqueID, userpostdto);
 
             return res.status(HttpStatus.OK).json({
                 message: "Post has been submitted successfully!",
-                post: newPost
+                post: newPost,
             });
 
         } catch (error) {
@@ -60,12 +62,17 @@ export class UsersController {
     async getUserList(@Req() req, @Res() res, ) {
         //throw new Error('Hello');
         let taskName = 'userList'
+        const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Submitted Successfully',req.metadata);
+
         try {
             this.Logger.debug(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - QueryData: ${"-"}`);
             const userlist = await this.userService.getUserList(req.evUniqueID);
+            const endTime = this.appService.endTask(Date.now());
             return res.status(HttpStatus.OK).json({
                 message: "Fetch User List successfully",
-                list: userlist
+                list: userlist,
+                metadata:usermetadata,
+                endTime: endTime
             });
 
         } catch (error) {
@@ -79,6 +86,7 @@ export class UsersController {
     /**
     *get user Details using userid
     */
+    @ApiImplicitParam({ name: 'userID' })
     @Get('/unique/:userID')
     async getUser(@Req() req, @Res() res, @Param('userID') userID) {
         let taskName = 'getUser';

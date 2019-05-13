@@ -5,6 +5,7 @@ import { GeneralCodes } from './general.errocodes.config';
 
 @Module({
   providers: [ErrorcodesService,GeneralCodes],
-  controllers: [ErrorcodesController]
+  controllers: [ErrorcodesController],
+  exports: [ErrorcodesService]
 })
 export class ErrorcodesModule {}

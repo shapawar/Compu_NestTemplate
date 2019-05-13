@@ -26,6 +26,7 @@ export class UsersService {
     async createUser(evUniqueID, data) {
         let taskName = 'createUser';
        
+        console.log("service",data);
 
         try {
             this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
