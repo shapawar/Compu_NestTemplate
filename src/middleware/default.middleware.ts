@@ -56,8 +56,9 @@ export class DefaultMiddleware implements NestMiddleware {
             this.apiResp.tasks = [];
 
             req.metadata = this.apiResp;
-
+            
             next();
+    
         };
     }
 }

@@ -3,18 +3,17 @@
 * Nest & Third party imports
 */
 import { Controller, Post, Res, Body, HttpStatus, Get, Param, Delete, Put, Req } from '@nestjs/common';
-
+import { ApiUseTags, ApiOperation, ApiImplicitParam } from '@nestjs/swagger';
+import { validate } from 'class-validator';
 /* 
 * Custome imports
 */
 import { UserPostDTO } from './user.post.dto';
 import { UsersService } from './users.service';
-import { LogService } from 'src/middleware/logger.middleware';
-
+import { LogService } from '../../middleware/logger.middleware';
 import { userEntity } from './user.entity';
-import { ApiUseTags, ApiOperation, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
 import { AppService } from '../../app.service';
-import { validate } from 'class-validator';
+
 
 @ApiUseTags('users')
 // @ApiBearerAuth()
@@ -50,11 +49,17 @@ export class UsersController {
                 let value = checkerror.map(data => data.constraints.length ||data.constraints.isEmail||data.constraints.isNotEmpty );
                 throw new Error(value[0]);
             } else {
+                const task = {
+                    name:taskName,
+                    info:"Add user details"
+                }
+
+                const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Post has been submitted successfully!',req.metadata,task);
                 const newPost = await this.userService.createUser(req.evUniqueID, userpostdto);
 
                 return res.status(HttpStatus.OK).json({
-                    message: "Post has been submitted successfully!",
-                    post: newPost
+                    metadata:usermetadata,
+                    post: newPost,
                 });
             }
         } catch (error) {
@@ -75,20 +80,22 @@ export class UsersController {
     async getUserList(@Req() req, @Res() res, ) {
         //throw new Error('Hello');
         let taskName = 'userList'
-        const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Submitted Successfully',req.metadata);
-
+    
         try {
             this.Logger.debug(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - QueryData: ${"-"}`);
+            const task = {
+                name:taskName,
+                info:"Get user list"
+            }
+            const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Fetch User List successfully',req.metadata,task);
             const userlist = await this.userService.getUserList(req.evUniqueID);
-            const endTime = this.appService.endTask(Date.now());
             return res.status(HttpStatus.OK).json({
-                message: "Fetch User List successfully",
-                list: userlist,
                 metadata:usermetadata,
-                endTime: endTime
+                list: userlist, 
             });
 
         } catch (error) {
+            
             this.Logger.error(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.stack}`);
 
@@ -107,8 +114,17 @@ export class UsersController {
         try {
             this.Logger.debug(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - QueryData: ${userID}`);
 
+            const task = {
+                name:taskName,
+                info:"Get user list"
+            }
+            
+            const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Fetch user info successfully',req.metadata,task);
             const user = await this.userService.getUser(req.evUniqueID, userID);
-            return res.status(HttpStatus.OK).json({ message: "Fetch user info successfully", UserDetails: user })
+            return res.status(HttpStatus.OK).json({ 
+                metadata:usermetadata,
+                UserDetails: user,
+            })
         } catch (error) {
             this.Logger.error(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.stack}`);
@@ -128,9 +144,17 @@ export class UsersController {
 
         try {
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - QueryData: ${userID}`);
-
+            const task = {
+                name:taskName,
+                info:"Delete user according to user id"
+            }
+            
+            const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'User deleted successfully',req.metadata,task);
             const user = await this.userService.deleteUser(req.evUniqueID, userID);
-            return res.status(HttpStatus.OK).json({ message: "User deleted successfully", data: user });
+            return res.status(HttpStatus.OK).json({ 
+                metadata:usermetadata,
+                data: user 
+            });
         } catch (error) {
             this.Logger.error(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.stack}`);
@@ -150,9 +174,15 @@ export class UsersController {
         try {
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME} )- ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
 
+            const task = {
+                name:taskName,
+                info:"Update the user details"
+            }
+            
+            const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'user has been updated successfully',req.metadata,task);
             const editPost = await this.userService.editPost(req.evUniqueID, userPostDTO);
             return res.status(HttpStatus.OK).json({
-                message: 'user has been updated successfully ',
+                metadata:usermetadata,
                 details: editPost
             })
 
@@ -175,9 +205,15 @@ export class UsersController {
         try {
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME} )- ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
 
+            const task = {
+                name:taskName,
+                info:"Add user details"
+            }
+            
+            const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Post has been submitted successfully!',req.metadata,task);
             const newPost = await this.userService.registerUsers(req.evUniqueID, userpostdto);
             return res.status(HttpStatus.OK).json({
-                message: "Post has been submitted successfully!",
+                metadata:usermetadata,
                 post: newPost
             });
 
@@ -200,9 +236,15 @@ export class UsersController {
         try {
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME} )- ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
 
+            const task = {
+                name:taskName,
+                info:"Get user list"
+            }
+            
+            const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Fetch User List successfully',req.metadata,task);
             const userlist = await this.userService.getUserData(req.evUniqueID);
             return res.status(HttpStatus.OK).json({
-                message: "Fetch User List successfully",
+                metadata:usermetadata,
                 list: userlist
             })
 
