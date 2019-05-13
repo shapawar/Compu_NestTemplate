@@ -51,7 +51,8 @@ export class AppModule implements NestModule {
     consumer
       .apply(DefaultMiddleware)
       .forRoutes('*')
-     
+      // .apply(AuthMiddleware)
+      // .forRoutes('/users')
   }
 
 }

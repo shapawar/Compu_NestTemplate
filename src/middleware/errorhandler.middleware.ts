@@ -10,11 +10,12 @@ import { LogService } from './logger.middleware';
 */
 @Catch()
 export class ErrorFilter implements ExceptionFilter {
-
+ 
   MODULENAME ="ERRORHANDLER";
   /* 
 *Configure error Handler middleware
 */
+
   catch(error: Error, host: ArgumentsHost) {
     let debugName='Error-Middleware';
     let logger = new LogService();
@@ -29,6 +30,10 @@ export class ErrorFilter implements ExceptionFilter {
       return;
     }
     
+    if (request.url === '/favicon.ico') {
+      return;
+    }
+
     request.metadata.errMsg = error.message;
     request.metadata.errCode = 1;
     request.timestamp = new Date().toISOString();
