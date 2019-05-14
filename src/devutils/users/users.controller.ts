@@ -22,8 +22,8 @@ import { Repository } from 'typeorm';
 export class UsersController {
 
     MODULENAME = 'USERCONTROLLER';
-
-    userService = new UsersService(new Repository);
+    constructor(private userService:UsersService){}
+    //userService = new UsersService(new Repository);
     Logger = new LogService();
     appService = new AppService()
 
@@ -128,6 +128,7 @@ export class UsersController {
                 UserDetails: user,
             })
         } catch (error) {
+
             this.Logger.error(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.stack}`);
 
@@ -158,6 +159,7 @@ export class UsersController {
                 data: user
             });
         } catch (error) {
+
             this.Logger.error(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.stack}`);
 

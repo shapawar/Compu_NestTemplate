@@ -18,7 +18,6 @@ export class AppService {
   taskName = "AppService";
   MODULENAME = "AppService"
 
-
   getHello(): string {
     return 'Hello World!';
 
@@ -26,8 +25,9 @@ export class AppService {
 
   /* Reasponse end metadata OBJ */
   endMetaData(evUniqueID, errCode, errMsg, metadata: apiResponse, task) {
-          let logger = new LogService();
-          let errorService = new ErrorcodesService(); 
+    
+    let logger = new LogService();
+    let errorService = new ErrorcodesService();
 
     try {
       const errorData = errorService.getErrorInformation(evUniqueID, errCode, errMsg);

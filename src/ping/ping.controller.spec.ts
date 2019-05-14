@@ -16,7 +16,7 @@ describe('Ping Controller', () => {
   describe('getHello', () => {
     it('should return "Hello World!"', () => {
       const appController = app.get<PingController>(PingController);
-      expect(appController.sum()).toBe('Hello World!');
+      expect(appController.getHello()).toBe('Hello World!');
     });
   });
 

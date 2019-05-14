@@ -3,7 +3,7 @@
 */
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
+
 
 /* 
 * Custom imports
@@ -19,18 +19,12 @@ import { AppService } from './app.service';
 import { ErrorcodesModule } from './errorcodes/errorcodes.module';
 
 
-
-
-
-
-
-
 @Module({
   imports: [UsersModule, TypeOrmModule.forRoot({
     type: 'postgres',
     port: 5432,
     username: 'postgres',
-    password: 'root',
+    password: 'admin2518',
     database: 'nestdapp',
     host: 'localhost',
     synchronize: true,

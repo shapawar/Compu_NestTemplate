@@ -18,6 +18,7 @@ export class ErrorcodesService {
 
     taskName = "ErrorCodesService";
     MODULENAME = "ErrorCodesController"
+
     
 
     getErrorInformation(evUniqueID, errCode, errMsg): errorCodes {
