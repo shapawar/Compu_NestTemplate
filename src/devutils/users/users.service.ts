@@ -14,10 +14,10 @@ import { LogService } from '../../middleware/logger.middleware';
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectRepository(userEntity) private readonly userRepository: Repository<userEntity>, private Logger: LogService) { }
+    constructor(@InjectRepository(userEntity) private readonly userRepository: Repository<userEntity>) { }
     MODULENAME = 'USERSERVICE';
 
-
+    Logger = new LogService();
     /**
      * create user
      * @param {*} evUniqueID req unique id

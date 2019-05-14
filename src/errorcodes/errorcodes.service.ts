@@ -7,8 +7,8 @@ import { Injectable, } from '@nestjs/common';
 * custom imports
 */
 import { GeneralCodes } from './general.errocodes.config';
-import { errorCodes } from 'src/interfaces/errorcode.interface';
-import { LogService } from 'src/middleware/logger.middleware';
+import { errorCodes } from '../interfaces/errorcode.interface';
+import { LogService } from '../middleware/logger.middleware';
 
 
 
@@ -19,14 +19,14 @@ export class ErrorcodesService {
     taskName = "ErrorCodesService";
     MODULENAME = "ErrorCodesController"
     
-    constructor(private readonly generalcodes: GeneralCodes) { }
 
     getErrorInformation(evUniqueID, errCode, errMsg): errorCodes {
 
         let logger = new LogService();
+        let generalcodes = new GeneralCodes();
 
         try {
-            let errorData = this.generalcodes.ErrorCodes
+            let errorData = generalcodes.ErrorCodes
 
             // convert to int just in case errCode is not
             const eCode = parseInt(errCode);

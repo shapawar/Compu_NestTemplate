@@ -13,6 +13,7 @@ import { UsersService } from './users.service';
 import { LogService } from '../../middleware/logger.middleware';
 import { userEntity } from './user.entity';
 import { AppService } from '../../app.service';
+import { Repository } from 'typeorm';
 
 
 @ApiUseTags('users')
@@ -20,10 +21,11 @@ import { AppService } from '../../app.service';
 @Controller('users')
 export class UsersController {
 
-    constructor(private userService: UsersService, private Logger: LogService, private appService: AppService) {
-    }
-
     MODULENAME = 'USERCONTROLLER';
+
+    userService = new UsersService(new Repository);
+    Logger = new LogService();
+    appService = new AppService()
 
     /**
     * create user
@@ -46,12 +48,12 @@ export class UsersController {
             let checkerror = await validate(userpost);
 
             if (checkerror.length > 0) {
-                let value = checkerror.map(data => data.constraints.length ||data.constraints.isEmail||data.constraints.isNotEmpty );
+                let value = checkerror.map(data => data.constraints.length || data.constraints.isEmail || data.constraints.isNotEmpty);
                 throw new Error(value[0]);
             } else {
                 const task = {
-                    name:taskName,
-                    info:"Add user details"
+                    name: taskName,
+                    info: "Add user details"
                 }
 
                 const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Post has been submitted successfully!',req.metadata,task);
@@ -80,22 +82,22 @@ export class UsersController {
     async getUserList(@Req() req, @Res() res, ) {
         //throw new Error('Hello');
         let taskName = 'userList'
-    
+
         try {
             this.Logger.debug(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - QueryData: ${"-"}`);
             const task = {
-                name:taskName,
-                info:"Get user list"
+                name: taskName,
+                info: "Get user list"
             }
             const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Fetch User List successfully',req.metadata,task);
             const userlist = await this.userService.getUserList(req.evUniqueID);
             return res.status(HttpStatus.OK).json({
                 metadata:usermetadata,
-                list: userlist, 
+                list: userlist,
             });
 
         } catch (error) {
-            
+
             this.Logger.error(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.stack}`);
 
@@ -115,13 +117,13 @@ export class UsersController {
             this.Logger.debug(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - QueryData: ${userID}`);
 
             const task = {
-                name:taskName,
-                info:"Get user list"
+                name: taskName,
+                info: "Get user list"
             }
-            
+
             const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Fetch user info successfully',req.metadata,task);
             const user = await this.userService.getUser(req.evUniqueID, userID);
-            return res.status(HttpStatus.OK).json({ 
+            return res.status(HttpStatus.OK).json({
                 metadata:usermetadata,
                 UserDetails: user,
             })
@@ -145,15 +147,15 @@ export class UsersController {
         try {
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - QueryData: ${userID}`);
             const task = {
-                name:taskName,
-                info:"Delete user according to user id"
+                name: taskName,
+                info: "Delete user according to user id"
             }
-            
+
             const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'User deleted successfully',req.metadata,task);
             const user = await this.userService.deleteUser(req.evUniqueID, userID);
-            return res.status(HttpStatus.OK).json({ 
+            return res.status(HttpStatus.OK).json({
                 metadata:usermetadata,
-                data: user 
+                data: user
             });
         } catch (error) {
             this.Logger.error(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);
@@ -175,10 +177,10 @@ export class UsersController {
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME} )- ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
 
             const task = {
-                name:taskName,
-                info:"Update the user details"
+                name: taskName,
+                info: "Update the user details"
             }
-            
+
             const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'user has been updated successfully',req.metadata,task);
             const editPost = await this.userService.editPost(req.evUniqueID, userPostDTO);
             return res.status(HttpStatus.OK).json({
@@ -206,10 +208,10 @@ export class UsersController {
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME} )- ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
 
             const task = {
-                name:taskName,
-                info:"Add user details"
+                name: taskName,
+                info: "Add user details"
             }
-            
+
             const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Post has been submitted successfully!',req.metadata,task);
             const newPost = await this.userService.registerUsers(req.evUniqueID, userpostdto);
             return res.status(HttpStatus.OK).json({
@@ -237,10 +239,10 @@ export class UsersController {
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME} )- ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
 
             const task = {
-                name:taskName,
-                info:"Get user list"
+                name: taskName,
+                info: "Get user list"
             }
-            
+
             const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Fetch User List successfully',req.metadata,task);
             const userlist = await this.userService.getUserData(req.evUniqueID);
             return res.status(HttpStatus.OK).json({

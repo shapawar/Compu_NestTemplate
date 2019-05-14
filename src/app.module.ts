@@ -30,7 +30,7 @@ import { ErrorcodesModule } from './errorcodes/errorcodes.module';
     type: 'postgres',
     port: 5432,
     username: 'postgres',
-    password: 'admin2518',
+    password: 'root',
     database: 'nestdapp',
     host: 'localhost',
     synchronize: true,

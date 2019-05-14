@@ -17,6 +17,7 @@ import { LogService } from './logger.middleware';
 export class ErrorFilter implements ExceptionFilter {
  
   MODULENAME ="ERRORHANDLER";
+
   /* 
 *Configure error Handler middleware
 */

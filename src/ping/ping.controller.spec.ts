@@ -1,27 +1,40 @@
-/* 
-* Nest & Third party imports
-*/
 import { Test, TestingModule } from '@nestjs/testing';
-
-
-/* 
-* Custom imports
-*/
 import { PingController } from './ping.controller';
+import { AppService } from '../app.service';
+
 
 describe('Ping Controller', () => {
-  let controller: PingController;
+  let app: TestingModule;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    app = await Test.createTestingModule({
       controllers: [PingController],
+      providers: [AppService],
     }).compile();
-    controller = module.get<PingController>(PingController);
-    
   });
 
-  it('should be defined', () => {
-  let user = jest.spyOn(controller,'ping');
-    expect(user).toHaveBeenCalled();
+  describe('getHello', () => {
+    it('should return "Hello World!"', () => {
+      const appController = app.get<PingController>(PingController);
+      expect(appController.sum()).toBe('Hello World!');
+    });
   });
+
+  describe('ping', () => {
+    it('should return metadata', () => {
+      const req = {
+        "evUniqueID": "30f02cd5-aa6f-4873-8507-b9225dee8383",
+        "errCode": 0,
+        "errMsg": "Submitted Successfully"
+
+      }
+      const res = {}
+      const appController = app.get<PingController>(PingController);
+      expect(appController.ping(res)).toBe(req);
+    });
+  });
+
+  describe('default middleware data',() => {
+    it('s')
+  })
 });

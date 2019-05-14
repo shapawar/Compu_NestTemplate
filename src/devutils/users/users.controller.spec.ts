@@ -23,24 +23,28 @@ describe('Users Controller', () => {
     usersController = module.get<UsersController>(UsersController);
   });
 
-  describe('getUserList',async () => {
-    it('should return an array of users', async () => {
-      const result:any = [
-        {
+  test('getUserList', () => {
+    // it('should return an array of users', async () => {
+    //   const result:any = [
+    //     {
     
-        "username": 'Safal@1234',
-         "email": 'noorm@gamil.com',
-         "mobile": 8857880616,
-         "password": 'noorm123',
-         "address": 'noorm'
-      }
-    ];
+    //     "username": 'Safal@1234',
+    //      "email": 'noorm@gamil.com',
+    //      "mobile": 8857880616,
+    //      "password": 'noorm123',
+    //      "address": 'noorm'
+    //   }
+    // ];
       
-      jest.spyOn(usersService,'getUserList').mockImplementation(() => result);
-      expect(await usersController.getUserList(result,null)).toBe(result);
+    // expect.assertions(1);
+     usersController.getUserList(null,null).then(data => {
+      expect(data.username).toEqual('Safal@1234');
+    })
+      // jest.spyOn(usersService,'getUserList').mockImplementation(() => result);
+      // expect(await usersController.getUserList(result,null)).toBe(result);
       // return usersController.getUserList(result,null).then(data => {
       //   expect(data).toBe(result);
       // });
     });
-  });
+  // });
 });
