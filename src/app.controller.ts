@@ -1,4 +1,7 @@
-import { Controller, Get , Res} from '@nestjs/common';
+/* 
+* NEST & Third party imports
+*/
+import { Controller} from '@nestjs/common';
 
 
 @Controller()

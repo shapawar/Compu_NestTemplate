@@ -1,8 +1,9 @@
 /* 
 * NEST & Third party middleware
 */
-import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
-import { IsEmail, IsString, Length, IsNotEmpty, Max, Min } from 'class-validator';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { IsEmail, IsString, Length, IsNotEmpty} from 'class-validator';
+
 
 /* Define User Entity */
 @Entity()

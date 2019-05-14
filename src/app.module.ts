@@ -17,7 +17,7 @@ import { LogService } from './middleware/logger.middleware';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ErrorcodesModule } from './errorcodes/errorcodes.module';
-// import { ErrorcodesService } from './errorcodes/errorcodes.service';
+
 
 
 
@@ -30,7 +30,7 @@ import { ErrorcodesModule } from './errorcodes/errorcodes.module';
     type: 'postgres',
     port: 5432,
     username: 'postgres',
-    password: 'root',
+    password: 'admin2518',
     database: 'nestdapp',
     host: 'localhost',
     synchronize: true,
@@ -45,14 +45,14 @@ import { ErrorcodesModule } from './errorcodes/errorcodes.module';
 * Middleware Settings
 */
 export class AppModule implements NestModule {
-  constructor(private readonly connection: Connection) { }
+
   /* For defult middleware apply for all routes */
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(DefaultMiddleware)
       .forRoutes('*')
-      // .apply(AuthMiddleware)
-      // .forRoutes('/users')
+      .apply(AuthMiddleware)
+      .forRoutes('/users')
   }
 
 }

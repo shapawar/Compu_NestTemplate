@@ -1,3 +1,6 @@
+/* 
+* Custom interface
+*/
 import { tasksData } from "./tasks.interface";
 
 /* 

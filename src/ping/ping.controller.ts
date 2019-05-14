@@ -14,6 +14,7 @@ import { LogService } from '../middleware/logger.middleware';
 */
 @Controller('ping')
 export class PingController {
+
     taskName = "PingController";
     MODULENAME = "PINGCONTROLLER"
 
@@ -23,13 +24,13 @@ export class PingController {
     @Get()
     @HttpCode(200)
     ping(@Req() req){
+
         this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-${this.taskName}`);
-        
         const task = {
             name:this.taskName,
             info:"Ping controller executed"
         }
-        
+ 
         let pingdata= this.appService.endMetaData(req.evUniqueID,0,'Submitted Successfully',req.metadata,task);
         return pingdata;
     }

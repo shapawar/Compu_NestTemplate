@@ -1,3 +1,7 @@
+
+/* 
+* Define error code interface
+*/
 export interface errorCodes {
     code: Number,
     message: String,

@@ -48,19 +48,19 @@ Nest-Scaffolding
 ## `Scaffolding in details`
 
 
-## dbscript:
+# dbscript:
 * This dirctory used for store appilication tables query, functions, stored procedures, triggers function and more information about application database.
 
-## dist:
+# dist:
 * This directory includes all metadata of src file used for running on production level
 
-## docs:
+# docs:
 * This directory includes all docs file with .md extention and app design documentation.
 
-## logs:
+# logs:
  * This file contains all auto generated log files by winston.
 
-## secured:
+# secured:
  * All security related stuff will go here.
 
 # src:
@@ -75,7 +75,7 @@ Nest-Scaffolding
 ## interface
 * This directory contains all interfaces files.
 
-# metadata.interfaces.ts
+### metadata.interfaces.ts
 * This file are used to create metadata object and send to every api response.
 
 ## middleware:
@@ -99,16 +99,20 @@ Nest-Scaffolding
 ## views
  * This directory contains all users view files.
 
+## app.module.ts
+* This file is used for initialize all module, service, and contoller.
 
-## test
+## main.ts
+* This file is useful for initializ component based routing, modules,custom and default middlewares.
+
+# test
  * This directory file inclued all test cases files.
 
-## .gitignore
+# .gitignore
  * This file used for avoiding push unwanted code to github/svn.
 
 
-## package.json:
+# package.json:
 * This file includes dependencies, devDependencies, scripts to run app, and more.
 
-## server.js:
-* This file is useful for initializ component based routing, modules,custom and default middlewares.
+
