@@ -18,22 +18,22 @@ export class AppService {
   taskName = "AppService";
   MODULENAME = "AppService"
 
-  constructor(private logger: LogService, private errorService: ErrorcodesService) { }
-
   getHello(): string {
-
     return 'Hello World!';
 
   }
 
   /* Reasponse end metadata OBJ */
   endMetaData(evUniqueID, errCode, errMsg, metadata: apiResponse, task) {
+    
+    let logger = new LogService();
+    let errorService = new ErrorcodesService();
 
     try {
-      const errorData = this.errorService.getErrorInformation(evUniqueID, errCode, errMsg);
+      const errorData = errorService.getErrorInformation(evUniqueID, errCode, errMsg);
 
       metadata.errCode = errorData.code;
-      metadata.errMsg = errorData.message
+      metadata.errMsg = errorData.message;
       metadata.elapsedTimeInMS = moment(Date.now()).diff(metadata.requestTS, 'milliseconds');
       metadata.tasks[metadata.tasks.push({
         name: task.name,
@@ -46,8 +46,8 @@ export class AppService {
 
     } catch (error) {
 
-      this.logger.error(`[${evUniqueID}](${this.MODULENAME})-${this.taskName}`);
-      this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-${this.taskName}`);
+      logger.error(`[${evUniqueID}](${this.MODULENAME})-${this.taskName}`);
+      logger.debug(`[${evUniqueID}](${this.MODULENAME})-${this.taskName}`);
       throw error;
     }
   }

@@ -3,7 +3,7 @@
 */
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
+
 
 /* 
 * Custom imports
@@ -17,12 +17,6 @@ import { LogService } from './middleware/logger.middleware';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ErrorcodesModule } from './errorcodes/errorcodes.module';
-
-
-
-
-
-
 
 
 @Module({
