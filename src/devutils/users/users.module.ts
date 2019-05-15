@@ -13,10 +13,9 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { userEntity } from './user.entity';
 import { LogService } from '../../middleware/logger.middleware';
-import { ErrorcodesModule } from '../../errorcodes/errorcodes.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([userEntity]),ErrorcodesModule],
+  imports: [TypeOrmModule.forFeature([userEntity])],
   providers: [UsersService,LogService,AppService],
   controllers: [UsersController]
 })
