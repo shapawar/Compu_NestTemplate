@@ -29,10 +29,10 @@ import { ErrorcodesModule } from './errorcodes/errorcodes.module';
     host: 'localhost',
     synchronize: true,
     entities: [userEntity]
-  }),ErrorcodesModule],
-  controllers: [ PingController,AppController],
-  providers: [ LogService,AppService],
-  exports :[LogService]
+  }), ErrorcodesModule],
+  controllers: [PingController, AppController],
+  providers: [LogService, AppService],
+  exports: [LogService]
 })
 
 /* 
@@ -45,8 +45,8 @@ export class AppModule implements NestModule {
     consumer
       .apply(DefaultMiddleware)
       .forRoutes('*')
-      // .apply(AuthMiddleware)
-      // .forRoutes('/users')
+      .apply(AuthMiddleware)
+      .forRoutes('/users')
   }
 
 }

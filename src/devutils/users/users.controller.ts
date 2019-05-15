@@ -233,7 +233,7 @@ export class UsersController {
     /* 
     * Get user list
     */
-    @Get('/noorm')
+    @Get('/noorm/getlist')
     async getUserLists(@Req() req, @Res() res) {
         let taskName = "getUserLists";
 
