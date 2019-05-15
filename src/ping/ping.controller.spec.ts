@@ -1,9 +1,59 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { PingController } from './ping.controller';
 import { AppService } from '../app.service';
+import { Req } from '@nestjs/common';
+import { DefaultMiddleware } from '../middleware/default.middleware';
+
 
 
 describe('Ping Controller', () => {
+  let pingcontroller: PingController;
+  let appservice: AppService;
+  let middleware: DefaultMiddleware;
+ 
+
+  beforeEach(async () => {
+
+    const module = await Test.createTestingModule({
+
+      controllers: [PingController],
+      providers: [AppService],
+
+    }).compile();
+
+    appservice = module.get<AppService>(AppService);
+    pingcontroller = module.get<PingController>(PingController);
+
+  });
+
+  describe('ping', () => {
+
+    it('should return object of ping method', async () => {
+
+      const result = {
+        requestURL: "",
+        evUniqueID: "",
+        requestTS: 0,
+        elapsedTimeInMS: 0,
+        apiServer: "",
+        apiBuildVersion: "",
+        errCode: 1,
+        errMsg: "",
+        timestamp: "",
+        tasks: []
+      }
+
+      jest.spyOn(appservice, 'endMetaData').mockImplementation(() => result);
+
+      expect(await pingcontroller.ping(Req)).toBe(result)
+    });
+
+  });
+
+});
+
+
+/* describe('Ping Controller', () => {
   let app: TestingModule;
 
   beforeAll(async () => {
@@ -37,4 +87,4 @@ describe('Ping Controller', () => {
   describe('default middleware data',() => {
     it('s')
   })
-});
+}); */
