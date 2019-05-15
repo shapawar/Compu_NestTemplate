@@ -3,7 +3,7 @@
 * Define error code interface
 */
 export interface errorCodes {
-    code: Number,
+    code: number,
     message: String,
     description: String,
     type: String,
