@@ -109,7 +109,7 @@ export class UsersController {
     *get user Details using userid
     */
     @ApiImplicitParam({ name: 'userID' })
-    @Get('/unique/:userID')
+    @Get(':userID')
     async getUser(@Req() req, @Res() res, @Param('userID') userID) {
         let taskName = 'getUser';
 
