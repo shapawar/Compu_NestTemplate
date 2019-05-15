@@ -40,6 +40,7 @@ export class PingController {
         return pingdata;
     }
 
+    @Get()
     getHello(){
         return this.appService.getHello();
     }
