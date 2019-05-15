@@ -33,13 +33,12 @@ describe('Ping Controller', () => {
   describe('getHello', () => {
 
     it('should return "Hello World!"', () => {
-
+      expect(pingController.getHello()).toBe('Hello World!')
     });
   });
 
   describe('ping controller test', () => {
-
-    it('should return default metadata', async () => {
+    it('should return errcode', async () => {
       const metadata = {
         errCode: 0,
       }
