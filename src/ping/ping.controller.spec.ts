@@ -1,40 +1,52 @@
-import { Test, TestingModule } from '@nestjs/testing';
+/* 
+* NEST & Third party imports
+*/
+import { Test } from '@nestjs/testing';
+import { Req } from '@nestjs/common';
+
+/* 
+* Custom imports
+*/
 import { PingController } from './ping.controller';
 import { AppService } from '../app.service';
 
 
+
+// Unit test method
 describe('Ping Controller', () => {
-  let app: TestingModule;
+
+  let pingController: PingController;
+  let appService: AppService;
 
   beforeAll(async () => {
-    app = await Test.createTestingModule({
+
+    const module = await Test.createTestingModule({
       controllers: [PingController],
       providers: [AppService],
     }).compile();
+
+    appService = module.get<AppService>(AppService);
+    pingController = module.get<PingController>(PingController);
+
   });
 
   describe('getHello', () => {
+
     it('should return "Hello World!"', () => {
-      const appController = app.get<PingController>(PingController);
-      expect(appController.getHello()).toBe('Hello World!');
+
     });
   });
 
-  describe('ping', () => {
-    it('should return metadata', () => {
-      const req = {
-        "evUniqueID": "30f02cd5-aa6f-4873-8507-b9225dee8383",
-        "errCode": 0,
-        "errMsg": "Submitted Successfully"
+  describe('ping controller test', () => {
 
+    it('should return default metadata', async () => {
+      const metadata = {
+        errCode: 0,
       }
-      const res = {}
-      const appController = app.get<PingController>(PingController);
-      expect(appController.ping(res)).toBe(req);
+      let test = pingController.ping(Req);
+      expect(test.errCode).toBe(metadata.errCode);
     });
+
   });
 
-  describe('default middleware data',() => {
-    it('s')
-  })
 });
