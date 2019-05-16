@@ -43,7 +43,7 @@ Nest-Scaffolding
         └── ... 
     ├──  app.controller.spec.ts
     ├──  app.controller.ts          # main contorller file
-    ├──  app.module.ts              # main module & shered file
+    ├──  app.module.ts              # main module & shared file
     ├──  app.service.ts             # main service file
     ├──  main.ts                    # Entry file 
     └── ...       
@@ -51,7 +51,7 @@ Nest-Scaffolding
     └── ...
 ├── .gitignore                      # To ignore files we don't want to push into remote repository.
 ├── package.json                    # This file includes project dependency & modules.
-├── README.md                       # Deatils information about getting started with appliction
+├── README.md                       # Detail information about getting started with appliction
 └── tsconfig.json                   # Configuration of the TypeScript compiler. 
 
 
@@ -61,7 +61,7 @@ Nest-Scaffolding
 
 
 # dbscript:
-* This dirctory used for store application tables query, functions, stored procedures, triggers function and more information about application database.
+* This directory used for store application tables query, functions, stored procedures, triggers function and more information about application database.
 
 # dist:
 * This directory includes all metadata of src file used for running on production level
@@ -94,7 +94,7 @@ Nest-Scaffolding
 * It includes all middlewares that will usefull in whole application e.g. auth.middleware.js, default.middleware.js 
 
 ### auth.middleware.ts
-* This file is used for handle autehntication of user before processing any data/method.
+* This file is used for handle authentication of user before processing any data/method.
 
 ### default.middleware.ts
 * This file is used for bind the value to api response data and execute before processing any data/method.
@@ -106,7 +106,7 @@ Nest-Scaffolding
 * This file is used for configuring all logger functionality that are used for prints log in console as well as write error logs into log file
 
 ## ping:
-* This directory includes ping route and that will be usefull for app helth check 
+* This directory includes ping route and that will be usefull for app health check 
 
 ## views
  * This directory contains all users view files.
@@ -115,14 +115,13 @@ Nest-Scaffolding
 * This file is used for initialize all module, service, and contoller.
 
 ## main.ts
-* This file is useful for initializ component based routing, modules,custom and default middlewares.
+* This file is useful for initialize component based routing, modules,custom and default middlewares.
 
 # test
- * This directory file inclued all test cases files.
+ * This directory file include all test cases files.
 
 # .gitignore
  * This file used for avoiding push unwanted code to github/svn.
-
 
 # package.json:
 * This file includes dependencies, devDependencies, scripts to run app, and more.
