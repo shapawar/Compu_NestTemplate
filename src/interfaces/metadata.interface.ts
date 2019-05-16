@@ -7,14 +7,14 @@ import { tasksData } from "./tasks.interface";
 * Defind res object interface
 */
 export interface apiResponse {
-    requestURL: String,
-    evUniqueID: String,
-    requestTS: number,
+    requestURL: string,
+    evUniqueID: string,
+    requestTS: string,
     elapsedTimeInMS: number,
-    apiServer: String,
-    apiBuildVersion: String,
+    apiServer: string,
+    apiBuildVersion: string,
     errCode: Number,
-    errMsg: String,
-    timestamp:String,
+    errMsg: string,
+    timestamp: string,
     tasks: Array<tasksData>
 }

@@ -4,8 +4,8 @@
 */
 export interface errorCodes {
     code: number,
-    message: String,
-    description: String,
-    type: String,
+    message: string,
+    description: string,
+    type: string,
     canOverrideMessage: Boolean
 }
