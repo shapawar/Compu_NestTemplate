@@ -1,5 +1,12 @@
+/* 
+* Nest & Third party imports
+*/
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
+
+/* 
+* custom imports
+*/
 import { AppModule } from './../src/app.module';
 
 
@@ -22,6 +29,7 @@ describe('AppController (e2e)', () => {
   //     .expect('Hello World!');
   // });
   
+  //ping unit test method
   it('/ping controller return json', () => {
     return request(app.getHttpServer())
       .get('/ping')
