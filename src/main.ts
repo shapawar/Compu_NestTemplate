@@ -39,7 +39,7 @@ async function bootstrap() {
     .setDescription('The Nest Js api description')
     .setVersion('1.0')
     .addTag('users')
-    .setBasePath('/v1')
+    .setBasePath(process.env.APIPATH)
     .build();
 
 

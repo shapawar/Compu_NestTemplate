@@ -1,7 +1,7 @@
 /* 
 * Nest & Third party imports
 */
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 
@@ -17,6 +17,8 @@ import { LogService } from './middleware/logger.middleware';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ErrorcodesModule } from './errorcodes/errorcodes.module';
+import { UsersController } from './devutils/users/users.controller';
+
 
 
 @Module({
@@ -46,7 +48,11 @@ export class AppModule implements NestModule {
       .apply(DefaultMiddleware)
       .forRoutes('*')
       .apply(AuthMiddleware)
-      .forRoutes('/users')
+      .exclude(
+        { path:'/users', method: RequestMethod.POST },
+        { path:'/users/login', method: RequestMethod.POST }
+        )
+      .forRoutes(UsersController)  
   }
 
 }

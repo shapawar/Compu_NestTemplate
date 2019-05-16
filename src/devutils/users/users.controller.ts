@@ -2,7 +2,7 @@
 /* 
 * Nest & Third party imports
 */
-import { Controller, Post, Res, Body, HttpStatus, Get, Param, Delete, Put, Req } from '@nestjs/common';
+import { Controller, Post, Res, Body, HttpStatus, Get, Param, Delete, Put, Req, HttpException } from '@nestjs/common';
 import { ApiUseTags, ApiOperation, ApiImplicitParam } from '@nestjs/swagger';
 import { validate } from 'class-validator';
 /* 
@@ -22,7 +22,7 @@ import { Repository } from 'typeorm';
 export class UsersController {
 
     MODULENAME = 'USERCONTROLLER';
-    constructor(private userService:UsersService){}
+    constructor(private userService: UsersService) { }
     //userService = new UsersService(new Repository);
     Logger = new LogService();
     appService = new AppService()
@@ -56,11 +56,11 @@ export class UsersController {
                     info: "Add user details"
                 }
 
-                const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Post has been submitted successfully!',req.metadata,task);
+                const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Post has been submitted successfully!', req.metadata, task);
                 const newPost = await this.userService.createUser(req.evUniqueID, userpostdto);
 
                 return res.status(HttpStatus.OK).json({
-                    metadata:usermetadata,
+                    metadata: usermetadata,
                     post: newPost,
                 });
             }
@@ -89,10 +89,10 @@ export class UsersController {
                 name: taskName,
                 info: "Get user list"
             }
-            const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Fetch User List successfully',req.metadata,task);
+            const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Fetch User List successfully', req.metadata, task);
             const userlist = await this.userService.getUserList(req.evUniqueID);
             return res.status(HttpStatus.OK).json({
-                metadata:usermetadata,
+                metadata: usermetadata,
                 list: userlist,
             });
 
@@ -121,10 +121,10 @@ export class UsersController {
                 info: "Get user list"
             }
 
-            const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Fetch user info successfully',req.metadata,task);
+            const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Fetch user info successfully', req.metadata, task);
             const user = await this.userService.getUser(req.evUniqueID, userID);
             return res.status(HttpStatus.OK).json({
-                metadata:usermetadata,
+                metadata: usermetadata,
                 UserDetails: user,
             })
         } catch (error) {
@@ -152,10 +152,10 @@ export class UsersController {
                 info: "Delete user according to user id"
             }
 
-            const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'User deleted successfully',req.metadata,task);
+            const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'User deleted successfully', req.metadata, task);
             const user = await this.userService.deleteUser(req.evUniqueID, userID);
             return res.status(HttpStatus.OK).json({
-                metadata:usermetadata,
+                metadata: usermetadata,
                 data: user
             });
         } catch (error) {
@@ -183,10 +183,10 @@ export class UsersController {
                 info: "Update the user details"
             }
 
-            const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'user has been updated successfully',req.metadata,task);
+            const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'user has been updated successfully', req.metadata, task);
             const editPost = await this.userService.editPost(req.evUniqueID, userPostDTO);
             return res.status(HttpStatus.OK).json({
-                metadata:usermetadata,
+                metadata: usermetadata,
                 details: editPost
             })
 
@@ -214,10 +214,10 @@ export class UsersController {
                 info: "Add user details"
             }
 
-            const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Post has been submitted successfully!',req.metadata,task);
+            const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Post has been submitted successfully!', req.metadata, task);
             const newPost = await this.userService.registerUsers(req.evUniqueID, userpostdto);
             return res.status(HttpStatus.OK).json({
-                metadata:usermetadata,
+                metadata: usermetadata,
                 post: newPost
             });
 
@@ -245,10 +245,10 @@ export class UsersController {
                 info: "Get user list"
             }
 
-            const usermetadata = this.appService.endMetaData(req.evUniqueID,0,'Fetch User List successfully',req.metadata,task);
+            const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Fetch User List successfully', req.metadata, task);
             const userlist = await this.userService.getUserData(req.evUniqueID);
             return res.status(HttpStatus.OK).json({
-                metadata:usermetadata,
+                metadata: usermetadata,
                 list: userlist
             })
 
@@ -261,5 +261,49 @@ export class UsersController {
 
     }
 
+    /* 
+    * Login check post and jwt creation
+    */
+    @Post('/login')
+    async loginPost(@Req() req, @Res() res, @Body() UserPostDTO: UserPostDTO) {
 
+        let taskName = "loginPost";
+
+        try {
+
+            this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME} )- ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
+
+            const postData = await this.userService.checkLogin(req.evUniqueID, UserPostDTO);
+
+            if (postData == undefined) {
+                const errors = { User: ' Invalid Credential try again' };
+                throw new HttpException({ errors }, 401);
+
+            } else {
+
+                const task = {
+                    name: taskName,
+                    info: "Check login post and create JWT token"
+                }
+                const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'User login successfully', req.metadata, task);
+
+                const token = await this.userService.generateJWT(req.evUniqueID,postData);
+
+                return res.status(HttpStatus.OK).json({
+                    metadata: usermetadata,
+                    jwtToken: token
+                });
+
+            }
+        } catch (error) {
+
+            this.Logger.error(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);
+            this.Logger.debug(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.stack}`);
+
+            throw error;
+
+        }
+    }
 }
+
+
