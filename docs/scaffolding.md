@@ -1,47 +1,59 @@
-## `Nest Scoffolding Structure for compumatrice's projects`
+## `Nest Scaffolding Structure for compumatrice's projects`
 
 ```
 Nest-Scaffolding
 ├── dbscript                   # DB scripts
-├── dist                       # Production deployment file
+├── dist                       # Application build file
     └── ...    
-├── docs                       # Docs files 
+├── docs                       # Include project related documentation files. 
+    ├── scaffolding.md          
+    └──  ... 
 ├── logs
     ├── all.logs.log           # Logging files
     └──  ... 
-├── secured                    # For security files       
-├── src                        # Typescript starter files
-    ├── devutils               # For DEV utility(Only for development)         
-        ├── users  
-            └── ...  
-    ├── errorcodes                 # For custom error codes and messages configuration      
+├── secured                    # Include security related files
+    ├── .env         
+    └──  ...        
+├── src                        # Application source files
+    ├── devutils               # For DEV utility(Only for development)           
+        └── ...  
+    ├── errorcodes                 # For custom error codes and messages configuration 
+        ├── errorcodes.controller.spec.ts
+        ├── errorcodes.controller.ts
+        ├── errorcodes.module.ts
+        ├── errorcodes.service.ts
+        ├── general.errorcodes.config.ts      
         └── ...        
     ├── interfaces                 # Interface files   
         ├──  metadata.interface.ts
         ├──  task.interface.ts
         └── ...
-    ├── middleware                 # Middleware files
+    ├── middleware                 # Include all middleware files required for application.
         ├── auth.middleware.ts 
         ├── default.middleware.ts 
         ├── errorhandler.middleware.ts 
         ├── logger.middleware.ts       
         └──  ...                                
     ├──  ping                       # Ping route for helth check
+        ├──  ping.controller.spec.ts
         ├──  ping.controller.ts  
         └── ... 
-    ├──  Views                      # View files
+    ├──  Views                      # HTML templates
         ├──  main.ejs 
         └── ... 
-    ├──  app.module.ts              # Parent file module
+    ├──  app.controller.spec.ts
+    ├──  app.controller.ts          # main contorller file
+    ├──  app.module.ts              # main module & shered file
+    ├──  app.service.ts             # main service file
     ├──  main.ts                    # Entry file 
     └── ...       
 ├── test                            # Test case files     
     └── ...
-├── .gitignore                      # Gitignore files
-├── package.json                    # package.json files
-├── README.md                       # README file
-├── tsconfig.json                   # tsconfig file 
-└── tslint.json                     # tslint file
+├── .gitignore                      # To ignore files we don't want to push into remote repository.
+├── package.json                    # This file includes project dependency & modules.
+├── README.md                       # Deatils information about getting started with appliction
+└── tsconfig.json                   # Configuration of the TypeScript compiler. 
+
 
 ```
 
@@ -49,22 +61,22 @@ Nest-Scaffolding
 
 
 # dbscript:
-* This dirctory used for store appilication tables query, functions, stored procedures, triggers function and more information about application database.
+* This dirctory used for store application tables query, functions, stored procedures, triggers function and more information about application database.
 
 # dist:
 * This directory includes all metadata of src file used for running on production level
 
 # docs:
-* This directory includes all docs file with .md extention and app design documentation.
+* This directory includes project related technical documentation files.
 
 # logs:
  * This file contains all auto generated log files by winston.
 
 # secured:
- * All security related stuff will go here.
+ * All security related files are store here.
 
 # src:
- * This directory contain all subdirectory that directory used for development purpose.
+ * This source directory includes all main application code. 
 
  ## devutils
  * This directory is used for implementing all bussiness logic purpose and used for development purpose to build and unit test block code quickly to minimize errors if any while developing main functionalities.
@@ -85,10 +97,10 @@ Nest-Scaffolding
 * This file is used for handle autehntication of user before processing any data/method.
 
 ### default.middleware.ts
-* This file is used for bind the value to api response data and execute br before processing any data/method.
+* This file is used for bind the value to api response data and execute before processing any data/method.
 
 ### error.middleware.ts
-* This file is used for handling custom error and system error generated  from thought out whole application.
+* This file is used for handling custom error and system error generated  from throw out whole application.
 
 ### logger.middleware.ts
 * This file is used for configuring all logger functionality that are used for prints log in console as well as write error logs into log file
@@ -114,5 +126,12 @@ Nest-Scaffolding
 
 # package.json:
 * This file includes dependencies, devDependencies, scripts to run app, and more.
+
+# tsconfig.json
+ * This file corresponds to the configuration of the TypeScript compiler.
+
+# tslint.json 
+ * This file is used to configure which rules get run and each of their options.
+
 
 
