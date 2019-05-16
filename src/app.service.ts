@@ -18,14 +18,9 @@ export class AppService {
   taskName = "AppService";
   MODULENAME = "AppService"
 
-  getHello(): string {
-    return 'Hello World!';
-
-  }
-
   /* Reasponse end metadata OBJ */
   endMetaData(evUniqueID, errCode, errMsg, metadata: apiResponse, task) {
-    
+
     let logger = new LogService();
     let errorService = new ErrorcodesService();
 
@@ -38,8 +33,8 @@ export class AppService {
       metadata.tasks[metadata.tasks.push({
         name: task.name,
         info: task.info,
-        startTS: Date.now(),
-        elapsedTimeInMS: this.endTask(Date.now())
+        startTS: moment().format(),
+        elapsedTimeInMS: moment(Date.now()).diff(task.elapsedTimeInMs, 'milliseconds')
       }) - 1];
 
       return metadata
@@ -51,9 +46,14 @@ export class AppService {
       throw error;
     }
   }
-  endTask(startTS) {
 
-    return moment(Date.now()).diff(startTS, 'milliseconds');
+  /**
+   * end task
+   * @param startTSInMs start time stamp in ms
+   */
+  endTask(startTSInMs) {
+
+    return moment(Date.now()).diff(startTSInMs, 'milliseconds');
 
   }
 

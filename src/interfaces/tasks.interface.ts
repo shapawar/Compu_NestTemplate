@@ -3,8 +3,8 @@
 * Defind task metadata interface
 */
 export interface tasksData {
-    name:String,
-    info:String,
-    startTS:Number,
-    elapsedTimeInMS:Number
+    name: string,
+    info: string,
+    startTS: string,
+    elapsedTimeInMS: Number
 }

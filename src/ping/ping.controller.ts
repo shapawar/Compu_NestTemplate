@@ -33,15 +33,12 @@ export class PingController {
 
         const task = {
             name: this.taskName,
-            info: "Ping controller executed"
+            info: "Ping controller executed",
+            elapsedTimeInMs: Date.now()
         }
 
-        let pingdata = this.appService.endMetaData(req.evUniqueID, 0, 'Submitted Successfully', req.metadata, task);
+        let pingdata = this.appService.endMetaData(req.evUniqueID, 0, "Submitted Successfully", req.metadata, task);
         return pingdata;
     }
 
-    @Get()
-    getHello(){
-        return this.appService.getHello();
-    }
 }

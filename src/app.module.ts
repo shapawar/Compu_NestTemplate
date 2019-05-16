@@ -26,7 +26,7 @@ import { UsersController } from './devutils/users/users.controller';
     type: 'postgres',
     port: 5432,
     username: 'postgres',
-    password: 'admin2518',
+    password: 'root',
     database: 'nestdapp',
     host: 'localhost',
     synchronize: true,
@@ -49,10 +49,10 @@ export class AppModule implements NestModule {
       .forRoutes('*')
       .apply(AuthMiddleware)
       .exclude(
-        { path:'/users', method: RequestMethod.POST },
-        { path:'/users/login', method: RequestMethod.POST }
-        )
-      .forRoutes(UsersController)  
+        { path: '/users', method: RequestMethod.POST },
+        { path: '/users/login', method: RequestMethod.POST }
+      )
+      .forRoutes(UsersController)
   }
 
 }

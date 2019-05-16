@@ -16,7 +16,7 @@ import { AppService } from '../../app.service';
 import { Repository } from 'typeorm';
 
 
-@ApiUseTags('users')
+@ApiUseTags('users(devutils)')
 // @ApiBearerAuth()
 @Controller('users')
 export class UsersController {
@@ -287,7 +287,7 @@ export class UsersController {
                 }
                 const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'User login successfully', req.metadata, task);
 
-                const token = await this.userService.generateJWT(req.evUniqueID,postData);
+                const token = await this.userService.generateJWT(req.evUniqueID, postData);
 
                 return res.status(HttpStatus.OK).json({
                     metadata: usermetadata,

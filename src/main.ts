@@ -3,7 +3,7 @@
 */
 
 import { NestFactory } from '@nestjs/core';
-import {ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import bodyParser = require('body-parser');
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
@@ -28,7 +28,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.use(bodyParser.json());
   app.enableCors();
-  app.setGlobalPrefix(process.env.APIPATH);
+  app.setGlobalPrefix(process.env.VERSION);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.useGlobalFilters(new ErrorFilter());
@@ -38,13 +38,13 @@ async function bootstrap() {
     .setTitle('Nest Js ')
     .setDescription('The Nest Js api description')
     .setVersion('1.0')
-    .addTag('users')
-    .setBasePath(process.env.APIPATH)
+    .addTag('users(devutils)')
+    .setBasePath(process.env.VERSION)
     .build();
 
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document); 
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(port);
   let Logger = new LogService();

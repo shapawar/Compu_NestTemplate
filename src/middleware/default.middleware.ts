@@ -7,6 +7,7 @@ import { Injectable, NestMiddleware, MiddlewareFunction, Logger } from '@nestjs/
 import { v4 as uuid } from 'uuid';
 import * as crypto from "crypto";
 import * as os from "os";
+import * as moment from "moment";
 
 /* 
 * custom imports
@@ -20,13 +21,10 @@ const callGUID: string = uuid();
 @Injectable()
 export class DefaultMiddleware implements NestMiddleware {
     apiResp = <apiResponse>{};
-    // constructor(private DefaultMiddleware: apiResponse) {
-
-    // }
 
     /**
- * Hash API server name
- */
+    * Hash API server name
+    */
     hashAPIServer() {
         try {
             const hash = crypto.createHash('sha256');
@@ -51,14 +49,14 @@ export class DefaultMiddleware implements NestMiddleware {
             this.apiResp.requestURL = req.originalUrl;
             this.apiResp.apiServer = this.hashAPIServer();
             this.apiResp.apiBuildVersion = process.env.npm_package_version || '--NOT AVAILABLE--';
-            this.apiResp.requestTS = Date.now();
+            this.apiResp.requestTS = moment().format();
             this.apiResp.elapsedTimeInMS = Date.now();
             this.apiResp.tasks = [];
 
             req.metadata = this.apiResp;
-            
+
             next();
-    
+
         };
     }
 }
