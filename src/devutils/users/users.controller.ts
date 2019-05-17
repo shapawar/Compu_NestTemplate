@@ -14,7 +14,6 @@ import { LogService } from '../../middleware/logger.middleware';
 import { userEntity } from './user.entity';
 import { AppService } from '../../app.service';
 
-
 @ApiUseTags('users(devutils)')
 @Controller('users')
 export class UsersController {
@@ -93,6 +92,11 @@ export class UsersController {
             }
             const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Fetch User List successfully', req.metadata, task);
             const userlist = await this.userService.getUserList(req.evUniqueID);
+            if(userlist == undefined){
+
+                throw new Error(`Users are not found plz try again !!!`);
+            }
+
             return res.status(HttpStatus.OK).json({
                 metadata: usermetadata,
                 list: userlist,
@@ -128,6 +132,12 @@ export class UsersController {
 
             const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Fetch user info successfully', req.metadata, task);
             const user = await this.userService.getUser(req.evUniqueID, userID);
+
+            if(user == undefined){
+
+                throw new Error(`Username is not found plz try again !!!`);
+            }
+
             return res.status(HttpStatus.OK).json({
                 metadata: usermetadata,
                 UserDetails: user,
@@ -163,6 +173,12 @@ export class UsersController {
 
             const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'User deleted successfully', req.metadata, task);
             const user = await this.userService.deleteUser(req.evUniqueID, userID);
+ 
+            if(user.affected == 0){
+
+                throw new Error(`Username is not found plz try again !!!`);
+            }
+
             return res.status(HttpStatus.OK).json({
                 metadata: usermetadata,
                 data: user
@@ -197,6 +213,11 @@ export class UsersController {
 
             const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'user has been updated successfully', req.metadata, task);
             const editPost = await this.userService.editPost(req.evUniqueID, userPostDTO);
+           
+            if(editPost == undefined){
+
+                throw new Error(`Username is not found plz try again !!!`);
+            }
             return res.status(HttpStatus.OK).json({
                 metadata: usermetadata,
                 details: editPost
@@ -264,6 +285,10 @@ export class UsersController {
 
             const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Fetch User List successfully', req.metadata, task);
             const userlist = await this.userService.getUserData(req.evUniqueID);
+            if(userlist == undefined){
+
+                throw new Error(`Users are not found plz try again !!!`);
+            }
             return res.status(HttpStatus.OK).json({
                 metadata: usermetadata,
                 list: userlist
@@ -307,7 +332,7 @@ export class UsersController {
                 const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'User login successfully', req.metadata, task);
 
                 const token = await this.userService.generateJWT(req.evUniqueID, postData);
-
+          
                 return res.status(HttpStatus.OK).json({
                     metadata: usermetadata,
                     jwtToken: token

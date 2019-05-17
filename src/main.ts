@@ -23,6 +23,7 @@ const port = process.env.PORT || 9001;
 async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
+  let Logger = new LogService();
 
   /* app initialisation */
   app.useGlobalPipes(new ValidationPipe());
@@ -37,19 +38,17 @@ async function bootstrap() {
   const options = new DocumentBuilder()
     .setTitle('Nest Js ')
     .setDescription('The Nest Js api description')
-    .setVersion('1.0')
+    .setVersion(process.env.SwaggerVersion)
     .addTag('users(devutils)')
     .addBearerAuth('Authorization', 'header', 'apiKey')
     .setBasePath(process.env.VERSION)
     .build();
 
-
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
 
   await app.listen(port);
-  let Logger = new LogService();
-
+  
   Logger.debug(`APIVERSION = ${process.env.APIVERSION}`);
   Logger.debug(`PORT = ${port}`);
   Logger.debug(`NODE_ENV = ${process.env.NODE_ENV}`);
