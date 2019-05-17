@@ -4,6 +4,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getManager } from 'typeorm';
+import * as crypt from 'crypto'
 const jwt = require('jsonwebtoken');
 
 /* 
@@ -189,35 +190,10 @@ export class UsersService {
     }
 
     /**
-     * Check user is present or not
-     * @param {*} evUniqueID req unique id
-     * @param {*} data is a req data
-     */
-    async checkLogin(evUniqueID, data) {
-        let taskName = 'checkLogin';
-
-        try {
-
-            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
-
-            const checkUser = await this.userRepository.findOne({ username: data.username, password: data.password });
-            return checkUser;
-
-        } catch (error) {
-
-            this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
-            this.Logger.error(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
-
-            throw error;
-        }
-
-    }
-
-      /**
-     * Genarate JWT Token
-     * @param {*} evUniqueID req unique id
-     * @param {*} data is user payload
-     */
+   * Genarate JWT Token
+   * @param {*} evUniqueID req unique id
+   * @param {*} data is user payload
+   */
     async generateJWT(evUniqueID, data) {
         let taskName = 'generateJWT';
 
@@ -225,14 +201,12 @@ export class UsersService {
 
             this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
 
-            let today = new Date();
-            let exp = new Date(today);
-            exp.setDate(today.getDate() + 60);
+            let jwtHeader = {
+                "alg": "HS256",
+                "typ": "JWT"
+            };
 
-            return jwt.sign({
-                username: data.username,
-                exp: exp.getTime() / 1000,
-            }, process.env.JWTSECRET);
+            return jwt.sign(data, process.env.JWTSECRET, { algorithm: 'HS256', header: jwtHeader });
 
         } catch (error) {
 
@@ -242,4 +216,65 @@ export class UsersService {
             throw error;
         }
     }
+
+    /**
+ * Manually generate JWT
+ * @param {String} evUniqueID EV unique ID
+ * @param {JSON} payload JWT payload
+ */
+    generateJWTManual(evUniqueID, payload) {
+
+        const taskName = 'generateJWTManual';
+
+        try {
+
+            let header = {
+                "alg": "HS256",
+                "typ": "JWT"
+            };
+            
+            // base64urlencode
+            const hdrEncoded = this.cleanUpJWTManual(evUniqueID, Buffer.from(JSON.stringify(header)).toString('base64'));
+
+            // const payEncoded = encodeURI(Buffer.from(payload).toString('base64'));
+            const payEncoded = this.cleanUpJWTManual(evUniqueID, Buffer.from(JSON.stringify(payload)).toString('base64'));
+
+            const combined = hdrEncoded + '.' + payEncoded;
+
+            // hash
+            const origSig = crypt.createHmac('sha256', process.env.JWTSECRET).update(combined).digest('base64');
+            const jwtSig = this.cleanUpJWTManual(evUniqueID, origSig);
+
+            return `${combined}.${jwtSig}`;
+        } catch (e) {
+            this.Logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${e.message}`);
+            this.Logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${e.stack}`);
+
+            throw e;
+        }
+    }
+
+    /**
+     * Clean up invalid Base64 chars to be used in JWT (for JWT generated manually)
+     * @param {String} evUniqueID EV unique ID
+     * @param {string} val Base64 JWT to clean up
+     */
+    cleanUpJWTManual(evUniqueID, val) {
+        const taskName = 'cleanUpJWT';
+
+        try {
+            val = val.replace(/\+/gi, '-');
+            val = val.replace(/\//gi, '_');
+            val = val.split('=')[0];
+
+            return val;
+        } catch (e) {
+            this.Logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${e.message}`);
+            this.Logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${e.stack}`);
+
+            throw e;
+        }
+    }
+
+
 }

@@ -46,15 +46,4 @@ export class AppService {
       throw error;
     }
   }
-
-  /**
-   * end task
-   * @param startTSInMs start time stamp in ms
-   */
-  endTask(startTSInMs) {
-
-    return moment(Date.now()).diff(startTSInMs, 'milliseconds');
-
-  }
-
 }

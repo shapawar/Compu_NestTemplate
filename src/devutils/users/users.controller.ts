@@ -16,13 +16,12 @@ import { userEntity } from './user.entity';
 import { AppService } from '../../app.service';
 
 @ApiUseTags('users(devutils)')
-@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
 
     MODULENAME = 'USERCONTROLLER';
     constructor(private userService: UsersService) { }
-    //userService = new UsersService(new Repository);
+
     Logger = new LogService();
     appService = new AppService()
 
@@ -52,7 +51,8 @@ export class UsersController {
             } else {
                 const task = {
                     name: taskName,
-                    info: "Add user details"
+                    info: "Add user details",
+                    elapsedTimeInMs: Date.now()
                 }
 
                 const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Post has been submitted successfully!', req.metadata, task);
@@ -78,6 +78,8 @@ export class UsersController {
     * fetch user list
     */
     @Get()
+    @ApiBearerAuth()
+    @ApiOperation({ title: 'Fetch user details' })
     async getUserList(@Req() req, @Res() res, ) {
         //throw new Error('Hello');
         let taskName = 'userList'
@@ -86,7 +88,8 @@ export class UsersController {
             this.Logger.debug(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - QueryData: ${"-"}`);
             const task = {
                 name: taskName,
-                info: "Get user list"
+                info: "Get user list",
+                elapsedTimeInMs: Date.now()
             }
             const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Fetch User List successfully', req.metadata, task);
             const userlist = await this.userService.getUserList(req.evUniqueID);
@@ -112,8 +115,10 @@ export class UsersController {
     /**
     *get user Details using userid
     */
-    @ApiImplicitParam({ name: 'userID' })
     @Get(':userID')
+    @ApiImplicitParam({ name: 'userID' })
+    @ApiBearerAuth()
+    @ApiOperation({ title: 'Fetch user details according to username' })
     async getUser(@Req() req, @Res() res, @Param('userID') userID) {
         let taskName = 'getUser';
 
@@ -122,7 +127,8 @@ export class UsersController {
 
             const task = {
                 name: taskName,
-                info: "Get user list"
+                info: "Get user list",
+                elapsedTimeInMs: Date.now()
             }
 
             const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Fetch user info successfully', req.metadata, task);
@@ -152,6 +158,9 @@ export class UsersController {
     * delete user using username
     */
     @Delete(':userID')
+    @ApiImplicitParam({ name: 'userID' })
+    @ApiOperation({ title: 'Delete user using username' })
+    @ApiBearerAuth()
     async deleteUser(@Req() req, @Res() res, @Param('userID') userID) {
         let taskName = 'deleteUser';
 
@@ -159,7 +168,8 @@ export class UsersController {
             this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME}) - ${taskName} - QueryData: ${userID}`);
             const task = {
                 name: taskName,
-                info: "Delete user according to user id"
+                info: "Delete user according to user id",
+                elapsedTimeInMs: Date.now()
             }
 
             const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'User deleted successfully', req.metadata, task);
@@ -188,6 +198,8 @@ export class UsersController {
     * update user adress user
     */
     @Put()
+    @ApiBearerAuth()
+    @ApiOperation({ title: 'Update user details by username'})
     async updateUser(@Req() req, @Res() res, @Body() userPostDTO: UserPostDTO) {
         let taskName = 'updateUser'
 
@@ -196,7 +208,8 @@ export class UsersController {
 
             const task = {
                 name: taskName,
-                info: "Update the user details"
+                info: "Update the user details",
+                elapsedTimeInMs: Date.now()
             }
 
             const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'user has been updated successfully', req.metadata, task);
@@ -224,6 +237,7 @@ export class UsersController {
     * create user using without TypeOrm(manually)
     */
     @Post('/noorm')
+    @ApiOperation({ title: 'Create users'})
     async addPosts(@Res() res, @Req() req, @Body() userpostdto: UserPostDTO) {
         let taskName = "registerUser";
 
@@ -232,7 +246,8 @@ export class UsersController {
 
             const task = {
                 name: taskName,
-                info: "Add user details"
+                info: "Add user details",
+                elapsedTimeInMs: Date.now()
             }
 
             const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Post has been submitted successfully!', req.metadata, task);
@@ -255,6 +270,8 @@ export class UsersController {
     * Get user list
     */
     @Get('/noorm/getlist')
+    @ApiBearerAuth()
+    @ApiOperation({ title: 'Fetch user details'})
     async getUserLists(@Req() req, @Res() res) {
         let taskName = "getUserLists";
 
@@ -263,7 +280,8 @@ export class UsersController {
 
             const task = {
                 name: taskName,
-                info: "Get user list"
+                info: "Get user list",
+                elapsedTimeInMs: Date.now()
             }
 
             const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'Fetch User List successfully', req.metadata, task);
@@ -284,50 +302,6 @@ export class UsersController {
             throw error;
         }
 
-    }
-
-    /* 
-    * Login check post and jwt creation
-    */
-    @Post('/login')
-    async loginPost(@Req() req, @Res() res, @Body() UserPostDTO: UserPostDTO) {
-
-        let taskName = "loginPost";
-
-        try {
-
-            this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME} )- ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
-
-            const postData = await this.userService.checkLogin(req.evUniqueID, UserPostDTO);
-
-            if (postData == undefined) {
-                const errors = { User: ' Invalid Credential try again' };
-                throw new HttpException({ errors }, 401);
-
-            } else {
-
-                const task = {
-                    name: taskName,
-                    info: "Check login post and create JWT token"
-                }
-                const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'User login successfully', req.metadata, task);
-
-                const token = await this.userService.generateJWT(req.evUniqueID, postData);
-          
-                return res.status(HttpStatus.OK).json({
-                    metadata: usermetadata,
-                    jwtToken: token
-                });
-
-            }
-        } catch (error) {
-
-            this.Logger.error(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);
-            this.Logger.debug(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.stack}`);
-
-            throw error;
-
-        }
     }
 }
 

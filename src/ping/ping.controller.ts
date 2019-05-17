@@ -29,16 +29,29 @@ export class PingController {
     @HttpCode(200)
     ping(@Req() req) {
 
-        this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-${this.taskName}`);
+        try {
 
-        const task = {
-            name: this.taskName,
-            info: "Ping controller executed",
-            elapsedTimeInMs: Date.now()
+            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-${this.taskName}`);
+
+            const task = {
+                name: this.taskName,
+                info: "Ping controller executed",
+                elapsedTimeInMs: Date.now()
+            }
+    
+            let pingdata = this.appService.endMetaData(req.evUniqueID, 0, "Submitted Successfully", req.metadata, task);
+            
+            return pingdata;
+
+        } catch (error) {
+            
+            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${this.taskName})- ${error.stack}`);
+            this.logger.error(`[${req.evUniqueID}](${this.MODULENAME})-(${this.taskName})- ${error.message}`);
+
+            throw error;
+
         }
-
-        let pingdata = this.appService.endMetaData(req.evUniqueID, 0, "Submitted Successfully", req.metadata, task);
-        return pingdata;
+       
     }
 
 }
