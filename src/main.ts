@@ -40,13 +40,12 @@ async function bootstrap() {
     .setTitle('Nest Js ')
     .setDescription('The Nest Js api description')
     .setVersion(process.env.SwaggerVersion)
-    .addTag('users(devutils)')
     .addBearerAuth('Authorization', 'header', 'apiKey')
     .setBasePath(process.env.VERSION)
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('docs', app, document);
 
   await app.listen(port);
   

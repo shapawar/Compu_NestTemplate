@@ -39,7 +39,7 @@ export class PingController {
                 elapsedTimeInMs: Date.now()
             }
     
-            let pingdata = this.appService.endMetaData(req.evUniqueID, 0, "Submitted Successfully", req.metadata, task);
+            let pingdata = this.appService.endMetaData(req.evUniqueID, 0, "Executed Successfully", req.metadata, task);
             
             return pingdata;
 
