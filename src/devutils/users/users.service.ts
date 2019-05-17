@@ -227,6 +227,7 @@ export class UsersService {
         const taskName = 'generateJWTManual';
 
         try {
+            this.Logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${JSON.stringify(payload)}`);
 
             let header = {
                 "alg": "HS256",
@@ -246,11 +247,12 @@ export class UsersService {
             const jwtSig = this.cleanUpJWTManual(evUniqueID, origSig);
 
             return `${combined}.${jwtSig}`;
-        } catch (e) {
-            this.Logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${e.message}`);
-            this.Logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${e.stack}`);
+        } catch (error) {
 
-            throw e;
+            this.Logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.message}`);
+            this.Logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.stack}`);
+
+            throw error;
         }
     }
 
@@ -263,6 +265,8 @@ export class UsersService {
         const taskName = 'cleanUpJWT';
 
         try {
+            this.Logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${val}`);
+
             val = val.replace(/\+/gi, '-');
             val = val.replace(/\//gi, '_');
             val = val.split('=')[0];

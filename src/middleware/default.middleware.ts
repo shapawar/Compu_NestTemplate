@@ -38,12 +38,12 @@ export class DefaultMiddleware implements NestMiddleware {
 
             return hash.digest('base64');
 
-        } catch (e) {
+        } catch (error) {
 
-            logger.error(`[${hash.digest('base64')}] ${this.MODULENAME} (${taskName}): ${JSON.stringify(e.message)}`);
-            logger.debug(`[${hash.digest('base64')}] ${this.MODULENAME} (${taskName}): ${JSON.stringify(e.message)}`);
+            logger.error(`[${hash.digest('base64')}] ${this.MODULENAME} (${taskName}): ${JSON.stringify(error.message)}`);
+            logger.debug(`[${hash.digest('base64')}] ${this.MODULENAME} (${taskName}): ${JSON.stringify(error.message)}`);
 
-            throw e;
+            throw error;
         }
     };
 
