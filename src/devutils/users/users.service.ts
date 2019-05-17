@@ -197,7 +197,7 @@ export class UsersService {
         let taskName = 'checkLogin';
 
         try {
-            
+
             this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
 
             const checkUser = await this.userRepository.findOne({ username: data.username, password: data.password });
