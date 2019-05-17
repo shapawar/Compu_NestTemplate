@@ -22,11 +22,15 @@ import { UsersController } from './devutils/users/users.controller';
 
 
 @Module({
+  
+  /* 
+  *  Database connection configuration
+  */
   imports: [UsersModule, TypeOrmModule.forRoot({
     type: 'postgres',
     port: 5432,
     username: 'postgres',
-    password: 'root',
+    password: 'admin2518',
     database: 'nestdapp',
     host: 'localhost',
     synchronize: true,
