@@ -41,8 +41,8 @@ export class AppService {
 
     } catch (error) {
 
-      logger.error(`[${evUniqueID}](${this.MODULENAME})-${this.taskName}`);
-      logger.debug(`[${evUniqueID}](${this.MODULENAME})-${this.taskName}`);
+      logger.error(`[${evUniqueID}](${this.MODULENAME})-${this.taskName}-${error.message}`);
+      logger.debug(`[${evUniqueID}](${this.MODULENAME})-${this.taskName}-${error.stack}`);
       throw error;
     }
   }

@@ -47,8 +47,8 @@ export class ErrorFilter implements ExceptionFilter {
  
       if (request.url == "/favicon.ico") {
   
-        this.logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${JSON.stringify(error.message)}`);
-        this.logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${JSON.stringify(error.message)}`);
+        this.logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
+        this.logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.stack}`);
         return;
   
       }
@@ -57,7 +57,7 @@ export class ErrorFilter implements ExceptionFilter {
       request.metadata.errCode = 1;
       request.timestamp = new Date().toISOString();
       this.logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
-      this.logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
+      this.logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.stack}`);
   
       const task = {
         name: this.taskName,
@@ -69,8 +69,8 @@ export class ErrorFilter implements ExceptionFilter {
   
     }catch (error) {
 
-      this.logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${JSON.stringify(error.message)}`);
-      this.logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${JSON.stringify(error.message)}`);
+      this.logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
+      this.logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.stack}`);
  
     }
 
