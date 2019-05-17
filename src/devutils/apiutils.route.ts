@@ -9,6 +9,7 @@ import { Repository } from "typeorm";
 */
 import { LogService } from '../middleware/logger.middleware';
 import { UsersService } from "./users/users.service";
+import { ApiExcludeEndpoint } from "@nestjs/swagger";
 
 //Module name
 const MODULENAME = "ApiUtils";
@@ -21,6 +22,7 @@ export class ApiUtils {
     userService = new UsersService(new Repository);
 
     @Get()
+    @ApiExcludeEndpoint()
     authToken(@Req() req, @Res() res) {
 
         let taskname = "Auth token get method";
@@ -57,6 +59,7 @@ export class ApiUtils {
     }
 
     @Post()
+    @ApiExcludeEndpoint()
     async encodeJWT(@Req() req, @Res() res) {
 
         let taskName = "Auth token encode method";

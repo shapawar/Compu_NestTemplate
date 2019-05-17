@@ -3,7 +3,7 @@
 * Nest & Third party imports
 */
 import { Controller, Post, Res, Body, HttpStatus, Get, Param, Delete, Put, Req, HttpException } from '@nestjs/common';
-import { ApiUseTags, ApiOperation, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiUseTags, ApiOperation, ApiImplicitParam, ApiBearerAuth, ApiExcludeEndpoint } from '@nestjs/swagger';
 import { validate } from 'class-validator';
 
 /* 
@@ -15,7 +15,7 @@ import { LogService } from '../../middleware/logger.middleware';
 import { userEntity } from './user.entity';
 import { AppService } from '../../app.service';
 
-@ApiUseTags('users(devutils)')
+
 @Controller('users')
 export class UsersController {
 
@@ -30,6 +30,7 @@ export class UsersController {
     */
     @Post()
     @ApiOperation({ title: 'Create Users' })
+    @ApiExcludeEndpoint()
     async addPost(@Req() req, @Res() res, @Body() userpostdto: UserPostDTO) {
         let taskName = 'createUser'
         try {
@@ -79,6 +80,7 @@ export class UsersController {
     */
     @Get()
     @ApiBearerAuth()
+    @ApiExcludeEndpoint()
     @ApiOperation({ title: 'Fetch user details' })
     async getUserList(@Req() req, @Res() res, ) {
         //throw new Error('Hello');
@@ -118,6 +120,7 @@ export class UsersController {
     @Get(':userID')
     @ApiImplicitParam({ name: 'userID' })
     @ApiBearerAuth()
+    @ApiExcludeEndpoint()
     @ApiOperation({ title: 'Fetch user details according to username' })
     async getUser(@Req() req, @Res() res, @Param('userID') userID) {
         let taskName = 'getUser';
@@ -161,6 +164,7 @@ export class UsersController {
     @ApiImplicitParam({ name: 'userID' })
     @ApiOperation({ title: 'Delete user using username' })
     @ApiBearerAuth()
+    @ApiExcludeEndpoint()
     async deleteUser(@Req() req, @Res() res, @Param('userID') userID) {
         let taskName = 'deleteUser';
 
@@ -199,6 +203,7 @@ export class UsersController {
     */
     @Put()
     @ApiBearerAuth()
+    @ApiExcludeEndpoint()
     @ApiOperation({ title: 'Update user details by username'})
     async updateUser(@Req() req, @Res() res, @Body() userPostDTO: UserPostDTO) {
         let taskName = 'updateUser'
@@ -238,6 +243,7 @@ export class UsersController {
     */
     @Post('/noorm')
     @ApiOperation({ title: 'Create users'})
+    @ApiExcludeEndpoint()
     async addPosts(@Res() res, @Req() req, @Body() userpostdto: UserPostDTO) {
         let taskName = "registerUser";
 
@@ -271,6 +277,7 @@ export class UsersController {
     */
     @Get('/noorm/getlist')
     @ApiBearerAuth()
+    @ApiExcludeEndpoint()
     @ApiOperation({ title: 'Fetch user details'})
     async getUserLists(@Req() req, @Res() res) {
         let taskName = "getUserLists";
