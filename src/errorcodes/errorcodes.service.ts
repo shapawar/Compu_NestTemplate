@@ -66,7 +66,7 @@ export class ErrorcodesService {
 
         } catch (error) {
 
-            logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${this.taskName}): ${error.message}`);
+            logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${this.taskName}): ${error.stack}`);
             logger.error(`[${evUniqueID}] ${this.MODULENAME}(${this.taskName}): ${error.message}`);
 
             return { "code": 1, "message": 'Internal Error', "description": error.message, "type": 'ERROR', "canOverrideMessage": false };

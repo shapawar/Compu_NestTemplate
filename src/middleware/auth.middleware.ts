@@ -57,8 +57,8 @@ export class AuthMiddleware implements NestMiddleware {
 
       } catch (error) {
         //add error logs here
-        logger.error(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${JSON.stringify(error.message)}`);
-        logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${JSON.stringify(error.message)}`);
+        logger.error(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
+        logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
 
         next(error);
       }

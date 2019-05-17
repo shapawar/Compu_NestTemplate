@@ -3,7 +3,7 @@
  * Nest and Third party imports
  */
 
-import { Injectable, NestMiddleware, MiddlewareFunction, Logger } from '@nestjs/common';
+import { Injectable, NestMiddleware, MiddlewareFunction } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import * as crypto from "crypto";
 import * as os from "os";
@@ -40,8 +40,8 @@ export class DefaultMiddleware implements NestMiddleware {
 
         } catch (error) {
 
-            logger.error(`[${hash.digest('base64')}] ${this.MODULENAME} (${taskName}): ${JSON.stringify(error.message)}`);
-            logger.debug(`[${hash.digest('base64')}] ${this.MODULENAME} (${taskName}): ${JSON.stringify(error.message)}`);
+            logger.error(`[${hash.digest('base64')}] ${this.MODULENAME} (${taskName}): ${error.message}`);
+            logger.debug(`[${hash.digest('base64')}] ${this.MODULENAME} (${taskName}): ${error.stack}`);
 
             throw error;
         }
@@ -74,8 +74,8 @@ export class DefaultMiddleware implements NestMiddleware {
 
             } catch (error) {
 
-                logger.error(`[${ req.evUniqueID }] ${this.MODULENAME} (${taskName}): ${JSON.stringify(error.message)}`);
-                logger.debug(`[${ req.evUniqueID }] ${this.MODULENAME} (${taskName}): ${JSON.stringify(error.message)}`);
+                logger.error(`[${ req.evUniqueID }] ${this.MODULENAME} (${taskName}): ${error.message}`);
+                logger.debug(`[${ req.evUniqueID }] ${this.MODULENAME} (${taskName}): ${error.stack}`);
 
                 throw error;
             }

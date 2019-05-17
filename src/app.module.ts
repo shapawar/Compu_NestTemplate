@@ -31,7 +31,7 @@ import { ApiUtils } from './devutils/apiutils.route';
     type: 'postgres',
     port: 5432,
     username: 'postgres',
-    password: 'root',
+    password: 'admin2518',
     database: 'nestdapp',
     host: 'localhost',
     synchronize: true,
