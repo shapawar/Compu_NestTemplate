@@ -225,14 +225,16 @@ export class UsersService {
 
             this.Logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
 
-            let today = new Date();
-            let exp = new Date(today);
-            exp.setDate(today.getDate() + 60);
-
-            return jwt.sign({
-                username: data.username,
-                exp: exp.getTime() / 1000,
-            }, process.env.JWTSECRET);
+            let jwtHeader = {
+                "alg": "HS256",
+                "typ": "JWT"
+            };
+            
+            // let today = new Date();
+            // let exp = new Date(today);
+            // exp.setDate(today.getDate() + 60);
+            
+            return jwt.sign(data, process.env.JWTSECRET, { algorithm: 'HS256', header: jwtHeader });
 
         } catch (error) {
 

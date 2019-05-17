@@ -18,6 +18,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ErrorcodesModule } from './errorcodes/errorcodes.module';
 import { UsersController } from './devutils/users/users.controller';
+import { ApiUtils } from './devutils/apiutils.route';
 
 
 
@@ -32,7 +33,7 @@ import { UsersController } from './devutils/users/users.controller';
     synchronize: true,
     entities: [userEntity]
   }), ErrorcodesModule],
-  controllers: [PingController, AppController],
+  controllers: [PingController, AppController,ApiUtils],
   providers: [LogService, AppService],
   exports: [LogService]
 })
@@ -50,7 +51,8 @@ export class AppModule implements NestModule {
       .apply(AuthMiddleware)
       .exclude(
         { path: '/users', method: RequestMethod.POST },
-        { path: '/users/login', method: RequestMethod.POST }
+        { path: '/users/login', method: RequestMethod.POST },
+        { path: '/users/noorm', method: RequestMethod.POST }
       )
       .forRoutes(UsersController)
   }
