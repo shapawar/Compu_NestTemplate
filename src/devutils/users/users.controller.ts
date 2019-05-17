@@ -302,52 +302,6 @@ export class UsersController {
         }
 
     }
-
-    /* 
-    * Login check post and jwt creation
-    */
-    @Post('/login')
-    @ApiOperation({ title: 'Get the token from username and password'})
-    async loginPost(@Req() req, @Res() res, @Body() UserPostDTO: UserPostDTO) {
-
-        let taskName = "loginPost";
-
-        try {
-
-            this.Logger.debug(`[${req.evUniqueID}](${this.MODULENAME} )- ${taskName} - QueryData: ${JSON.stringify(req.body)}`);
-
-            const postData = await this.userService.checkLogin(req.evUniqueID, UserPostDTO);
-
-            if (postData == undefined) {
-                const errors = { User: ' Invalid Credential try again' };
-                throw new HttpException({ errors }, 401);
-
-            } else {
-
-                const task = {
-                    name: taskName,
-                    info: "Check login post and create JWT token",
-                    elapsedTimeInMs: Date.now()
-                }
-                const usermetadata = this.appService.endMetaData(req.evUniqueID, 0, 'User login successfully', req.metadata, task);
-
-                const token = await this.userService.generateJWT(req.evUniqueID, postData);
-          
-                return res.status(HttpStatus.OK).json({
-                    metadata: usermetadata,
-                    jwtToken: token
-                });
-
-            }
-        } catch (error) {
-
-            this.Logger.error(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.message}`);
-            this.Logger.debug(`[${req.evUniqueID}]( ${this.MODULENAME}) - ${taskName} - ErrorMessage: ${error.stack}`);
-
-            throw error;
-
-        }
-    }
 }
 
 

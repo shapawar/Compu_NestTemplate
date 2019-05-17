@@ -70,8 +70,8 @@ export class ApiUtils {
                 "username": req.body.username,
                 "exp": req.body.exp,
                 "iat": req.body.iat,
-                "useJWT":'',
-                "jwt": req.body.jwt,
+                "useJWT":req.body.useJWT ? 'CHECKED' : '',
+                "jwt":req.body.jwt,
                 "errMsg": ''
             };
 
@@ -93,8 +93,12 @@ export class ApiUtils {
             jwtPayload.exp = Math.floor(exp.getTime() / 1000);
             jwtPayload.iat = Math.floor(iat.getTime() / 1000);
             
-            data.jwt = await this.userService.generateJWT(req.evUniqueID, jwtPayload);
-            
+            if (data.useJWT === 'CHECKED') {
+                data.jwt = await this.userService.generateJWT(req.evUniqueID, jwtPayload);
+            } else {
+                data.jwt = await this.userService.generateJWTManual(req.evUniqueID, jwtPayload);
+            }
+           
             res.render('auth-token', { data: data })
 
         } catch (error) {
