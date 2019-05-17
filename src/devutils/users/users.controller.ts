@@ -3,7 +3,7 @@
 * Nest & Third party imports
 */
 import { Controller, Post, Res, Body, HttpStatus, Get, Param, Delete, Put, Req, HttpException } from '@nestjs/common';
-import { ApiUseTags, ApiOperation, ApiImplicitParam } from '@nestjs/swagger';
+import { ApiUseTags, ApiOperation, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
 import { validate } from 'class-validator';
 /* 
 * Custome imports
@@ -14,10 +14,8 @@ import { LogService } from '../../middleware/logger.middleware';
 import { userEntity } from './user.entity';
 import { AppService } from '../../app.service';
 
-
-
 @ApiUseTags('users(devutils)')
-// @ApiBearerAuth()
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
 
