@@ -37,11 +37,11 @@ import { APP_FILTER } from '@nestjs/core';
     entities: [userEntity]
   }), ErrorcodesModule],
   controllers: [PingController, AppController, ApiUtils],
-  providers: [LogService, AppService, ErrorcodesService, ErrorFilter,  {
+  providers: [LogService, AppService, ErrorcodesService, {
     provide: APP_FILTER,
     useClass: ErrorFilter,
-  },],
-  exports: [LogService, AppService, ErrorcodesService, ErrorFilter]
+  }],
+  exports: [LogService, AppService, ErrorcodesService]
 })
 
 /* 

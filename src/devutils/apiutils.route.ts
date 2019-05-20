@@ -7,8 +7,8 @@ import { Get, Req, Res, Controller, Post } from "@nestjs/common";
 *Custom imports
 */
 import { LogService } from '../service/logger.service';
-import { UsersService } from "./users/users.service";
 import { ApiExcludeEndpoint } from "@nestjs/swagger";
+import { AppService } from "src/service/app.service";
 
 
 @Controller('/apiutils/auth-token')
@@ -17,7 +17,7 @@ export class ApiUtils {
     //Module name
     MODULENAME = "ApiUtils";
 
-    constructor(private logger:LogService, private userService:UsersService){}
+    constructor(private logger:LogService, private appService:AppService){}
 
     @Get()
     @ApiExcludeEndpoint()
@@ -95,9 +95,9 @@ export class ApiUtils {
             jwtPayload.iat = Math.floor(iat.getTime() / 1000);
 
             if (data.useJWT === 'CHECKED') {
-                data.jwt = await this.userService.generateJWT(req.evUniqueID, jwtPayload);
+                data.jwt = await this.appService.generateJWT(req.evUniqueID, jwtPayload);
             } else {
-                data.jwt = await this.userService.generateJWTManual(req.evUniqueID, jwtPayload);
+                data.jwt = await this.appService.generateJWTManual(req.evUniqueID, jwtPayload);
             }
 
             res.render('auth-token', { data: data })

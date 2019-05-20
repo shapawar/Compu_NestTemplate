@@ -27,6 +27,9 @@ export class ErrorcodesService {
         const taskName = "getErrorInformation";
 
         try {
+
+            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName})`);
+
             let errorData = this.generalcodes.ErrorCodes
 
             // convert to int just in case errCode is not
@@ -34,7 +37,6 @@ export class ErrorcodesService {
 
             // get error info
             const filtered = errorData.filter((item) => {
-                // console.log("===",filtered);
                 return (item.code === eCode);
             });
 
@@ -72,5 +74,4 @@ export class ErrorcodesService {
             throw error;
         }
     }
-
 }

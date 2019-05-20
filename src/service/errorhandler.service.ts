@@ -60,7 +60,8 @@ export class ErrorFilter implements ExceptionFilter {
 
       const task = {
         name: this.taskName,
-        info: error.stack
+        info: error.stack,
+        elapsedTimeInMs: Date.now()
       }
 
       let responseobj = await this.appService.endMetaData(this.request.evUniqueID, this.request.metadata.errCode, error.message, this.request.metadata, task);
