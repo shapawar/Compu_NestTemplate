@@ -10,7 +10,9 @@ import { GeneralCodes } from './general.errocodes.config';
 import { errorCodes } from '../interfaces/errorcode.interface';
 import { LogService } from '../service/logger.service';
 
-
+/* 
+* Error codes service
+*/
 @Injectable()
 export class ErrorcodesService {
     MODULENAME = "ErrorcodesService";
@@ -27,6 +29,8 @@ export class ErrorcodesService {
         const taskName = "getErrorInformation";
 
         try {
+             this.logger.debug(`[${evUniqueID}]-${this.MODULENAME} (${taskName})`);
+
             let errorData = this.generalcodes.ErrorCodes
 
             // convert to int just in case errCode is not
@@ -59,6 +63,9 @@ export class ErrorcodesService {
                 return errInfo;
 
             } else {
+
+                this.logger.debug(`[${evUniqueID}]-${this.MODULENAME} (${taskName})- Unknown error code`);
+                this.logger.error(`[${evUniqueID}]-${this.MODULENAME} (${taskName})- Unknown error code`);
 
                 throw new Error(`Unknown error code: ${errCode}`);
 

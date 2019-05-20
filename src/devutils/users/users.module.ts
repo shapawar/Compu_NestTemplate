@@ -1,7 +1,6 @@
 /* 
 * Nest & Third party imports
 */
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 

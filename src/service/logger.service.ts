@@ -1,4 +1,3 @@
-
 /**
  * Nest and Third party imports
  */
@@ -17,6 +16,7 @@ export enum LogLevel { INFO = 'info', WARN = 'warn', ERROR = 'error', DEBUG = 'd
  */
 @Injectable()
 export class LogService {
+    
     private readonly logger: Logger;
     private contextName: string = 'NEST JS Logs';
 

@@ -5,16 +5,13 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import * as bodyParser from 'body-parser';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+require('dotenv').config({ "path": './secured/.env' });
 
 /* 
 * custom imports
 */
 import { AppModule } from './app.module';
-require('dotenv').config({ "path": './secured/.env' });
-import { ErrorFilter } from './service/errorhandler.service';
 import { LogService } from './service/logger.service';
-import { AppService } from './service/app.service';
-
 
 /* Define port */
 const port = process.env.PORT || 9001;

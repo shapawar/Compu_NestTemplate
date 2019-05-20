@@ -1,17 +1,18 @@
-
 /**
  * Nest and Third party imports
  */
 import { NestMiddleware, Injectable, MiddlewareFunction } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
-import { LogService } from 'src/service/logger.service';
 
+/* 
+* Custom imports
+*/
+import { LogService } from '../service/logger.service';
 
 /* 
 * JWT Authentication middleware
 */
 @Injectable()
-
 export class AuthMiddleware implements NestMiddleware {
   MODULENAME = 'AuthMiddleware';
 

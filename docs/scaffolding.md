@@ -30,21 +30,24 @@ Nest-Scaffolding
         └── ...
     ├── middleware                 # Include all middleware files required for application.
         ├── auth.middleware.ts 
-        ├── default.middleware.ts 
-        ├── errorhandler.middleware.ts 
-        ├── logger.middleware.ts       
-        └──  ...                                
+        ├── default.middleware.ts      
+        └──  ...                                    
     ├──  ping                       # Ping route for helth check
         ├──  ping.controller.spec.ts
         ├──  ping.controller.ts  
-        └── ... 
+        └── ...                    
+    ├──  service                     # service provided files are contains in this directory
+        ├──  app.service.ts             
+        ├── errorhandler.middleware.ts 
+        ├── logger.middleware.ts  
+        └── ...
     ├──  Views                      # HTML templates
         ├──  main.ejs 
         └── ... 
     ├──  app.controller.spec.ts
     ├──  app.controller.ts          # main contorller file
     ├──  app.module.ts              # main module & shared file
-    ├──  app.service.ts             # main service file
+    
     ├──  main.ts                    # Entry file 
     └── ...       
 ├── test                            # Test case files     
@@ -99,14 +102,20 @@ Nest-Scaffolding
 ### default.middleware.ts
 * This file is used for bind the value to api response data and execute before processing any data/method.
 
-### error.middleware.ts
-* This file is used for handling custom error and system error generated  from throw out whole application.
-
-### logger.middleware.ts
-* This file is used for configuring all logger functionality that are used for prints log in console as well as write error logs into log file
-
 ## ping:
 * This directory includes ping route and that will be usefull for app health check 
+
+## Service
+ * Whole application service provided files are contains in this directory
+
+### app.service.ts
+* Metadata task object is createed here using mehods and bind into response object metadata. 
+
+### error.service.ts
+* This file is used for handling custom error and system error generated  from throw out whole application.
+
+### logger.service.ts
+* This file is used for configuring all logger functionality that are used for prints log in console as well as write error logs into log file
 
 ## views
  * This directory contains all users view files.

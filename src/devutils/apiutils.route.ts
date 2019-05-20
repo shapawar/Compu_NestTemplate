@@ -10,7 +10,9 @@ import { LogService } from '../service/logger.service';
 import { UsersService } from "./users/users.service";
 import { ApiExcludeEndpoint } from "@nestjs/swagger";
 
-
+/* 
+* ApiUtils controller
+*/
 @Controller('/apiutils/auth-token')
 export class ApiUtils {
 
@@ -19,6 +21,11 @@ export class ApiUtils {
 
     constructor(private logger:LogService, private userService:UsersService){}
 
+    /**
+     * 
+     * @param req 
+     * @param res = render on html template
+     */
     @Get()
     @ApiExcludeEndpoint()
     authToken(@Req() req, @Res() res) {
@@ -56,6 +63,11 @@ export class ApiUtils {
         }
     }
 
+    /**
+     * 
+     * @param req = get user payload data
+     * @param res = send jwt token
+     */
     @Post()
     @ApiExcludeEndpoint()
     async encodeJWT(@Req() req, @Res() res) {

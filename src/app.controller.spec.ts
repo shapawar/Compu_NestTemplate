@@ -18,8 +18,6 @@ describe('AppController', () => {
             controllers: [AppController],
             providers: [AppService],
         }).compile();
-
-
     });
 
 });

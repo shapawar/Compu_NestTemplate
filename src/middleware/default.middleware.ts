@@ -1,8 +1,6 @@
-
-/**
+/*
  * Nest and Third party imports
  */
-
 import { Injectable, NestMiddleware, MiddlewareFunction } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import * as crypto from "crypto";
@@ -16,7 +14,7 @@ import { apiResponse } from 'src/interfaces/metadata.interface';
 import { LogService } from 'src/service/logger.service';
 
 
-
+/* Default middleware */
 @Injectable()
 export class DefaultMiddleware implements NestMiddleware {
     MODULENAME = "DefaultMiddleware";

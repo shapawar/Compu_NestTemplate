@@ -1,16 +1,13 @@
 /* 
 * Nest & Third party imports
 */
-import { Controller, Get, HttpCode, Req, Res, UseFilters } from '@nestjs/common';
+import { Controller, Get, Req, Res } from '@nestjs/common';
 
 /* 
 * Custome imports
 */
 import { AppService } from '../service/app.service';
 import { LogService } from 'src/service/logger.service';
-
-
-
 
 /* 
 * Ping route for helth check

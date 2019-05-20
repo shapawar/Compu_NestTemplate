@@ -3,6 +3,7 @@
 */
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_FILTER } from '@nestjs/core';
 
 /* 
 * Custom imports
@@ -20,7 +21,7 @@ import { ApiUtils } from './devutils/apiutils.route';
 import { ErrorFilter } from './service/errorhandler.service';
 import { ErrorcodesService } from './errorcodes/errorcodes.service';
 import { LogService } from './service/logger.service';
-import { APP_FILTER } from '@nestjs/core';
+
 
 /*
   * Main module and Database connection configuration
@@ -30,18 +31,18 @@ import { APP_FILTER } from '@nestjs/core';
     type: 'postgres',
     port: 5432,
     username: 'postgres',
-    password: 'root',
+    password: 'admin2518',
     database: 'nestdapp',
     host: 'localhost',
     synchronize: true,
     entities: [userEntity]
   }), ErrorcodesModule],
   controllers: [PingController, AppController, ApiUtils],
-  providers: [LogService, AppService, ErrorcodesService, ErrorFilter,  {
+  providers: [LogService, AppService, ErrorcodesService,  {
     provide: APP_FILTER,
     useClass: ErrorFilter,
-  },],
-  exports: [LogService, AppService, ErrorcodesService, ErrorFilter]
+  }],
+  exports: [LogService, AppService, ErrorcodesService]
 })
 
 /* 
@@ -57,7 +58,6 @@ export class AppModule implements NestModule {
       .apply(AuthMiddleware)
       .exclude(
         { path: '/users', method: RequestMethod.POST },
-        { path: '/users/login', method: RequestMethod.POST },
         { path: '/users/noorm', method: RequestMethod.POST }
       )
       .forRoutes(UsersController)
