@@ -8,17 +8,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 /* 
 * Custom imports 
 */
-import { AppService } from '../../app.service';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { userEntity } from './user.entity';
-import { LogService } from '../../middleware/logger.middleware';
-import { ErrorcodesService } from '../../errorcodes/errorcodes.service';
+import { LogService } from 'src/service/logger.service';
+import { AppService } from 'src/service/app.service';
+import { ErrorcodesService } from 'src/errorcodes/errorcodes.service';
+import { GeneralCodes } from 'src/errorcodes/general.errocodes.config';
 
 @Module({
   imports: [TypeOrmModule.forFeature([userEntity])],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService,LogService,AppService,ErrorcodesService,GeneralCodes],
   exports: [UsersService, UsersModule]
 })
 

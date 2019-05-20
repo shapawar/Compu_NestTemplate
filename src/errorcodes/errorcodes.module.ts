@@ -9,7 +9,7 @@ import { Module } from '@nestjs/common';
 import { ErrorcodesService } from './errorcodes.service';
 import { ErrorcodesController } from './errorcodes.controller';
 import { GeneralCodes } from './general.errocodes.config';
-import { LogService } from '../middleware/logger.middleware';
+import { LogService } from '../service/logger.service';
 
 
 @Module({

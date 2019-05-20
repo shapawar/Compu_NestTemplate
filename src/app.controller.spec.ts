@@ -7,7 +7,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 * custom imports
 */
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppService } from './service/app.service';
 
 
 describe('AppController', () => {

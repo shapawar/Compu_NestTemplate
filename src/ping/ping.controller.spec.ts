@@ -8,7 +8,7 @@ import { Req, Res } from '@nestjs/common';
 * Custom imports
 */
 import { PingController } from './ping.controller';
-import { AppService } from '../app.service';
+import { AppService } from '../service/app.service';
 
 
 // Unit test method

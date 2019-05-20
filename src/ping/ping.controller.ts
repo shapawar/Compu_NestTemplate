@@ -6,9 +6,9 @@ import { Controller, Get, HttpCode, Req, Res, UseFilters } from '@nestjs/common'
 /* 
 * Custome imports
 */
-import { AppService } from '../app.service';
-import { LogService } from '../middleware/logger.middleware';
-import { ErrorFilter } from '../middleware/errorhandler.middleware';
+import { AppService } from '../service/app.service';
+import { LogService } from 'src/service/logger.service';
+
 
 
 
@@ -16,25 +16,22 @@ import { ErrorFilter } from '../middleware/errorhandler.middleware';
 * Ping route for helth check
 */
 @Controller('ping')
-//@UseFilters(new ErrorFilter())
 export class PingController {
+   
     MODULENAME = "PingController";
 
     constructor(private logger: LogService, private appService: AppService) { }
 
-    //logger = new LogService();
-    //appService = new AppService();
-
-
     @Get()
     ping(@Req() req, @Res() res) {
+
         const taskName = "/ping";
         const httpCode = 200; //default
 
         try {
 
             this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-${taskName}`);
-            throw new Error('Error in ping controller')
+            // throw new Error('Error in ping controller')
 
             const task = {
                 name: taskName,

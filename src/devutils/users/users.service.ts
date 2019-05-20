@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 * custom imports
 */
 import { userEntity } from './user.entity';
-import { LogService } from '../../middleware/logger.middleware';
+import { LogService } from '../../service/logger.service';
 
 @Injectable()
 export class UsersService {
@@ -21,7 +21,7 @@ export class UsersService {
     Logger = new LogService();
     /**
      * create user
-     * @param {*} evUniqueID req unique id
+     * @param {*} evUniqueID EV unique id
      * @param {*} data is a req data
      */
     async createUser(evUniqueID, data) {
@@ -53,7 +53,7 @@ export class UsersService {
 
     /**
     * fetch all user list
-    * @param {*} evUniqueID req unique id
+    * @param {*} evUniqueID EV unique id
     */
     async getUserList(evUniqueID) {
         let taskName = 'getUserList';
@@ -75,7 +75,7 @@ export class UsersService {
 
     /**
     * Get details of user
-    * @param {*} evUniqueID req unique id
+    * @param {*} evUniqueID EV unique id
     * @param {*} userid is a req params
     */
     async getUser(evUniqueID, userid) {
@@ -98,7 +98,7 @@ export class UsersService {
 
     /**
     * Delete user
-    * @param {*} evUniqueID req unique id
+    * @param {*} evUniqueID EV unique id
     * @param {*} userid is a req data
     */
     async deleteUser(evUniqueID, userid) {
@@ -122,7 +122,7 @@ export class UsersService {
 
     /**
     * update user
-    * @param {*} evUniqueID req unique id
+    * @param {*} evUniqueID EV unique id
     * @param {*} data is a req data
     */
     async editPost(evUniqueID, data) {
@@ -145,7 +145,7 @@ export class UsersService {
 
     /**
     * registerUsers user
-    * @param {*} evUniqueID req unique id
+    * @param {*} evUniqueID EV unique id
     * @param {*} data is a req data
     */
     async registerUsers(evUniqueID, data): Promise<userEntity> {
@@ -168,7 +168,7 @@ export class UsersService {
 
     /**
       * registerUsers user
-      * @param {*} evUniqueID req unique id
+      * @param {*} evUniqueID EV unique id
       */
     async getUserData(evUniqueID) {
         let taskName = 'getUserData';
@@ -191,7 +191,7 @@ export class UsersService {
 
     /**
    * Genarate JWT Token
-   * @param {*} evUniqueID req unique id
+   * @param {*} evUniqueID EV unique id
    * @param {*} data is user payload
    */
     async generateJWT(evUniqueID, data) {

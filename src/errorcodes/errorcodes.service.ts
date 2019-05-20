@@ -1,14 +1,14 @@
 /* 
 * Nest & Third party imports
  */
-import { Injectable, } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 /* 
 * custom imports
 */
 import { GeneralCodes } from './general.errocodes.config';
 import { errorCodes } from '../interfaces/errorcode.interface';
-import { LogService } from '../middleware/logger.middleware';
+import { LogService } from '../service/logger.service';
 
 
 @Injectable()
@@ -17,11 +17,14 @@ export class ErrorcodesService {
 
     constructor(private logger: LogService, private generalcodes: GeneralCodes) { }
 
+    /**
+     * 
+     * @param {string} evUniqueID EV unique Id
+     * @param {number} errCode Error code
+     * @param {string} errMsg  Error message
+     */
     getErrorInformation(evUniqueID, errCode, errMsg): errorCodes {
         const taskName = "getErrorInformation";
-
-        // let logger = new LogService();
-        // let generalcodes = new GeneralCodes();
 
         try {
             let errorData = this.generalcodes.ErrorCodes
@@ -31,6 +34,7 @@ export class ErrorcodesService {
 
             // get error info
             const filtered = errorData.filter((item) => {
+                console.log("===",filtered);
                 return (item.code === eCode);
             });
 
@@ -46,7 +50,6 @@ export class ErrorcodesService {
                     }
 
                 } else {
-
                     // use default message
                     errMsg = filteredItem.message;
                 }
@@ -66,7 +69,7 @@ export class ErrorcodesService {
             this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.stack}`);
             this.logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.message}`);
 
-            return { "code": 1, "message": 'Internal Error', "description": error.message, "type": 'ERROR', "canOverrideMessage": false };
+            throw error;
         }
     }
 

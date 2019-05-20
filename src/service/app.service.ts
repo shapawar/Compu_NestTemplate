@@ -8,23 +8,31 @@ import * as moment from 'moment'
 /* 
 * Custom imports
 */
-import { apiResponse } from './interfaces/metadata.interface';
-import { LogService } from './middleware/logger.middleware';
-import { ErrorcodesService } from './errorcodes/errorcodes.service';
+import { apiResponse } from '../interfaces/metadata.interface';
+
+import { ErrorcodesService } from '../errorcodes/errorcodes.service';
+import { LogService } from './logger.service';
 
 @Injectable()
 export class AppService {
+
   MODULENAME = "AppService";
 
-  ///logger = new LogService();
-  //errorService = new ErrorcodesService();
-
   constructor(private logger: LogService, private errorService: ErrorcodesService) { }
-  //Add comments 
+ 
+  /**
+   * @param {string} evUniqueID EV Unique ID
+   * @param {number} errCode  Error code
+   * @param {string} errMsg   Error message
+   * @param {JSON}   metadata JSON metadata object
+   * @param {JSON}   task   task metadata object
+   */
   endMetaData(evUniqueID, errCode, errMsg, metadata: apiResponse, task) {
+
     const taskName = "endMetaData method";
 
     try {
+
       const errorData = this.errorService.getErrorInformation(evUniqueID, errCode, errMsg);
 
       metadata.errCode = errorData.code;
@@ -40,6 +48,7 @@ export class AppService {
       return metadata
 
     } catch (error) {
+
       this.logger.error(`[${evUniqueID}](${this.MODULENAME})-${taskName}-${error.message}`);
       this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-${taskName}-${error.stack}`);
 

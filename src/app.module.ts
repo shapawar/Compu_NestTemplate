@@ -12,14 +12,14 @@ import { UsersModule } from './devutils/users/users.module';
 import { userEntity } from './devutils/users/user.entity';
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { PingController } from './ping/ping.controller';
-import { LogService } from './middleware/logger.middleware';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppService } from './service/app.service';
 import { ErrorcodesModule } from './errorcodes/errorcodes.module';
 import { UsersController } from './devutils/users/users.controller';
 import { ApiUtils } from './devutils/apiutils.route';
-import { ErrorFilter } from './middleware/errorhandler.middleware';
+import { ErrorFilter } from './service/errorhandler.service';
 import { ErrorcodesService } from './errorcodes/errorcodes.service';
+import { LogService } from './service/logger.service';
 
 /*
   * Main module and Database connection configuration

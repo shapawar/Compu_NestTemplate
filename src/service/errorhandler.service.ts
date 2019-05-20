@@ -6,8 +6,9 @@ import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus, Injec
 /* 
 * Custom imports
 */
-import { LogService } from './logger.middleware';
-import { AppService } from '../app.service';
+
+import { AppService } from './app.service';
+import { LogService } from 'src/service/logger.service';
 
 
 /* 
@@ -21,9 +22,6 @@ export class ErrorFilter implements ExceptionFilter {
   taskName = "Error_Handler";
   response;
   request;
-
-  //logger = new LogService();
-  //appService = new AppService();
 
   //create instance
   constructor(private logger: LogService, private appService: AppService) { }

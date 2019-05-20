@@ -3,7 +3,7 @@
 * Nest & Third party imports
 */
 import { Controller, Post, Res, Body, HttpStatus, Get, Param, Delete, Put, Req, HttpException } from '@nestjs/common';
-import { ApiUseTags, ApiOperation, ApiImplicitParam, ApiBearerAuth, ApiExcludeEndpoint } from '@nestjs/swagger';
+import { ApiOperation, ApiImplicitParam, ApiBearerAuth, ApiExcludeEndpoint } from '@nestjs/swagger';
 import { validate } from 'class-validator';
 
 /* 
@@ -11,19 +11,18 @@ import { validate } from 'class-validator';
 */
 import { UserPostDTO } from './user.post.dto';
 import { UsersService } from './users.service';
-import { LogService } from '../../middleware/logger.middleware';
+
 import { userEntity } from './user.entity';
-import { AppService } from '../../app.service';
+import { AppService } from '../../service/app.service';
+import { LogService } from 'src/service/logger.service';
 
 
 @Controller('users')
 export class UsersController {
 
     MODULENAME = 'UsersController';
-    constructor(private userService: UsersService) { }
 
-    Logger = new LogService();
-    appService = new AppService()
+    constructor(private userService: UsersService, private Logger: LogService, private appService:AppService) { }
 
     /**
     * create user

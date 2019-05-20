@@ -2,24 +2,22 @@
 * Nest & Third party imports
 */
 import { Get, Req, Res, Controller, Post } from "@nestjs/common";
-import { Repository } from "typeorm";
 
 /* 
 *Custom imports
 */
-import { LogService } from '../middleware/logger.middleware';
+import { LogService } from '../service/logger.service';
 import { UsersService } from "./users/users.service";
 import { ApiExcludeEndpoint } from "@nestjs/swagger";
 
-//Module name
-const MODULENAME = "ApiUtils";
 
 @Controller('/apiutils/auth-token')
 export class ApiUtils {
 
-    //Create instance of service
-    logger = new LogService();
-    userService = new UsersService(new Repository);
+    //Module name
+    MODULENAME = "ApiUtils";
+
+    constructor(private logger:LogService, private userService:UsersService){}
 
     @Get()
     @ApiExcludeEndpoint()
@@ -29,7 +27,7 @@ export class ApiUtils {
 
         try {
 
-            this.logger.debug(`[${req.evUniqueID}](${MODULENAME})-(${taskname})`);
+            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${taskname})`);
 
             // data
             const curDate = new Date();
@@ -51,8 +49,8 @@ export class ApiUtils {
 
         } catch (error) {
 
-            this.logger.debug(`[${req.evUniqueID}](${MODULENAME})-(${taskname})- ${error.stack}`);
-            this.logger.error(`[${req.evUniqueID}](${MODULENAME})-(${taskname})- ${error.message}`);
+            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${taskname})- ${error.stack}`);
+            this.logger.error(`[${req.evUniqueID}](${this.MODULENAME})-(${taskname})- ${error.message}`);
 
             throw error;
         }
@@ -62,11 +60,11 @@ export class ApiUtils {
     @ApiExcludeEndpoint()
     async encodeJWT(@Req() req, @Res() res) {
 
-        let taskName = "Auth token encode method";
+        let taskName = "Auth token encode";
 
         try {
 
-            this.logger.debug(`[${req.evUniqueID}](${MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(req.body)}`);
+            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(req.body)}`);
 
             const data = {
                 "evUniqueID": req.evUniqueID,
@@ -106,8 +104,8 @@ export class ApiUtils {
 
         } catch (error) {
 
-            this.logger.debug(`[${req.evUniqueID}](${MODULENAME})-(${taskName})- ${error.stack}`);
-            this.logger.error(`[${req.evUniqueID}](${MODULENAME})-(${taskName})- ${error.message}`);
+            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
+            this.logger.error(`[${req.evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
 
             throw error;
 
