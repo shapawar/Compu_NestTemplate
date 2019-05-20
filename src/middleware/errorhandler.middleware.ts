@@ -1,7 +1,7 @@
 /* 
 * Nset and third party imports
 */
-import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common';
+import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus, Injectable } from '@nestjs/common';
 
 /* 
 * Custom imports
@@ -10,68 +10,71 @@ import { LogService } from './logger.middleware';
 import { AppService } from '../app.service';
 
 
-
 /* 
 * Error Handler middleware
-* Handle all catch error throw by try block
+* Handle error thrown from anywhere from app
 */
-
 @Catch()
+@Injectable()
 export class ErrorFilter implements ExceptionFilter {
-
   MODULENAME = "ERRORHANDLER";
   taskName = "Error_Handler";
+  response;
+  request;
 
-  //create instance of service files
-   logger = new LogService();
-   appservice = new AppService();
+  //logger = new LogService();
+  //appService = new AppService();
 
-  /* 
-*Configure error Handler middleware
-*/
-
+  //create instance
+  constructor(private logger: LogService, private appService: AppService) { }
 
   async catch(error: Error, host: ArgumentsHost) {
 
     let debugName = 'Error-Middleware';
 
-    //create object/instance of different service
-    let response = host.switchToHttp().getResponse();
-    let request = host.switchToHttp().getRequest();
-
     try {
 
-      this.logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${JSON.stringify(error.message)}`);
+      console.log("this.request");
+      console.log("this.response");
+      //create object/instance of different service
+      this.response = host.switchToHttp().getResponse();
+      this.request = host.switchToHttp().getRequest();
+
+      console.log("this.request", this.request.evUniqueID);
+      console.log("this.response", this.response.locals.evUniqueID);
+      this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
 
       let status = (error instanceof HttpException) ? error.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
- 
-      if (request.url == "/favicon.ico") {
-  
-        this.logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
-        this.logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.stack}`);
+
+      if (this.request.url == "/favicon.ico") {
+
+        this.logger.error(`[${this.request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
+        this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.stack}`);
         return;
-  
+
       }
-  
-      request.metadata.errMsg = error.message;
-      request.metadata.errCode = 1;
-      request.timestamp = new Date().toISOString();
-      this.logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
-      this.logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.stack}`);
-  
+
+      this.request.metadata.errMsg = error.message;
+      this.request.metadata.errCode = 1;
+      this.request.timestamp = new Date().toISOString();
+      this.logger.error(`[${this.request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
+      this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.stack}`);
+
       const task = {
         name: this.taskName,
         info: error.stack
       }
 
-      let responseobj = await this.appservice.endMetaData(request.evUniqueID, request.metadata.errCode, error.message, request.metadata, task);
-      return response.status(status).json(responseobj);
-  
-    }catch (error) {
+      let responseobj = await this.appService.endMetaData(this.request.evUniqueID, this.request.metadata.errCode, error.message, this.request.metadata, task);
+      return this.response.status(status).json(responseobj);
 
-      this.logger.error(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
-      this.logger.debug(`[${request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.stack}`);
- 
+    } catch (error) {
+
+      this.logger.error(`[${this.request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
+      this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.stack}`);
+
+      throw error;
+
     }
 
   }

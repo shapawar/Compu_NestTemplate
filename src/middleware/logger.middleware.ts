@@ -11,6 +11,7 @@ import winston = require('winston');
  */
 export enum LogLevel { INFO = 'info', WARN = 'warn', ERROR = 'error', DEBUG = 'debug' }
 
+
 /**
  * Logger Class
  */

@@ -11,23 +11,20 @@ import { errorCodes } from '../interfaces/errorcode.interface';
 import { LogService } from '../middleware/logger.middleware';
 
 
-
-
 @Injectable()
 export class ErrorcodesService {
+    MODULENAME = "ErrorcodesService";
 
-    taskName = "ErrorCodesService";
-    MODULENAME = "ErrorCodesController"
-
-    
+    constructor(private logger: LogService, private generalcodes: GeneralCodes) { }
 
     getErrorInformation(evUniqueID, errCode, errMsg): errorCodes {
+        const taskName = "getErrorInformation";
 
-        let logger = new LogService();
-        let generalcodes = new GeneralCodes();
+        // let logger = new LogService();
+        // let generalcodes = new GeneralCodes();
 
         try {
-            let errorData = generalcodes.ErrorCodes
+            let errorData = this.generalcodes.ErrorCodes
 
             // convert to int just in case errCode is not
             const eCode = parseInt(errCode);
@@ -66,8 +63,8 @@ export class ErrorcodesService {
 
         } catch (error) {
 
-            logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${this.taskName}): ${error.stack}`);
-            logger.error(`[${evUniqueID}] ${this.MODULENAME}(${this.taskName}): ${error.message}`);
+            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.stack}`);
+            this.logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.message}`);
 
             return { "code": 1, "message": 'Internal Error', "description": error.message, "type": 'ERROR', "canOverrideMessage": false };
         }

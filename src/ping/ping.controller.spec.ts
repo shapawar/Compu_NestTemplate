@@ -2,14 +2,13 @@
 * NEST & Third party imports
 */
 import { Test } from '@nestjs/testing';
-import { Req } from '@nestjs/common';
+import { Req, Res } from '@nestjs/common';
 
 /* 
 * Custom imports
 */
 import { PingController } from './ping.controller';
 import { AppService } from '../app.service';
-
 
 
 // Unit test method
@@ -36,7 +35,7 @@ describe('Ping Controller', () => {
       const metadata = {
         errCode: 0,
       }
-      let test = pingController.ping(Req);
+      let test = pingController.ping(Req, Res);
       expect(test.errCode).toBe(metadata.errCode);
     });
 

@@ -15,46 +15,53 @@ import * as moment from "moment";
 import { apiResponse } from 'src/interfaces/metadata.interface';
 import { LogService } from './logger.middleware';
 
-/* create unique ID */
-const callGUID: string = uuid();
-
-const logger = new LogService();
 
 @Injectable()
 export class DefaultMiddleware implements NestMiddleware {
+    MODULENAME = "DefaultMiddleware";
+
     apiResp = <apiResponse>{};
 
-    MODULENAME = "DefaultMiddleware";
+    constructor(private logger: LogService) { }
+
     /**
-    * Hash API server name
-    */
-    hashAPIServer() {
-        let taskName = "Create Hash"
+     * Hash API server name
+     * @param evUniqueID req unique id
+     */
+    hashAPIServer(evUniqueID) {
+        let taskName = "hashAPIServer";
 
         try {
 
-            var hash = crypto.createHash('sha256');
+            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME} (${taskName})`);
+
+            let hash = crypto.createHash('sha256');
             hash.update(os.hostname());
 
             return hash.digest('base64');
 
         } catch (error) {
 
-            logger.error(`[${hash.digest('base64')}] ${this.MODULENAME} (${taskName}): ${error.message}`);
-            logger.debug(`[${hash.digest('base64')}] ${this.MODULENAME} (${taskName}): ${error.stack}`);
+            this.logger.error(`[${evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
+            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.stack}`);
 
             throw error;
         }
     };
 
+    //Add comment 
     resolve(...args: any[]): MiddlewareFunction {
-        let taskName = "metadata object";
+        let taskName = "In resolve method";
 
         return (req, res, next) => {
 
             try {
 
-                logger.debug(`[${ req.evUniqueID }] ${this.MODULENAME} (${taskName}): -`);
+                /* create unique ID */
+                const callGUID = uuid();
+
+                this.logger.debug(`[${callGUID}] ${this.MODULENAME} (${taskName})`);
+
                 // assign a unique id to this request and response
                 req.evUniqueID = callGUID;
                 res.locals.evUniqueID = callGUID;//to share between middlewares
@@ -62,7 +69,7 @@ export class DefaultMiddleware implements NestMiddleware {
                 // create API response metadata object since we can setup initial information
                 this.apiResp.evUniqueID = callGUID;
                 this.apiResp.requestURL = req.originalUrl;
-                this.apiResp.apiServer = this.hashAPIServer();
+                this.apiResp.apiServer = this.hashAPIServer(req.evUniqueID);
                 this.apiResp.apiBuildVersion = process.env.npm_package_version || '--NOT AVAILABLE--';
                 this.apiResp.requestTS = moment().format();
                 this.apiResp.elapsedTimeInMS = Date.now();
@@ -74,12 +81,11 @@ export class DefaultMiddleware implements NestMiddleware {
 
             } catch (error) {
 
-                logger.error(`[${ req.evUniqueID }] ${this.MODULENAME} (${taskName}): ${error.message}`);
-                logger.debug(`[${ req.evUniqueID }] ${this.MODULENAME} (${taskName}): ${error.stack}`);
+                this.logger.error(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
+                this.logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.stack}`);
 
                 throw error;
             }
-
 
         };
     }

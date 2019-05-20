@@ -26,7 +26,7 @@ export class ApiUtils {
     authToken(@Req() req, @Res() res) {
 
         let taskname = "Auth token get method";
-        
+
         try {
 
             this.logger.debug(`[${req.evUniqueID}](${MODULENAME})-(${taskname})`);
@@ -73,8 +73,8 @@ export class ApiUtils {
                 "username": req.body.username,
                 "exp": req.body.exp,
                 "iat": req.body.iat,
-                "useJWT":req.body.useJWT ? 'CHECKED' : '',
-                "jwt":req.body.jwt,
+                "useJWT": req.body.useJWT ? 'CHECKED' : '',
+                "jwt": req.body.jwt,
                 "errMsg": ''
             };
 
@@ -95,13 +95,13 @@ export class ApiUtils {
             // exp and iat MUST be in seconds since EPOCH
             jwtPayload.exp = Math.floor(exp.getTime() / 1000);
             jwtPayload.iat = Math.floor(iat.getTime() / 1000);
-            
+
             if (data.useJWT === 'CHECKED') {
                 data.jwt = await this.userService.generateJWT(req.evUniqueID, jwtPayload);
             } else {
                 data.jwt = await this.userService.generateJWTManual(req.evUniqueID, jwtPayload);
             }
-           
+
             res.render('auth-token', { data: data })
 
         } catch (error) {

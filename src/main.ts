@@ -1,21 +1,19 @@
 /* 
 * Nest and third party imports
 */
-
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import bodyParser = require('body-parser');
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
-
 /* 
 * custom imports
 */
-
 import { AppModule } from './app.module';
 require('dotenv').config({ "path": './secured/.env' });
 import { ErrorFilter } from './middleware/errorhandler.middleware';
 import { LogService } from './middleware/logger.middleware';
+import { AppService } from './app.service';
 
 /* Define port */
 const port = process.env.PORT || 9001;
@@ -26,7 +24,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   let Logger = new LogService();
 
-  /* app initialisation */
+  /* app initialization */
   app.useGlobalPipes(new ValidationPipe());
   app.use(bodyParser.json());
   app.enableCors();
@@ -34,7 +32,6 @@ async function bootstrap() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.useGlobalFilters(new ErrorFilter());
-
 
   const options = new DocumentBuilder()
     .setTitle('Nest Js ')
@@ -48,8 +45,8 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   await app.listen(port);
-  
-  Logger.debug(`APIVERSION = ${process.env.APIVERSION}`);
+
+  Logger.debug(`APIVERSION = ${process.env.VERSION}`);
   Logger.debug(`PORT = ${port}`);
   Logger.debug(`NODE_ENV = ${process.env.NODE_ENV}`);
 }

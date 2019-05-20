@@ -28,13 +28,13 @@ describe('AppController (e2e)', () => {
   //     .expect(200)
   //     .expect('Hello World!');
   // });
-  
+
   //ping unit test method
   it('/ping controller return json', () => {
     return request(app.getHttpServer())
       .get('/ping')
       .expect(200)
-      .expect('Content-type',/json/)
+      .expect('Content-type', /json/)
   });
 
 });

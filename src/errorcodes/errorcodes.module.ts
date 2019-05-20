@@ -9,10 +9,12 @@ import { Module } from '@nestjs/common';
 import { ErrorcodesService } from './errorcodes.service';
 import { ErrorcodesController } from './errorcodes.controller';
 import { GeneralCodes } from './general.errocodes.config';
+import { LogService } from '../middleware/logger.middleware';
+
 
 @Module({
-  providers: [ErrorcodesService,GeneralCodes],
+  providers: [LogService, ErrorcodesService, GeneralCodes],
   controllers: [ErrorcodesController],
-  exports: [ErrorcodesService]
+  exports: [ErrorcodesService, GeneralCodes]
 })
-export class ErrorcodesModule {}
+export class ErrorcodesModule { }

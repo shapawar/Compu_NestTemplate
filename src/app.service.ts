@@ -14,18 +14,18 @@ import { ErrorcodesService } from './errorcodes/errorcodes.service';
 
 @Injectable()
 export class AppService {
+  MODULENAME = "AppService";
 
-  taskName = "AppService";
-  MODULENAME = "AppService"
+  ///logger = new LogService();
+  //errorService = new ErrorcodesService();
 
-  /* Reasponse end metadata OBJ */
+  constructor(private logger: LogService, private errorService: ErrorcodesService) { }
+  //Add comments 
   endMetaData(evUniqueID, errCode, errMsg, metadata: apiResponse, task) {
-
-    let logger = new LogService();
-    let errorService = new ErrorcodesService();
+    const taskName = "endMetaData method";
 
     try {
-      const errorData = errorService.getErrorInformation(evUniqueID, errCode, errMsg);
+      const errorData = this.errorService.getErrorInformation(evUniqueID, errCode, errMsg);
 
       metadata.errCode = errorData.code;
       metadata.errMsg = errorData.message;
@@ -40,9 +40,9 @@ export class AppService {
       return metadata
 
     } catch (error) {
+      this.logger.error(`[${evUniqueID}](${this.MODULENAME})-${taskName}-${error.message}`);
+      this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-${taskName}-${error.stack}`);
 
-      logger.error(`[${evUniqueID}](${this.MODULENAME})-${this.taskName}-${error.message}`);
-      logger.debug(`[${evUniqueID}](${this.MODULENAME})-${this.taskName}-${error.stack}`);
       throw error;
     }
   }

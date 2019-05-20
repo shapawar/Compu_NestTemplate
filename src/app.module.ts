@@ -4,7 +4,6 @@
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-
 /* 
 * Custom imports
 */
@@ -19,27 +18,26 @@ import { AppService } from './app.service';
 import { ErrorcodesModule } from './errorcodes/errorcodes.module';
 import { UsersController } from './devutils/users/users.controller';
 import { ApiUtils } from './devutils/apiutils.route';
+import { ErrorFilter } from './middleware/errorhandler.middleware';
+import { ErrorcodesService } from './errorcodes/errorcodes.service';
 
-
-
-@Module({
-  
-  /* 
-  *  Database connection configuration
+/*
+  * Main module and Database connection configuration
   */
+@Module({
   imports: [UsersModule, TypeOrmModule.forRoot({
     type: 'postgres',
     port: 5432,
     username: 'postgres',
-    password: 'admin2518',
+    password: 'root',
     database: 'nestdapp',
     host: 'localhost',
     synchronize: true,
     entities: [userEntity]
   }), ErrorcodesModule],
-  controllers: [PingController, AppController,ApiUtils],
-  providers: [LogService, AppService],
-  exports: [LogService]
+  controllers: [PingController, AppController, ApiUtils],
+  providers: [LogService, AppService, ErrorcodesService, ErrorFilter],
+  exports: [LogService, AppService, ErrorcodesService, ErrorFilter]
 })
 
 /* 
