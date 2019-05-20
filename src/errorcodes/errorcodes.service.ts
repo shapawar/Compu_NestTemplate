@@ -34,7 +34,7 @@ export class ErrorcodesService {
 
             // get error info
             const filtered = errorData.filter((item) => {
-                console.log("===",filtered);
+                // console.log("===",filtered);
                 return (item.code === eCode);
             });
 

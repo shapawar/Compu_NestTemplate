@@ -20,6 +20,7 @@ import { ApiUtils } from './devutils/apiutils.route';
 import { ErrorFilter } from './service/errorhandler.service';
 import { ErrorcodesService } from './errorcodes/errorcodes.service';
 import { LogService } from './service/logger.service';
+import { APP_FILTER } from '@nestjs/core';
 
 /*
   * Main module and Database connection configuration
@@ -36,7 +37,10 @@ import { LogService } from './service/logger.service';
     entities: [userEntity]
   }), ErrorcodesModule],
   controllers: [PingController, AppController, ApiUtils],
-  providers: [LogService, AppService, ErrorcodesService, ErrorFilter],
+  providers: [LogService, AppService, ErrorcodesService, ErrorFilter,  {
+    provide: APP_FILTER,
+    useClass: ErrorFilter,
+  },],
   exports: [LogService, AppService, ErrorcodesService, ErrorFilter]
 })
 

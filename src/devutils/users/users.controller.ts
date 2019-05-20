@@ -73,7 +73,6 @@ export class UsersController {
 
     }
 
-
     /**
     * fetch user list
     */
