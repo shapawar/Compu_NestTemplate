@@ -7,7 +7,7 @@ import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus, Injec
 * Custom imports
 */
 import { AppService } from './app.service';
-import { LogService } from 'src/service/logger.service';
+import { LogService } from '../service/logger.service';
 
 
 /* 
@@ -26,13 +26,13 @@ export class ErrorFilter implements ExceptionFilter {
   constructor(private logger: LogService, private appService: AppService) { }
 
   async catch(error: Error, host: ArgumentsHost) {
-    let debugName = 'Error-Servie';
+    let taskName = 'Error-Servie';
 
     try {
       this.response = host.switchToHttp().getResponse();
       this.request = host.switchToHttp().getRequest();
 
-      this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${debugName}) `);
+      this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${taskName}) `);
 
       let status = (error instanceof HttpException) ? error.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -44,12 +44,13 @@ export class ErrorFilter implements ExceptionFilter {
       this.request.metadata.errCode = 1;
       this.request.timestamp = new Date().toISOString();
       
-      this.logger.error(`[${this.request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
-      this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.stack}`);
+      this.logger.error(`[${this.request.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
+      this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.stack}`);
 
       const task = {
-        name: debugName,
-        info: error.stack
+        name: taskName,
+        info: error.stack,
+        elapsedTimeInMs: Date.now()
       }
 
       let responseobj = await this.appService.endMetaData(this.request.evUniqueID, this.request.metadata.errCode, error.message, this.request.metadata, task);
@@ -57,8 +58,8 @@ export class ErrorFilter implements ExceptionFilter {
 
     } catch (error) {
 
-      this.logger.error(`[${this.request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.message}`);
-      this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${debugName}): ${error.stack}`);
+      this.logger.error(`[${this.request.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
+      this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.stack}`);
 
       throw error;
 

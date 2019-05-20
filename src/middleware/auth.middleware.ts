@@ -54,17 +54,20 @@ export class AuthMiddleware implements NestMiddleware {
           this.logger.error(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): Auth token missing`);
           this.logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}):Auth token missing`);
 
-          next({ message: "Auth token missing", name: "JWT Token error" });
+          next({ message: "Auth token missing", name: "JWT Token error", stack:"Please Send the auth token to every request" });
 
         }
 
       } catch (error) {
-        //add error logs here
+
         this.logger.error(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
         this.logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
 
         next(error);
       }
+
     }
+
   }
+
 };

@@ -19,6 +19,11 @@ export class PingController {
 
     constructor(private logger: LogService, private appService: AppService) { }
 
+    /**
+     * For helth check
+     * @param req 
+     * @param res 
+     */
     @Get()
     ping(@Req() req, @Res() res) {
 

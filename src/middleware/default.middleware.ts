@@ -10,8 +10,8 @@ import * as moment from "moment";
 /* 
 * custom imports
 */
-import { apiResponse } from 'src/interfaces/metadata.interface';
-import { LogService } from 'src/service/logger.service';
+import { apiResponse } from '../interfaces/metadata.interface';
+import { LogService } from '../service/logger.service';
 
 
 /* Default middleware */

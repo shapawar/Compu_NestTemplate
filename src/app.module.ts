@@ -38,7 +38,7 @@ import { LogService } from './service/logger.service';
     entities: [userEntity]
   }), ErrorcodesModule],
   controllers: [PingController, AppController, ApiUtils],
-  providers: [LogService, AppService, ErrorcodesService,  {
+  providers: [LogService, AppService, ErrorcodesService, {
     provide: APP_FILTER,
     useClass: ErrorFilter,
   }],

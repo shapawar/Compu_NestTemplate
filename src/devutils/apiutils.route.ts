@@ -1,30 +1,30 @@
 /* 
 * Nest & Third party imports
 */
-import { Get, Req, Res, Controller, Post } from "@nestjs/common";
+import { Get, Req, Res, Controller, Post, UnauthorizedException } from "@nestjs/common";
+import { ApiExcludeEndpoint } from "@nestjs/swagger";
 
 /* 
 *Custom imports
 */
 import { LogService } from '../service/logger.service';
+import { AppService } from "../service/app.service";
 import { UsersService } from "./users/users.service";
-import { ApiExcludeEndpoint } from "@nestjs/swagger";
 
 /* 
-* ApiUtils controller
+* AppUtils Contoller
 */
 @Controller('/apiutils/auth-token')
 export class ApiUtils {
 
-    //Module name
     MODULENAME = "ApiUtils";
 
-    constructor(private logger:LogService, private userService:UsersService){}
+    constructor(private logger:LogService, private appService:AppService, private userService: UsersService){}
 
     /**
      * 
-     * @param req 
-     * @param res = render on html template
+     * @param req -
+     * @param res - render on html template
      */
     @Get()
     @ApiExcludeEndpoint()
@@ -40,7 +40,7 @@ export class ApiUtils {
             const curDate = new Date();
             const expDate = new Date();
 
-            expDate.setSeconds(curDate.getSeconds() + 60);
+            expDate.setSeconds(curDate.getSeconds() + 300);
 
             const data = {
                 "evUniqueID": req.evUniqueID,
@@ -65,8 +65,8 @@ export class ApiUtils {
 
     /**
      * 
-     * @param req = get user payload data
-     * @param res = send jwt token
+     * @param res - render on html template
+     * @param req - user payload
      */
     @Post()
     @ApiExcludeEndpoint()
@@ -77,6 +77,11 @@ export class ApiUtils {
         try {
 
             this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(req.body)}`);
+            
+            const user = await this.userService.validateUser(req.evUniqueID,req.body.username);
+            if (!user) {
+              throw new UnauthorizedException();
+            }
 
             const data = {
                 "evUniqueID": req.evUniqueID,
@@ -107,9 +112,9 @@ export class ApiUtils {
             jwtPayload.iat = Math.floor(iat.getTime() / 1000);
 
             if (data.useJWT === 'CHECKED') {
-                data.jwt = await this.userService.generateJWT(req.evUniqueID, jwtPayload);
+                data.jwt = await this.appService.generateJWT(req.evUniqueID, jwtPayload);
             } else {
-                data.jwt = await this.userService.generateJWTManual(req.evUniqueID, jwtPayload);
+                data.jwt = await this.appService.generateJWTManual(req.evUniqueID, jwtPayload);
             }
 
             res.render('auth-token', { data: data })

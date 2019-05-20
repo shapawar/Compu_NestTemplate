@@ -29,7 +29,6 @@ async function bootstrap() {
   app.setGlobalPrefix(process.env.VERSION);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
-  // app.useGlobalFilters(new ErrorFilter());
 
   const options = new DocumentBuilder()
     .setTitle('Nest Js ')

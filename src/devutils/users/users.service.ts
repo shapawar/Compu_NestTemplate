@@ -4,8 +4,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getManager } from 'typeorm';
-import * as crypt from 'crypto'
-const jwt = require('jsonwebtoken');
 
 /* 
 * custom imports
@@ -21,8 +19,8 @@ export class UsersService {
 
     MODULENAME = 'USERSERVICE';
 
-    constructor(@InjectRepository(userEntity) private readonly userRepository: Repository<userEntity>,private logger:LogService ) { }
-    
+    constructor(@InjectRepository(userEntity) private readonly userRepository: Repository<userEntity>, private logger: LogService) { }
+
     /**
      * create user
      * @param {*} evUniqueID EV unique id
@@ -33,7 +31,7 @@ export class UsersService {
         let taskName = 'createUser';
 
         try {
-            
+
             this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
 
             const checkuser = await this.userRepository.findOne({ username: data.username });
@@ -54,7 +52,6 @@ export class UsersService {
 
             throw error;
         }
-
     }
 
     /**
@@ -77,7 +74,6 @@ export class UsersService {
 
             throw error;
         }
-
     }
 
     /**
@@ -101,7 +97,6 @@ export class UsersService {
 
             throw error;
         }
-
     }
 
     /**
@@ -110,7 +105,7 @@ export class UsersService {
     * @param {*} userid is a req data
     */
     async deleteUser(evUniqueID, userid) {
-        
+
         let taskName = 'deleteUser';
 
         try {
@@ -127,7 +122,6 @@ export class UsersService {
 
             throw error;
         }
-
     }
 
     /**
@@ -152,7 +146,6 @@ export class UsersService {
 
             throw error;
         }
-
     }
 
     /**
@@ -178,7 +171,6 @@ export class UsersService {
 
             throw error;
         }
-
     }
 
     /**
@@ -190,7 +182,7 @@ export class UsersService {
         let taskName = 'getUserData';
 
         try {
-            this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: - `);
+            this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})`);
 
             const list = await getManager().query(`SELECT * FROM user_entity`);
             return list;
@@ -202,28 +194,19 @@ export class UsersService {
 
             throw error;
         }
-
     }
 
     /**
-   * Genarate JWT Token
-   * @param {*} evUniqueID EV unique id
-   * @param {*} data is user payload
-   */
-    async generateJWT(evUniqueID, data) {
-
-        let taskName = 'generateJWT';
+     * check user is validate or not
+     * @param (String) username 
+     */
+    async validateUser(evUniqueID, username) {
+        let taskName = 'validate User';
 
         try {
+            this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${username}`);
 
-            this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
-
-            let jwtHeader = {
-                "alg": "HS256",
-                "typ": "JWT"
-            };
-
-            return jwt.sign(data, process.env.JWTSECRET, { algorithm: 'HS256', header: jwtHeader });
+            return await this.userRepository.findOne({ username: username });
 
         } catch (error) {
 
@@ -232,74 +215,6 @@ export class UsersService {
 
             throw error;
         }
+
     }
-
-    /**
- * Manually generate JWT
- * @param {String} evUniqueID EV unique ID
- * @param {JSON} payload JWT payload
- */
-    generateJWTManual(evUniqueID, payload) {
-
-        const taskName = 'generateJWTManual';
-
-        try {
-            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${JSON.stringify(payload)}`);
-
-            let header = {
-                "alg": "HS256",
-                "typ": "JWT"
-            };
-            
-            // base64urlencode
-            const hdrEncoded = this.cleanUpJWTManual(evUniqueID, Buffer.from(JSON.stringify(header)).toString('base64'));
-
-            // const payEncoded = encodeURI(Buffer.from(payload).toString('base64'));
-            const payEncoded = this.cleanUpJWTManual(evUniqueID, Buffer.from(JSON.stringify(payload)).toString('base64'));
-
-            const combined = hdrEncoded + '.' + payEncoded;
-
-            // hash
-            const origSig = crypt.createHmac('sha256', process.env.JWTSECRET).update(combined).digest('base64');
-            const jwtSig = this.cleanUpJWTManual(evUniqueID, origSig);
-
-            return `${combined}.${jwtSig}`;
-
-        } catch (error) {
-
-            this.logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.message}`);
-            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.stack}`);
-
-            throw error;
-        }
-    }
-
-    /**
-     * Clean up invalid Base64 chars to be used in JWT (for JWT generated manually)
-     * @param {String} evUniqueID EV unique ID
-     * @param {string} val Base64 JWT to clean up
-     */
-    cleanUpJWTManual(evUniqueID, val) {
-
-        const taskName = 'cleanUpJWT';
-
-        try {
-            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${val}`);
-
-            val = val.replace(/\+/gi, '-');
-            val = val.replace(/\//gi, '_');
-            val = val.split('=')[0];
-
-            return val;
-
-        } catch (error) {
-            
-            this.logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.message}`);
-            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.stack}`);
-
-            throw error;
-        }
-    }
-
-
 }

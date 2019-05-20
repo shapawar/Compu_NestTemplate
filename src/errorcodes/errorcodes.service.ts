@@ -11,10 +11,11 @@ import { errorCodes } from '../interfaces/errorcode.interface';
 import { LogService } from '../service/logger.service';
 
 /* 
-* Error codes service
+* Errorcodes Service
 */
 @Injectable()
 export class ErrorcodesService {
+    
     MODULENAME = "ErrorcodesService";
 
     constructor(private logger: LogService, private generalcodes: GeneralCodes) { }
@@ -29,7 +30,8 @@ export class ErrorcodesService {
         const taskName = "getErrorInformation";
 
         try {
-             this.logger.debug(`[${evUniqueID}]-${this.MODULENAME} (${taskName})`);
+
+            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName})`);
 
             let errorData = this.generalcodes.ErrorCodes
 
@@ -38,7 +40,6 @@ export class ErrorcodesService {
 
             // get error info
             const filtered = errorData.filter((item) => {
-                // console.log("===",filtered);
                 return (item.code === eCode);
             });
 
@@ -64,9 +65,6 @@ export class ErrorcodesService {
 
             } else {
 
-                this.logger.debug(`[${evUniqueID}]-${this.MODULENAME} (${taskName})- Unknown error code`);
-                this.logger.error(`[${evUniqueID}]-${this.MODULENAME} (${taskName})- Unknown error code`);
-
                 throw new Error(`Unknown error code: ${errCode}`);
 
             }
@@ -79,5 +77,4 @@ export class ErrorcodesService {
             throw error;
         }
     }
-
 }
