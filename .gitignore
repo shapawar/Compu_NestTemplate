@@ -13,3 +13,6 @@ typings/
 # dotenv environment variables file
 #.env
 ./secured/.env
+
+## Visual studio code
+.vscode/
