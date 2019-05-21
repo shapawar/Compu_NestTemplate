@@ -49,7 +49,7 @@ export class DefaultMiddleware implements NestMiddleware {
         }
     };
 
-    //Add comment 
+    //Nest middleware function 
     resolve(): MiddlewareFunction {
         let taskName = "In resolve method";
 

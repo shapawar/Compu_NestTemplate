@@ -10,7 +10,7 @@ import { APP_FILTER } from '@nestjs/core';
 */
 import { DefaultMiddleware } from './middleware/default.middleware';
 import { UsersModule } from './devutils/users/users.module';
-import { userEntity } from './devutils/users/entity/user.entity';
+
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { PingController } from './ping/ping.controller';
 import { AppController } from './app.controller';
@@ -21,6 +21,7 @@ import { ApiUtils } from './devutils/apiutils.route';
 import { ErrorFilter } from './service/errorhandler.service';
 import { ErrorcodesService } from './errorcodes/errorcodes.service';
 import { LogService } from './service/logger.service';
+import { userEntity } from './devutils/users/entity/user.entity';
 
 
 /*
@@ -31,7 +32,7 @@ import { LogService } from './service/logger.service';
     type: 'postgres',
     port: 5432,
     username: 'postgres',
-    password: 'admin2518',
+    password: 'root',
     database: 'nestdapp',
     host: 'localhost',
     synchronize: true,

@@ -26,7 +26,7 @@ export class ErrorFilter implements ExceptionFilter {
   constructor(private logger: LogService, private appService: AppService) { }
 
   async catch(error: Error, host: ArgumentsHost) {
-    let taskName = 'Error-Servie';
+    let taskName = 'Error-Service';
 
     try {
       
