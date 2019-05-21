@@ -4,6 +4,9 @@
   "description": "description",
   "author": "",
   "license": "MIT",
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\"",
