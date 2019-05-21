@@ -8,7 +8,7 @@ import { Repository, getManager } from 'typeorm';
 /* 
 * custom imports
 */
-import { userEntity } from './user.entity';
+import { userEntity } from './entity/user.entity';
 import { LogService } from '../../service/logger.service';
 
 /* 
@@ -201,27 +201,4 @@ export class UsersService {
         }
     }
 
-    /**
-     * check user is validate or not
-     * @param (String) username 
-     */
-    async validateUser(evUniqueID, username) {
-
-        let taskName = 'validate User';
-
-        try {
-
-            this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${username}`);
-
-            return await this.userRepository.findOne({ username: username });
-
-        } catch (error) {
-
-            this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
-            this.logger.error(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
-
-            throw error;
-        }
-
-    }
 }

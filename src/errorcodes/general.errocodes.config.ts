@@ -3,6 +3,7 @@
 */
 export class GeneralCodes {
 
+    //make override false in all places excepts code = 1
     ErrorCodes = [
         { "code": 0, "message": 'OK', "description": 'Success', "type": 'SUCCESS', "canOverrideMessage": true },
         { "code": 1, "message": 'Internal Error', "description": 'Unexpected error encountered', "type": 'ERROR', "canOverrideMessage": true },
