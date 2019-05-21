@@ -32,14 +32,13 @@ export class ErrorFilter implements ExceptionFilter {
       
       this.response = host.switchToHttp().getResponse();
       this.request = host.switchToHttp().getRequest();
+      if (this.request.url == "/favicon.ico") {
+        return;
+      }
 
       this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${taskName}) `);
 
       let status = (error instanceof HttpException) ? error.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-
-      if (this.request.url == "/favicon.ico") {
-        return;
-      }
 
       this.request.metadata.errMsg = error.message;
       this.request.metadata.errCode = 1;

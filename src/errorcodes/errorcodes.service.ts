@@ -7,7 +7,7 @@ import { Injectable } from '@nestjs/common';
 * custom imports
 */
 import { GeneralCodes } from './general.errocodes.config';
-import { errorCodes } from '../interfaces/errorcode.interface';
+import { errorCodes } from './interface/errorcode.interface';
 import { LogService } from '../service/logger.service';
 
 /* 

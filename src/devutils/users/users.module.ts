@@ -9,7 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 */
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
-import { userEntity } from './user.entity';
+import { userEntity } from './entity/user.entity';
 import { LogService } from '../../service/logger.service';
 import { AppService } from '../../service/app.service';
 import { ErrorcodesService } from '../../errorcodes/errorcodes.service';

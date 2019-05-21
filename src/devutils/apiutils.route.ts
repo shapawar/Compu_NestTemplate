@@ -11,6 +11,7 @@ import { LogService } from '../service/logger.service';
 import { AppService } from "../service/app.service";
 import { UsersService } from "./users/users.service";
 
+
 /* 
 * AppUtils Contoller
 */
@@ -77,11 +78,6 @@ export class ApiUtils {
         try {
 
             this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(req.body)}`);
-            
-            const user = await this.userService.validateUser(req.evUniqueID,req.body.username);
-            if (!user) {
-              throw new UnauthorizedException();
-            }
 
             const data = {
                 "evUniqueID": req.evUniqueID,
