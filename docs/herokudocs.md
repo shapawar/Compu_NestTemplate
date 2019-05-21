@@ -20,3 +20,5 @@
 
 * 'heroku logs --tail' Used this command for checking heroku logs after build successfully.
 
+## Select specific file from heroku
+* 'heroku git:remote -a nest-test01' used this command for selecting our project directory in heroku.
