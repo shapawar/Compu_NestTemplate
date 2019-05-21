@@ -30,10 +30,10 @@ import { LogService } from './service/logger.service';
   imports: [UsersModule, TypeOrmModule.forRoot({
     type: 'postgres',
     port: 5432,
-    username: 'fitpiqlufwwijc',
-    password: '0e8d25ad703d175eec6184d7d2a41f968c03fb3dd0b02eb2a952067a57911309',
-    database: 'd63sbm61vtsq87',
-    host: 'ec2-54-225-106-93.compute-1.amazonaws.com',
+    username: 'postgres',
+    password: 'admin2518',
+    database: 'nestdapp',
+    host: 'localhost',
     synchronize: true,
     entities: [userEntity]
   }), ErrorcodesModule],
@@ -45,10 +45,7 @@ import { LogService } from './service/logger.service';
   exports: [LogService, AppService, ErrorcodesService]
 })
 
-// postgres://
-// fitpiqlufwwijc:0e8d25ad703d175eec6184d7d2a41f968c03fb3dd0b02eb2a952067a57911309@
-// ec2-54-225-106-93.compute-1.amazonaws.com:5432/
-// d63sbm61vtsq87
+// postgres://fitpiqlufwwijc:0e8d25ad703d175eec6184d7d2a41f968c03fb3dd0b02eb2a952067a57911309@ec2-54-225-106-93.compute-1.amazonaws.com:5432/d63sbm61vtsq87
 
 /* 
 * Middleware Settings
