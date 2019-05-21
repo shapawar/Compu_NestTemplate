@@ -16,3 +16,7 @@
   2) git commit -m "doing it live"
   3) git push heroku HEAD:master 
 
+## Check heroku logs
+
+* 'heroku logs --tail' Used this command for checking heroku logs after build successfully.
+

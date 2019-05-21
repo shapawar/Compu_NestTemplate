@@ -40,7 +40,9 @@
     "typeorm": "^0.2.16",
     "typescript": "^3.0.1",
     "uuid": "^3.3.2",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "ts-node": "^7.0.1",
+    "tsconfig-paths": "^3.5.0"
   },
   "devDependencies": {
     "@nestjs/testing": "^6.1.1",
