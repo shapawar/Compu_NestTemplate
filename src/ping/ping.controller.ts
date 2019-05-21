@@ -19,11 +19,7 @@ export class PingController {
 
     constructor(private logger: LogService, private appService: AppService) { }
 
-    /**
-     * For helth check
-     * @param req 
-     * @param res 
-     */
+   //Ping route
     @Get()
     ping(@Req() req, @Res() res) {
 
@@ -33,7 +29,6 @@ export class PingController {
         try {
 
             this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-${taskName}`);
-            // throw new Error('Error in ping controller')
 
             const task = {
                 name: taskName,
