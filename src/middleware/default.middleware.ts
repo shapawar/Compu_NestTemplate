@@ -49,8 +49,8 @@ export class DefaultMiddleware implements NestMiddleware {
         }
     };
 
-    //Add comment 
-    resolve(...args: any[]): MiddlewareFunction {
+    //Nest middleware function 
+    resolve(): MiddlewareFunction {
         let taskName = "In resolve method";
 
         return (req, res, next) => {
