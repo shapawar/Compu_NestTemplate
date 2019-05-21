@@ -30,10 +30,10 @@ import { LogService } from './service/logger.service';
   imports: [UsersModule, TypeOrmModule.forRoot({
     type: 'postgres',
     port: 5432,
-    username: 'postgres',
-    password: 'admin2518',
-    database: 'nestdapp',
-    host: 'localhost',
+    username: 'uhpkjedounyiwb',
+    password: '85b2d919afcbc42ab7006e55c715fbf63804d31ea25bfbc56eee01c0bc69ecb2',
+    database: 'd2igp7go1t4lgp',
+    host: 'ec2-54-225-116-36.compute-1.amazonaws.com',
     synchronize: true,
     entities: [userEntity]
   }), ErrorcodesModule],
