@@ -8,9 +8,9 @@ import { validate } from 'class-validator';
 /* 
 * Custom imports
 */
-import { UserPostDTO } from './user.post.dto';
+import { UserPostDTO } from './dto/user.post.dto';
 import { UsersService } from './users.service';
-import { userEntity } from './user.entity';
+import { userEntity } from './entity/user.entity';
 import { AppService } from '../../service/app.service';
 import { LogService } from '../../service/logger.service';
 

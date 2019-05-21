@@ -14,7 +14,7 @@ import { ErrorcodesService } from '../errorcodes/errorcodes.service';
 import { LogService } from './logger.service';
 
 /* 
-* App Service
+* shared service
 */
 @Injectable()
 export class AppService {
@@ -36,7 +36,7 @@ export class AppService {
 
         try {
 
-            this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-${taskName}- QueryData:${metadata}`);
+            this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-${taskName}- QueryData:${JSON.stringify(metadata)}`);
 
             const errorData = this.errorService.getErrorInformation(evUniqueID, errCode, errMsg);
 
