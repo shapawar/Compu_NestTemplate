@@ -16,3 +16,7 @@ typings/
 
 ## Visual studio code
 .vscode/
+
+dist/
+
+.DS_Store
