@@ -35,6 +35,7 @@ async function bootstrap() {
     .setDescription('The Nest Js api description')
     .setVersion(process.env.SwaggerVersion)
     .addBearerAuth('Authorization', 'header', 'apiKey')
+    .setSchemes("https", "http")
     .setBasePath(process.env.VERSION)
     .build();
 
