@@ -23,7 +23,7 @@ export class ApiUtils {
 
     /**
      * 
-     * @param req -
+     * @param req 
      * @param res - render on html template
      */
     @Get()

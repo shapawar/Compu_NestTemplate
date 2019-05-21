@@ -321,6 +321,7 @@ export class UsersController {
 
                 throw new Error(`Users are not found plz try again !!!`);
             }
+            
             return res.status(httpCode).json({
                 metadata: usermetadata,
                 list: userlist

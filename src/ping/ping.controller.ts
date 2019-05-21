@@ -10,7 +10,7 @@ import { AppService } from '../service/app.service';
 import { LogService } from 'src/service/logger.service';
 
 /* 
-* Ping route for helth check
+* Ping route for health check
 */
 @Controller('ping')
 export class PingController {

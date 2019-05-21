@@ -38,7 +38,7 @@ export class UsersService {
             if (checkuser == undefined) {
 
                 const savedata = await this.userRepository.save(data);
-                return savedata
+                return savedata;
 
             } else {
 
@@ -63,10 +63,12 @@ export class UsersService {
         let taskName = 'getUserList';
 
         try {
+
             this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: - `);
 
             const list = await this.userRepository.find();
             return list;
+
         } catch (error) {
 
             this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
@@ -85,6 +87,7 @@ export class UsersService {
         let taskName = 'getUser';
 
         try {
+
             this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${userid}`);
 
             const details = await this.userRepository.findOne({ username: userid });
@@ -134,6 +137,7 @@ export class UsersService {
         let taskName = 'editPost';
 
         try {
+
             this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
 
             const editedPost = await this.userRepository.update({ username: data.username }, data);
@@ -182,6 +186,7 @@ export class UsersService {
         let taskName = 'getUserData';
 
         try {
+
             this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})`);
 
             const list = await getManager().query(`SELECT * FROM user_entity`);
@@ -201,9 +206,11 @@ export class UsersService {
      * @param (String) username 
      */
     async validateUser(evUniqueID, username) {
+
         let taskName = 'validate User';
 
         try {
+
             this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${username}`);
 
             return await this.userRepository.findOne({ username: username });

@@ -17,6 +17,7 @@ import { LogService } from '../service/logger.service';
 /* Default middleware */
 @Injectable()
 export class DefaultMiddleware implements NestMiddleware {
+
     MODULENAME = "DefaultMiddleware";
 
     apiResp = <apiResponse>{};
@@ -86,6 +87,6 @@ export class DefaultMiddleware implements NestMiddleware {
                 throw error;
             }
 
-        };
+        }
     }
 }

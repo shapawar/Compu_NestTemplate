@@ -1,6 +1,6 @@
 
 /* 
-* Defind task metadata interface
+* Define task metadata interface
 */
 export interface tasksData {
     name: string,

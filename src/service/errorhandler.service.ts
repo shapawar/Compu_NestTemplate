@@ -29,6 +29,7 @@ export class ErrorFilter implements ExceptionFilter {
     let taskName = 'Error-Servie';
 
     try {
+      
       this.response = host.switchToHttp().getResponse();
       this.request = host.switchToHttp().getRequest();
 

@@ -14,6 +14,7 @@ import { LogService } from '../service/logger.service';
 */
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
+  
   MODULENAME = 'AuthMiddleware';
 
   constructor(private logger: LogService) { }

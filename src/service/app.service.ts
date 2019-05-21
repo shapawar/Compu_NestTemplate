@@ -19,140 +19,142 @@ import { LogService } from './logger.service';
 @Injectable()
 export class AppService {
 
-  MODULENAME = "AppService";
+    MODULENAME = "AppService";
 
-  constructor(private logger: LogService, private errorService: ErrorcodesService) { }
- 
-  /**
-   * @param {string} evUniqueID EV Unique ID
-   * @param {number} errCode  Error code
-   * @param {string} errMsg   Error message
-   * @param {JSON}   metadata JSON metadata object
-   * @param {JSON}   task   task metadata object
-   */
-  endMetaData(evUniqueID, errCode, errMsg, metadata: apiResponse, task) {
+    constructor(private logger: LogService, private errorService: ErrorcodesService) { }
 
-    const taskName = "endMetaData method";
+    /**
+     * @param {string} evUniqueID EV Unique ID
+     * @param {number} errCode  Error code
+     * @param {string} errMsg   Error message
+     * @param {JSON}   metadata JSON metadata object
+     * @param {JSON}   task   task metadata object
+     */
+    endMetaData(evUniqueID, errCode, errMsg, metadata: apiResponse, task) {
 
-    try {
+        const taskName = "endMetaData method";
 
-      this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-${taskName}- QueryData:${metadata}`);
+        try {
 
-      const errorData = this.errorService.getErrorInformation(evUniqueID, errCode, errMsg);
+            this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-${taskName}- QueryData:${metadata}`);
 
-      metadata.errCode = errorData.code;
-      metadata.errMsg = errorData.message;
-      metadata.elapsedTimeInMS = moment(Date.now()).diff(metadata.requestTS, 'milliseconds');
-      metadata.tasks[metadata.tasks.push({
-        name: task.name,
-        info: task.info,
-        startTS: moment().format(),
-        elapsedTimeInMS: moment(Date.now()).diff(task.elapsedTimeInMs, 'milliseconds')
-      }) - 1];
+            const errorData = this.errorService.getErrorInformation(evUniqueID, errCode, errMsg);
 
-      return metadata
+            metadata.errCode = errorData.code;
+            metadata.errMsg = errorData.message;
+            metadata.elapsedTimeInMS = moment(Date.now()).diff(metadata.requestTS, 'milliseconds');
+            metadata.tasks[metadata.tasks.push({
+                name: task.name,
+                info: task.info,
+                startTS: moment().format(),
+                elapsedTimeInMS: moment(Date.now()).diff(task.elapsedTimeInMs, 'milliseconds')
+            }) - 1];
 
-    } catch (error) {
+            return metadata
 
-      this.logger.error(`[${evUniqueID}](${this.MODULENAME})-${taskName}-${error.message}`);
-      this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-${taskName}-${error.stack}`);
+        } catch (error) {
 
-      throw error;
+            this.logger.error(`[${evUniqueID}](${this.MODULENAME})-${taskName}-${error.message}`);
+            this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-${taskName}-${error.stack}`);
+
+            throw error;
+        }
     }
-  }
 
-  /**
-   * Genarate JWT Token
-   * @param {*} evUniqueID EV unique id
-   * @param {*} data is user payload
-   */
-  async generateJWT(evUniqueID, data) {
-    let taskName = 'generateJWT';
+    /**
+     * Genarate JWT Token
+     * @param {*} evUniqueID EV unique id
+     * @param {*} data is user payload
+     */
+    async generateJWT(evUniqueID, data) {
 
-    try {
+        let taskName = 'generateJWT';
 
-        this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
+        try {
 
-        let jwtHeader = {
-            "alg": "HS256",
-            "typ": "JWT"
-        };
+            this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(data)}`);
 
-        return jwt.sign(data, process.env.JWTSECRET, { algorithm: 'HS256', header: jwtHeader });
+            let jwtHeader = {
+                "alg": "HS256",
+                "typ": "JWT"
+            };
 
-    } catch (error) {
+            return jwt.sign(data, process.env.JWTSECRET, { algorithm: 'HS256', header: jwtHeader });
 
-        this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
-        this.logger.error(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
+        } catch (error) {
 
-        throw error;
+            this.logger.debug(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
+            this.logger.error(`[${evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
+
+            throw error;
+        }
     }
-}
 
-/**
-* Manually generate JWT
-* @param {String} evUniqueID EV unique ID
-* @param {JSON} payload JWT payload
-*/
-generateJWTManual(evUniqueID, payload) {
+    /**
+    * Manually generate JWT
+    * @param {String} evUniqueID EV unique ID
+    * @param {JSON} payload JWT payload
+    */
+    generateJWTManual(evUniqueID, payload) {
 
-    const taskName = 'generateJWTManual';
+        const taskName = 'generateJWTManual';
 
-    try {
+        try {
 
-        this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${JSON.stringify(payload)}`);
+            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${JSON.stringify(payload)}`);
 
-        let header = {
-            "alg": "HS256",
-            "typ": "JWT"
-        };
-        
-        // base64urlencode
-        const hdrEncoded = this.cleanUpJWTManual(evUniqueID, Buffer.from(JSON.stringify(header)).toString('base64'));
+            let header = {
+                "alg": "HS256",
+                "typ": "JWT"
+            };
 
-        // const payEncoded = encodeURI(Buffer.from(payload).toString('base64'));
-        const payEncoded = this.cleanUpJWTManual(evUniqueID, Buffer.from(JSON.stringify(payload)).toString('base64'));
+            // base64urlencode
+            const hdrEncoded = this.cleanUpJWTManual(evUniqueID, Buffer.from(JSON.stringify(header)).toString('base64'));
 
-        const combined = hdrEncoded + '.' + payEncoded;
+            // const payEncoded = encodeURI(Buffer.from(payload).toString('base64'));
+            const payEncoded = this.cleanUpJWTManual(evUniqueID, Buffer.from(JSON.stringify(payload)).toString('base64'));
 
-        // hash
-        const origSig = crypt.createHmac('sha256', process.env.JWTSECRET).update(combined).digest('base64');
-        const jwtSig = this.cleanUpJWTManual(evUniqueID, origSig);
+            const combined = hdrEncoded + '.' + payEncoded;
 
-        return `${combined}.${jwtSig}`;
+            // hash
+            const origSig = crypt.createHmac('sha256', process.env.JWTSECRET).update(combined).digest('base64');
+            const jwtSig = this.cleanUpJWTManual(evUniqueID, origSig);
 
-    } catch (error) {
+            return `${combined}.${jwtSig}`;
 
-        this.logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.message}`);
-        this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.stack}`);
+        } catch (error) {
 
-        throw error;
+            this.logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.message}`);
+            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.stack}`);
+
+            throw error;
+        }
     }
-}
 
-/**
- * Clean up invalid Base64 chars to be used in JWT (for JWT generated manually)
- * @param {String} evUniqueID EV unique ID
- * @param {string} val Base64 JWT to clean up
- */
-cleanUpJWTManual(evUniqueID, val) {
-    const taskName = 'cleanUpJWT';
+    /**
+     * Clean up invalid Base64 chars to be used in JWT (for JWT generated manually)
+     * @param {String} evUniqueID EV unique ID
+     * @param {string} val Base64 JWT to clean up
+     */
+    cleanUpJWTManual(evUniqueID, val) {
 
-    try {
-        this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${val}`);
+        const taskName = 'cleanUpJWT';
 
-        val = val.replace(/\+/gi, '-');
-        val = val.replace(/\//gi, '_');
-        val = val.split('=')[0];
+        try {
+            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${val}`);
 
-        return val;
+            val = val.replace(/\+/gi, '-');
+            val = val.replace(/\//gi, '_');
+            val = val.split('=')[0];
 
-    } catch (e) {
-      
-        this.logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${e.message}`);
-        this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${e.stack}`);
+            return val;
 
-        throw e;
+        } catch (e) {
+
+            this.logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${e.message}`);
+            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${e.stack}`);
+
+            throw e;
+        }
     }
-}
 }

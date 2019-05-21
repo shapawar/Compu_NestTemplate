@@ -24,8 +24,8 @@ import { LogService } from './service/logger.service';
 
 
 /*
-  * Main module and Database connection configuration
-  */
+* Main module and Database connection configuration
+*/
 @Module({
   imports: [UsersModule, TypeOrmModule.forRoot({
     type: 'postgres',
