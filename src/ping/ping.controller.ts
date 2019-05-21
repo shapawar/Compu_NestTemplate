@@ -7,7 +7,7 @@ import { Controller, Get, Req, Res } from '@nestjs/common';
 * Custome imports
 */
 import { AppService } from '../service/app.service';
-import { LogService } from 'src/service/logger.service';
+import { LogService } from '../service/logger.service';
 
 /* 
 * Ping route for health check
@@ -19,11 +19,7 @@ export class PingController {
 
     constructor(private logger: LogService, private appService: AppService) { }
 
-    /**
-     * For helth check
-     * @param req 
-     * @param res 
-     */
+   //Ping route
     @Get()
     ping(@Req() req, @Res() res) {
 
@@ -33,7 +29,6 @@ export class PingController {
         try {
 
             this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-${taskName}`);
-            // throw new Error('Error in ping controller')
 
             const task = {
                 name: taskName,
