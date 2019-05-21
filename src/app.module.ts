@@ -27,16 +27,7 @@ import { LogService } from './service/logger.service';
 * Main module and Database connection configuration
 */
 @Module({
-  imports: [UsersModule, TypeOrmModule.forRoot({
-    type: 'postgres',
-    port: 5432,
-    username: 'postgres',
-    password: 'admin2518',
-    database: 'nestdapp',
-    host: 'localhost',
-    synchronize: true,
-    entities: [userEntity]
-  }), ErrorcodesModule],
+  imports: [UsersModule, TypeOrmModule.forRoot(), ErrorcodesModule],
   controllers: [PingController, AppController, ApiUtils],
   providers: [LogService, AppService, ErrorcodesService, {
     provide: APP_FILTER,
