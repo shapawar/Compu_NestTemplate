@@ -7,7 +7,7 @@ import { Controller, Get, Req, Res } from '@nestjs/common';
 * Custome imports
 */
 import { AppService } from '../service/app.service';
-import { LogService } from 'src/service/logger.service';
+import { LogService } from '../service/logger.service';
 
 /* 
 * Ping route for health check
