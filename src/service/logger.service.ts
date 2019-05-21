@@ -1,4 +1,3 @@
-
 /**
  * Nest and Third party imports
  */
@@ -11,11 +10,13 @@ import winston = require('winston');
  */
 export enum LogLevel { INFO = 'info', WARN = 'warn', ERROR = 'error', DEBUG = 'debug' }
 
+
 /**
  * Logger Class
  */
 @Injectable()
 export class LogService {
+
     private readonly logger: Logger;
     private contextName: string = 'NEST JS Logs';
 
@@ -84,6 +85,5 @@ export class LogService {
     public debug(message: string): void {
         this.logger.log({ level: LogLevel.DEBUG, message: message, meta: { context: this.contextName } });
     }
-
 
 }

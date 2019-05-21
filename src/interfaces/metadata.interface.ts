@@ -4,7 +4,7 @@
 import { tasksData } from "./tasks.interface";
 
 /* 
-* Defind res object interface
+* Define res object interface
 */
 export interface apiResponse {
     requestURL: string,
@@ -15,6 +15,7 @@ export interface apiResponse {
     apiBuildVersion: string,
     errCode: Number,
     errMsg: string,
+    errName: string,
     timestamp: string,
     tasks: Array<tasksData>
 }

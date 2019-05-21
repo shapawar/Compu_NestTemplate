@@ -1,23 +1,25 @@
 /* 
 * Nest & Third party imports
 */
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 /* 
 * Custom imports 
 */
-import { AppService } from '../../app.service';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { userEntity } from './user.entity';
-import { LogService } from '../../middleware/logger.middleware';
+import { LogService } from '../../service/logger.service';
+import { AppService } from '../../service/app.service';
+import { ErrorcodesService } from '../../errorcodes/errorcodes.service';
+import { GeneralCodes } from '../../errorcodes/general.errocodes.config';
 
 @Module({
   imports: [TypeOrmModule.forFeature([userEntity])],
-  providers: [UsersService,LogService,AppService],
-  controllers: [UsersController]
+  controllers: [UsersController],
+  providers: [UsersService,LogService,AppService,ErrorcodesService,GeneralCodes],
+  exports: [UsersService, UsersModule]
 })
 
-export class UsersModule{}
+export class UsersModule { }

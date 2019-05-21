@@ -1,57 +1,59 @@
 /* 
 * Nest & Third party imports
 */
-import { Controller, Get, HttpCode, Req } from '@nestjs/common';
+import { Controller, Get, Req, Res } from '@nestjs/common';
 
 /* 
 * Custome imports
 */
-import { AppService } from '../app.service';
-import { LogService } from '../middleware/logger.middleware';
-
-
+import { AppService } from '../service/app.service';
+import { LogService } from 'src/service/logger.service';
 
 /* 
-* Ping route for helth check
+* Ping route for health check
 */
 @Controller('ping')
 export class PingController {
+   
+    MODULENAME = "PingController";
 
-    taskName = "PingController";
-    MODULENAME = "PINGCONTROLLER"
+    constructor(private logger: LogService, private appService: AppService) { }
 
-
-    logger = new LogService();
-    appService = new AppService();
-
-
+    /**
+     * For helth check
+     * @param req 
+     * @param res 
+     */
     @Get()
-    @HttpCode(200)
-    ping(@Req() req) {
+    ping(@Req() req, @Res() res) {
+
+        const taskName = "/ping";
+        const httpCode = 200; //default
 
         try {
 
-            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-${this.taskName}`);
+            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-${taskName}`);
+            // throw new Error('Error in ping controller')
 
             const task = {
-                name: this.taskName,
+                name: taskName,
                 info: "Ping controller executed",
                 elapsedTimeInMs: Date.now()
             }
-    
+
             let pingdata = this.appService.endMetaData(req.evUniqueID, 0, "Executed Successfully", req.metadata, task);
-            
-            return pingdata;
+
+            return res.status(httpCode).send(pingdata);
 
         } catch (error) {
-            
-            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${this.taskName})- ${error.stack}`);
-            this.logger.error(`[${req.evUniqueID}](${this.MODULENAME})-(${this.taskName})- ${error.message}`);
+
+            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
+            this.logger.error(`[${req.evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
 
             throw error;
 
         }
-       
+
     }
 
 }

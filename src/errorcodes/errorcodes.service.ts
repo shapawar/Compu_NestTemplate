@@ -1,33 +1,39 @@
 /* 
 * Nest & Third party imports
  */
-import { Injectable, } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 /* 
 * custom imports
 */
 import { GeneralCodes } from './general.errocodes.config';
 import { errorCodes } from '../interfaces/errorcode.interface';
-import { LogService } from '../middleware/logger.middleware';
+import { LogService } from '../service/logger.service';
 
-
-
-
+/* 
+* Errorcodes Service
+*/
 @Injectable()
 export class ErrorcodesService {
-
-    taskName = "ErrorCodesService";
-    MODULENAME = "ErrorCodesController"
-
     
+    MODULENAME = "ErrorcodesService";
 
+    constructor(private logger: LogService, private generalcodes: GeneralCodes) { }
+
+    /**
+     * 
+     * @param {string} evUniqueID EV unique Id
+     * @param {number} errCode Error code
+     * @param {string} errMsg  Error message
+     */
     getErrorInformation(evUniqueID, errCode, errMsg): errorCodes {
-
-        let logger = new LogService();
-        let generalcodes = new GeneralCodes();
+        const taskName = "getErrorInformation";
 
         try {
-            let errorData = generalcodes.ErrorCodes
+
+            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName})`);
+
+            let errorData = this.generalcodes.ErrorCodes
 
             // convert to int just in case errCode is not
             const eCode = parseInt(errCode);
@@ -49,7 +55,6 @@ export class ErrorcodesService {
                     }
 
                 } else {
-
                     // use default message
                     errMsg = filteredItem.message;
                 }
@@ -66,11 +71,10 @@ export class ErrorcodesService {
 
         } catch (error) {
 
-            logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${this.taskName}): ${error.stack}`);
-            logger.error(`[${evUniqueID}] ${this.MODULENAME}(${this.taskName}): ${error.message}`);
+            this.logger.debug(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.stack}`);
+            this.logger.error(`[${evUniqueID}] ${this.MODULENAME}(${taskName}): ${error.message}`);
 
-            return { "code": 1, "message": 'Internal Error', "description": error.message, "type": 'ERROR', "canOverrideMessage": false };
+            throw error;
         }
     }
-
 }

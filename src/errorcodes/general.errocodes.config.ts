@@ -1,4 +1,3 @@
-
 /* 
 * Define and add general error codes
 */

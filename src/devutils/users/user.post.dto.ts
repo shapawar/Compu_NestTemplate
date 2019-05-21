@@ -1,8 +1,8 @@
 /* 
-* NEST & Third party middleware
+* NEST & Third party imports
 */
-
 import { ApiModelProperty } from "@nestjs/swagger";
+
 
 /* Data transfer object for user entitty */
 export class UserPostDTO {

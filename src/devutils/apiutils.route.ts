@@ -1,41 +1,46 @@
 /* 
 * Nest & Third party imports
 */
-import { Get, Req, Res, Controller, Post } from "@nestjs/common";
-import { Repository } from "typeorm";
+import { Get, Req, Res, Controller, Post, UnauthorizedException } from "@nestjs/common";
+import { ApiExcludeEndpoint } from "@nestjs/swagger";
 
 /* 
 *Custom imports
 */
-import { LogService } from '../middleware/logger.middleware';
+import { LogService } from '../service/logger.service';
+import { AppService } from "../service/app.service";
 import { UsersService } from "./users/users.service";
-import { ApiExcludeEndpoint } from "@nestjs/swagger";
 
-//Module name
-const MODULENAME = "ApiUtils";
-
+/* 
+* AppUtils Contoller
+*/
 @Controller('/apiutils/auth-token')
 export class ApiUtils {
 
-    //Create instance of service
-    logger = new LogService();
-    userService = new UsersService(new Repository);
+    MODULENAME = "ApiUtils";
 
+    constructor(private logger:LogService, private appService:AppService, private userService: UsersService){}
+
+    /**
+     * 
+     * @param req 
+     * @param res - render on html template
+     */
     @Get()
     @ApiExcludeEndpoint()
     authToken(@Req() req, @Res() res) {
 
         let taskname = "Auth token get method";
-        
+
         try {
 
-            this.logger.debug(`[${req.evUniqueID}](${MODULENAME})-(${taskname})`);
+            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${taskname})`);
 
             // data
             const curDate = new Date();
             const expDate = new Date();
 
-            expDate.setSeconds(curDate.getSeconds() + 60);
+            expDate.setSeconds(curDate.getSeconds() + 300);
 
             const data = {
                 "evUniqueID": req.evUniqueID,
@@ -51,30 +56,40 @@ export class ApiUtils {
 
         } catch (error) {
 
-            this.logger.debug(`[${req.evUniqueID}](${MODULENAME})-(${taskname})- ${error.stack}`);
-            this.logger.error(`[${req.evUniqueID}](${MODULENAME})-(${taskname})- ${error.message}`);
+            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${taskname})- ${error.stack}`);
+            this.logger.error(`[${req.evUniqueID}](${this.MODULENAME})-(${taskname})- ${error.message}`);
 
             throw error;
         }
     }
 
+    /**
+     * 
+     * @param res - render on html template
+     * @param req - user payload
+     */
     @Post()
     @ApiExcludeEndpoint()
     async encodeJWT(@Req() req, @Res() res) {
 
-        let taskName = "Auth token encode method";
+        let taskName = "Auth token encode";
 
         try {
 
-            this.logger.debug(`[${req.evUniqueID}](${MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(req.body)}`);
+            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${taskName})- QueryData: ${JSON.stringify(req.body)}`);
+            
+            const user = await this.userService.validateUser(req.evUniqueID,req.body.username);
+            if (!user) {
+              throw new UnauthorizedException();
+            }
 
             const data = {
                 "evUniqueID": req.evUniqueID,
                 "username": req.body.username,
                 "exp": req.body.exp,
                 "iat": req.body.iat,
-                "useJWT":req.body.useJWT ? 'CHECKED' : '',
-                "jwt":req.body.jwt,
+                "useJWT": req.body.useJWT ? 'CHECKED' : '',
+                "jwt": req.body.jwt,
                 "errMsg": ''
             };
 
@@ -95,19 +110,19 @@ export class ApiUtils {
             // exp and iat MUST be in seconds since EPOCH
             jwtPayload.exp = Math.floor(exp.getTime() / 1000);
             jwtPayload.iat = Math.floor(iat.getTime() / 1000);
-            
+
             if (data.useJWT === 'CHECKED') {
-                data.jwt = await this.userService.generateJWT(req.evUniqueID, jwtPayload);
+                data.jwt = await this.appService.generateJWT(req.evUniqueID, jwtPayload);
             } else {
-                data.jwt = await this.userService.generateJWTManual(req.evUniqueID, jwtPayload);
+                data.jwt = await this.appService.generateJWTManual(req.evUniqueID, jwtPayload);
             }
-           
+
             res.render('auth-token', { data: data })
 
         } catch (error) {
 
-            this.logger.debug(`[${req.evUniqueID}](${MODULENAME})-(${taskName})- ${error.stack}`);
-            this.logger.error(`[${req.evUniqueID}](${MODULENAME})-(${taskName})- ${error.message}`);
+            this.logger.debug(`[${req.evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.stack}`);
+            this.logger.error(`[${req.evUniqueID}](${this.MODULENAME})-(${taskName})- ${error.message}`);
 
             throw error;
 

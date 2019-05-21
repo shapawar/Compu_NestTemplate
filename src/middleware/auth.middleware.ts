@@ -1,20 +1,23 @@
-
 /**
  * Nest and Third party imports
  */
 import { NestMiddleware, Injectable, MiddlewareFunction } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
-import { LogService } from './logger.middleware';
 
-const logger = new LogService();
+/* 
+* Custom imports
+*/
+import { LogService } from '../service/logger.service';
 
 /* 
 * JWT Authentication middleware
 */
 @Injectable()
-
 export class AuthMiddleware implements NestMiddleware {
+  
   MODULENAME = 'AuthMiddleware';
+
+  constructor(private logger: LogService) { }
 
   /*
   * Verify token if token unauthorized throw error msg otherwise continue. 
@@ -26,13 +29,14 @@ export class AuthMiddleware implements NestMiddleware {
 
       try {
 
+        this.logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName})- In resolve method`);
+
         const token = req.headers.authorization;
 
         if (token) {
 
           try {
 
-            logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): - `);
             /* verify token method */
             let check = await jwt.verify(token, process.env.JWTSECRET);
             req.check = check;
@@ -40,28 +44,31 @@ export class AuthMiddleware implements NestMiddleware {
 
           } catch (error) {
 
-            logger.error(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${JSON.stringify(error.message)}`);
-            logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${JSON.stringify(error.message)}`);
+            this.logger.error(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${JSON.stringify(error.message)}`);
+            this.logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${JSON.stringify(error.message)}`);
 
             next(error);
           }
 
         } else {
 
-          logger.error(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): Auth token missing`);
-          logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}):Auth token missing`);
+          this.logger.error(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): Auth token missing`);
+          this.logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}):Auth token missing`);
 
-          next({ message: "Auth token missing", name: "JWT Token error" });
+          next({ message: "Auth token missing", name: "JWT Token error", stack:"Please Send the auth token to every request" });
 
         }
 
       } catch (error) {
-        //add error logs here
-        logger.error(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
-        logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
+
+        this.logger.error(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
+        this.logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
 
         next(error);
       }
+
     }
+
   }
+
 };

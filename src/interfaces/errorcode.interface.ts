@@ -1,4 +1,3 @@
-
 /* 
 * Define error code interface
 */
