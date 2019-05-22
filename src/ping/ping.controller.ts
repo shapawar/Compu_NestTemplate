@@ -24,6 +24,7 @@ export class PingController {
 
    //Ping route
     @Get()
+    @ApiResponse({ status: 200, description: 'Success', type: responseMetadataDTO })
     ping(@Req() req, @Res() res) {
 
         const taskName = "/ping";

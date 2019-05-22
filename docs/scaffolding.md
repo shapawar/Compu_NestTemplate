@@ -16,7 +16,9 @@ Nest-Scaffolding
     └──  ...        
 ├── src                        # Application source files
     ├── devutils               # For DEV utility(Only for development)           
-        └── ...  
+        └── ...
+    ├── dto                    # shared DTO files
+        └── ...
     ├── errorcodes                 # For custom error codes and messages configuration 
         ├── errorcodes.controller.spec.ts
         ├── errorcodes.controller.ts
@@ -37,9 +39,9 @@ Nest-Scaffolding
         ├──  ping.controller.ts  
         └── ...                    
     ├──  service                     # service provided files are contains in this directory
-        ├──  app.service.ts             
-        ├── errorhandler.middleware.ts 
-        ├── logger.middleware.ts  
+        ├── app.service.ts             
+        ├── errorhandler.service.ts 
+        ├── logger.service.ts  
         └── ...
     ├──  Views                      # HTML templates
         ├──  main.ejs 
@@ -83,6 +85,9 @@ Nest-Scaffolding
 
  ## devutils
  * This directory is used for implementing all bussiness logic purpose and used for development purpose to build and unit test block code quickly to minimize errors if any while developing main functionalities.
+
+ ## DTO
+* This directory include all shared DTO(Data Transfer Object) for swagger implementation models.
 
  ## errorcodes:
  * This file contains the error handler functions and also used for setting up error configuration that are used for handling error in whole applications.

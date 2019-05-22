@@ -1,7 +1,7 @@
 /* 
 * NEST & Third party imports
 */
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 
 
 @Controller()

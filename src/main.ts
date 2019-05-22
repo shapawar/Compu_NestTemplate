@@ -15,7 +15,7 @@ import { AppModule } from './app.module';
 import { LogService } from './service/logger.service';
 
 /* Define port */
-const port = process.env.PORT || 9001;
+const port = process.env.PORT || 8081;
 
 
 async function bootstrap() {
@@ -43,7 +43,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('docs', app, document);
+  SwaggerModule.setup(`${process.env.VERSION}/docs`, app, document);
 
   await app.listen(port);
 
