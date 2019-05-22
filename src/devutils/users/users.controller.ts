@@ -2,7 +2,7 @@
 * Nest & Third party imports
 */
 import { Controller, Post, Res, Body, Get, Param, Delete, Put, Req } from '@nestjs/common';
-import { ApiOperation, ApiImplicitParam, ApiBearerAuth, ApiExcludeEndpoint } from '@nestjs/swagger';
+import { ApiOperation, ApiImplicitParam, ApiBearerAuth, ApiExcludeEndpoint, ApiResponse } from '@nestjs/swagger';
 import { validate } from 'class-validator';
 
 /* 
@@ -82,6 +82,7 @@ export class UsersController {
     @Get()
     @ApiBearerAuth()
     @ApiExcludeEndpoint()
+    @ApiResponse({ status: 200, description: 'Success', type: UserPostDTO })
     @ApiOperation({ title: 'Fetch user details' })
     async getUserList(@Req() req, @Res() res, ) {
         

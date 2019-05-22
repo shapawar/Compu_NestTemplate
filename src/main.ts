@@ -5,6 +5,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import * as bodyParser from 'body-parser';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as path from "path";
 require('dotenv').config({ "path": './secured/.env' });
 
 /* 
@@ -14,7 +15,7 @@ import { AppModule } from './app.module';
 import { LogService } from './service/logger.service';
 
 /* Define port */
-const port = process.env.PORT || 9001;
+const port = process.env.PORT || 8081;
 
 
 async function bootstrap() {
@@ -28,7 +29,9 @@ async function bootstrap() {
   app.enableCors();
   app.setGlobalPrefix(process.env.VERSION);
   app.set('views', __dirname + '/views');
+  app.useStaticAssets(path.join(__dirname, './public'));
   app.set('view engine', 'ejs');
+  
 
   const options = new DocumentBuilder()
     .setTitle('Nest Js ')
@@ -40,7 +43,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('docs', app, document);
+  SwaggerModule.setup(`${process.env.VERSION}/docs`, app, document);
 
   await app.listen(port);
 

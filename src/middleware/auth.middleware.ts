@@ -14,7 +14,7 @@ import { LogService } from '../service/logger.service';
 */
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  
+
   MODULENAME = 'AuthMiddleware';
 
   constructor(private logger: LogService) { }
@@ -22,7 +22,7 @@ export class AuthMiddleware implements NestMiddleware {
   /*
   * Verify token if token unauthorized throw error msg otherwise continue. 
    */
-  resolve(...args: any[]): MiddlewareFunction {
+  resolve(): MiddlewareFunction {
     return async (req, res, next) => {
 
       let taskName = "JWTAuthentication";
@@ -55,7 +55,7 @@ export class AuthMiddleware implements NestMiddleware {
           this.logger.error(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}): Auth token missing`);
           this.logger.debug(`[${req.evUniqueID}] ${this.MODULENAME} (${taskName}):Auth token missing`);
 
-          next({ message: "Auth token missing", name: "JWT Token error", stack:"Please Send the auth token to every request" });
+          next({ message: "Auth token missing", name: "JWT Token error", stack: "Please Send the auth token to every request" });
 
         }
 

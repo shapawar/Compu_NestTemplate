@@ -29,12 +29,10 @@ export class ErrorFilter implements ExceptionFilter {
     let taskName = 'Error-Service';
 
     try {
-      
+
       this.response = host.switchToHttp().getResponse();
       this.request = host.switchToHttp().getRequest();
-      if (this.request.url == "/favicon.ico") {
-        return;
-      }
+ 
 
       this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${taskName}) `);
 
@@ -43,7 +41,7 @@ export class ErrorFilter implements ExceptionFilter {
       this.request.metadata.errMsg = error.message;
       this.request.metadata.errCode = 1;
       this.request.timestamp = new Date().toISOString();
-      
+
       this.logger.error(`[${this.request.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.message}`);
       this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${taskName}): ${error.stack}`);
 

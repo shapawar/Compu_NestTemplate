@@ -31,18 +31,19 @@
     "dotenv": "^6.2.0",
     "ejs": "^2.6.1",
     "injection-js": "^2.2.1",
+    "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "pg": "^7.10.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.2.2",
     "swagger-ui-express": "^4.0.2",
+    "ts-node": "^7.0.1",
+    "tsconfig-paths": "^3.5.0",
     "typeorm": "^0.2.16",
     "typescript": "^3.0.1",
     "uuid": "^3.3.2",
-    "winston": "^3.2.1",
-    "ts-node": "^7.0.1",
-    "tsconfig-paths": "^3.5.0"
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@nestjs/testing": "^6.1.1",
