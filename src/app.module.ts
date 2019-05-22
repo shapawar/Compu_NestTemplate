@@ -10,7 +10,6 @@ import { APP_FILTER } from '@nestjs/core';
 */
 import { DefaultMiddleware } from './middleware/default.middleware';
 import { UsersModule } from './devutils/users/users.module';
-
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { PingController } from './ping/ping.controller';
 import { AppController } from './app.controller';
@@ -46,7 +45,6 @@ import { userEntity } from './devutils/users/entity/user.entity';
   exports: [LogService, AppService, ErrorcodesService]
 })
 
-// postgres://fitpiqlufwwijc:0e8d25ad703d175eec6184d7d2a41f968c03fb3dd0b02eb2a952067a57911309@ec2-54-225-106-93.compute-1.amazonaws.com:5432/d63sbm61vtsq87
 
 /* 
 * Middleware Settings
