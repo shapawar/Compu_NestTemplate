@@ -14,7 +14,7 @@ import { AppModule } from './app.module';
 import { LogService } from './service/logger.service';
 
 /* Define port */
-const port = process.env.PORT || 9001;
+const port = process.env.PORT || 8081;
 
 
 async function bootstrap() {

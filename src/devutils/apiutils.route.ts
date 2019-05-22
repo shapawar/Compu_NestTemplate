@@ -20,7 +20,7 @@ export class ApiUtils {
 
     MODULENAME = "ApiUtils";
 
-    constructor(private logger:LogService, private appService:AppService, private userService: UsersService){}
+    constructor(private logger: LogService, private appService: AppService) { }
 
     /**
      * 
