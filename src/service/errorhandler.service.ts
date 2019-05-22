@@ -32,9 +32,7 @@ export class ErrorFilter implements ExceptionFilter {
       
       this.response = host.switchToHttp().getResponse();
       this.request = host.switchToHttp().getRequest();
-      if (this.request.url == "/favicon.ico") {
-        return;
-      }
+ 
 
       this.logger.debug(`[${this.request.evUniqueID}] ${this.MODULENAME} (${taskName}) `);
 

@@ -5,6 +5,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import * as bodyParser from 'body-parser';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as path from "path";
 require('dotenv').config({ "path": './secured/.env' });
 
 /* 
@@ -28,7 +29,9 @@ async function bootstrap() {
   app.enableCors();
   app.setGlobalPrefix(process.env.VERSION);
   app.set('views', __dirname + '/views');
+  app.useStaticAssets(path.join(__dirname, './public'));
   app.set('view engine', 'ejs');
+  
 
   const options = new DocumentBuilder()
     .setTitle('Nest Js ')

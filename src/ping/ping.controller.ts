@@ -2,17 +2,20 @@
 * Nest & Third party imports
 */
 import { Controller, Get, Req, Res } from '@nestjs/common';
+import { ApiResponse } from '@nestjs/swagger';
 
 /* 
 * Custome imports
 */
 import { AppService } from '../service/app.service';
 import { LogService } from '../service/logger.service';
+import { responseMetadataDTO } from '../dto/responsemetadata.dto';
 
 /* 
 * Ping route for health check
 */
 @Controller('ping')
+@ApiResponse({ status: 200, description: 'Success', type: responseMetadataDTO })
 export class PingController {
    
     MODULENAME = "PingController";

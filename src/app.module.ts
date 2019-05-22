@@ -10,7 +10,6 @@ import { APP_FILTER } from '@nestjs/core';
 */
 import { DefaultMiddleware } from './middleware/default.middleware';
 import { UsersModule } from './devutils/users/users.module';
-
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { PingController } from './ping/ping.controller';
 import { AppController } from './app.controller';
