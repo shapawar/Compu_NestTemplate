@@ -2,7 +2,7 @@
 * Nest & Third party imports
 */
 import { Controller, Get, Req, Res } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiOperation } from '@nestjs/swagger';
 
 /* 
 * Custome imports
@@ -15,7 +15,6 @@ import { responseMetadataDTO } from '../dto/responsemetadata.dto';
 * Ping route for health check
 */
 @Controller('ping')
-@ApiResponse({ status: 200, description: 'Success', type: responseMetadataDTO })
 export class PingController {
    
     MODULENAME = "PingController";
@@ -24,7 +23,9 @@ export class PingController {
 
    //Ping route
     @Get()
+    @ApiOperation({ title: 'Ping route for health check' })
     @ApiResponse({ status: 200, description: 'Success', type: responseMetadataDTO })
+    @ApiResponse({ status: 404, description: 'Not Found', type: responseMetadataDTO })
     ping(@Req() req, @Res() res) {
 
         const taskName = "/ping";
