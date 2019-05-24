@@ -1,7 +1,7 @@
 /* 
 * Nest & Third party imports
 */
-import { Get, Req, Res, Controller, Post, UnauthorizedException } from "@nestjs/common";
+import { Get, Req, Res, Controller, Post } from "@nestjs/common";
 import { ApiExcludeEndpoint } from "@nestjs/swagger";
 
 /* 
@@ -9,7 +9,7 @@ import { ApiExcludeEndpoint } from "@nestjs/swagger";
 */
 import { LogService } from '../service/logger.service';
 import { AppService } from "../service/app.service";
-import { UsersService } from "./users/users.service";
+
 
 
 /* 
@@ -112,7 +112,7 @@ export class ApiUtils {
             } else {
                 data.jwt = await this.appService.generateJWTManual(req.evUniqueID, jwtPayload);
             }
-
+       
             res.render('auth-token', { data: data })
 
         } catch (error) {
