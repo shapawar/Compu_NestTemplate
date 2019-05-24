@@ -7,6 +7,7 @@ import * as bodyParser from 'body-parser';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as path from "path";
 require('dotenv').config({ "path": './secured/.env' });
+import * as express from 'express';
 
 /* 
 * custom imports
@@ -16,10 +17,10 @@ import { LogService } from './service/logger.service';
 
 /* Define port */
 const port = process.env.PORT || 8081;
-
+ let server = express();
 
 async function bootstrap() {
-
+ 
   const app = await NestFactory.create(AppModule);
   let Logger = new LogService();
 
@@ -28,9 +29,9 @@ async function bootstrap() {
   app.use(bodyParser.json());
   app.enableCors();
   app.setGlobalPrefix(process.env.VERSION);
-  app.set('views', __dirname + '/views');
-  app.useStaticAssets(path.join(__dirname, './public'));
-  app.set('view engine', 'ejs');
+  server.set('views', __dirname + '/views');
+  app.use(express.static(path.join(__dirname,'/public')));
+  //server.set('view engine', 'ejs');
   
 
   const options = new DocumentBuilder()
