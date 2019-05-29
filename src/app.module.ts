@@ -3,6 +3,7 @@
 */
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { createConnections } from 'typeorm';
 import { APP_FILTER } from '@nestjs/core';
 
 /* 
@@ -20,23 +21,16 @@ import { ApiUtils } from './devutils/apiutils.route';
 import { ErrorFilter } from './service/errorhandler.service';
 import { ErrorcodesService } from './errorcodes/errorcodes.service';
 import { LogService } from './service/logger.service';
-import { userEntity } from './devutils/users/entity/user.entity';
 
+
+//connections for database
+createConnections();
 
 /*
 * Main module and Database connection configuration
 */
 @Module({
-  imports: [UsersModule, TypeOrmModule.forRoot({
-    type: 'postgres',
-    port: 5432,
-    username: 'postgres',
-    password: 'root',
-    database: 'nestdapp',
-    host: 'localhost',
-    synchronize: true,
-    entities: [userEntity]
-  }), ErrorcodesModule],
+  imports: [UsersModule, TypeOrmModule.forRoot({}), ErrorcodesModule],
   controllers: [PingController, AppController, ApiUtils],
   providers: [LogService, AppService, ErrorcodesService, {
     provide: APP_FILTER,
