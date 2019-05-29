@@ -8,14 +8,15 @@ import { Repository } from 'typeorm';
 /* 
 * Custom imports
 */
-import { signup } from './entity/signup_entity';
 import { LogService } from '../../service/logger.service';
+import { signup } from './entity/signup.entity';
 
 /* 
 * SignUp Service
 */
 @Injectable()
 export class SignupService {
+
     MODULENAME = 'SignupService';
     constructor(@InjectRepository(signup) private readonly userRepository: Repository<signup>, private logger: LogService) { }
 
@@ -25,7 +26,6 @@ export class SignupService {
      * @param {*} data is a req data
      */
     async createUser(evUniqueID, data) {
-
         let taskName = 'createUser';
 
         try {

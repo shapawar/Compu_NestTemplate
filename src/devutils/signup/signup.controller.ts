@@ -1,16 +1,17 @@
 /* 
 * Nest & Third party imports
 */
-import { Controller, Post, Req, Res } from '@nestjs/common';
+import { Controller, Post, Req, Res, Body } from '@nestjs/common';
 import { validate } from 'class-validator';
+
 /* 
 * Custom imports
  */
 import { LogService } from '../../service/logger.service';
 import { AppService } from '../../service/app.service';
-import { UserSignupDTO } from './dto/signup_dto';
-import { signup } from './entity/signup_entity';
+import { UserSignupDTO } from './dto/signup.dto';
 import { SignupService } from './signup.service';
+import { signup } from './entity/signup.entity';
 
 @Controller('signup')
 export class SignupController {
@@ -22,7 +23,7 @@ export class SignupController {
 
     //create user registration
     @Post()
-    async signUp(@Req() req, @Res() res, signUpDTO: UserSignupDTO){
+    async signUp(@Req() req, @Res() res,@Body() signUpDTO: UserSignupDTO){
         let taskName="signUp";
         const httpCode = 200;
 
@@ -53,7 +54,7 @@ export class SignupController {
               }
 
               const usermetadata = this.appservice.endMetaData(req.evUniqueID, 0, 'Post has been submitted successfully!', req.metadata, task);
-              const newPost = await this.signupservice.createUser(req.evUniqueID, UserSignupDTO);
+              const newPost = await this.signupservice.createUser(req.evUniqueID, signUpDTO);
 
               return res.status(httpCode).json({
                   metadata: usermetadata,

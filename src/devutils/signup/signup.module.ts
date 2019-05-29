@@ -1,12 +1,19 @@
+/* 
+* NEST & Third party imports
+*/
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+/* 
+* Custom imports
+*/
 import { SignupController } from './signup.controller';
 import { SignupService } from './signup.service';
 import { LogService } from '../../service/logger.service';
 import { AppService } from '../../service/app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { signup } from './entity/signup_entity';
 import { ErrorcodesService } from '../../errorcodes/errorcodes.service';
-import { GeneralCodes } from 'src/errorcodes/general.errocodes.config';
+import { GeneralCodes } from '../../errorcodes/general.errocodes.config';
+import { signup } from './entity/signup.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([signup])],

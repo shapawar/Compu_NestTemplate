@@ -1,23 +1,26 @@
+/* 
+* NEST & Third party imports
+*/
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { IsNotEmpty, IsString, Length, IsNumber, IsEmail } from "class-validator";
+import { IsNotEmpty, IsString, Length, IsEmail } from "class-validator";
 
 
 
+/* 
+* Signup Entity
+*/
 @Entity()
-
 export class signup{
 
     @PrimaryGeneratedColumn()
     id:number;
 
     @Column()
-    @IsNotEmpty()
     @IsString()
     @Length(2, 20)
     fname:string;
 
     @Column()
-    @IsNotEmpty()
     @IsString()
     @Length(2,20)
     lname:string
@@ -28,11 +31,9 @@ export class signup{
     @Length(8 , 15)
     username:string
 
-    @Column()
+    @Column("bigint")
     @IsNotEmpty()
-    @IsNumber()
-    @Length(10, 12)
-    mobile:number;
+    mobile:number
 
     @Column()
     @IsNotEmpty()
@@ -43,6 +44,8 @@ export class signup{
     @IsNotEmpty()
     @IsString()
     gender:string
-
+    
+    @Column()
+    password:string
 
 }

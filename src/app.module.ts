@@ -1,6 +1,14 @@
+/* 
+* Nest & Third party imports
+*/
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { createConnections } from 'typeorm';
 import { APP_FILTER } from '@nestjs/core';
+
+/* 
+* Custom imports
+*/
 import { DefaultMiddleware } from './middleware/default.middleware';
 import { UsersModule } from './devutils/users/users.module';
 import { AuthMiddleware } from './middleware/auth.middleware';
@@ -13,32 +21,19 @@ import { ApiUtils } from './devutils/apiutils.route';
 import { ErrorFilter } from './service/errorhandler.service';
 import { ErrorcodesService } from './errorcodes/errorcodes.service';
 import { LogService } from './service/logger.service';
-import { userEntity } from './devutils/users/entity/user.entity';
 import { SigninModule } from './devutils/signin/signin.module';
 import { SignupModule } from './devutils/signup/signup.module';
-/* 
-* Nest & Third party imports
-*/
 
-/* 
-* Custom imports
-*/
 
+
+//connections for database
+createConnections();
 
 /*
 * Main module and Database connection configuration
 */
 @Module({
-  imports: [UsersModule, TypeOrmModule.forRoot({
-    type: 'postgres',
-    port: 5432,
-    username: 'postgres',
-    password: 'root',
-    database: 'nestdapp',
-    host: 'localhost',
-    synchronize: true,
-    entities: [userEntity]
-  }), ErrorcodesModule, SigninModule, SignupModule],
+  imports: [UsersModule, TypeOrmModule.forRoot({}), ErrorcodesModule,SignupModule,SigninModule],
   controllers: [PingController, AppController, ApiUtils],
   providers: [LogService, AppService, ErrorcodesService, {
     provide: APP_FILTER,
@@ -61,7 +56,10 @@ export class AppModule implements NestModule {
       .apply(AuthMiddleware)
       .exclude(
         { path: '/users', method: RequestMethod.POST },
-        { path: '/users/noorm', method: RequestMethod.POST }
+        { path: '/users/noorm', method: RequestMethod.POST },
+        { path: '/signup', method: RequestMethod.POST },
+        { path: '/login', method: RequestMethod.POST }
+
       )
       .forRoutes(UsersController)
   }
